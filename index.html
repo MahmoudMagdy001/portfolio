@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahmoud Magdy Mansour | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <div class="background-animation">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="container hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <div class="profile-glow">
+                <div class="profile-img">
+                    <img src="images/profile.jpg" alt="Mahmoud Magdy Mansour">
+                </div>
+            </div>
+            <div class="hero-text">
+                <h1 class="hero-title">Hello, I'm <span class="typing-text">Mahmoud Magdy</span></h1>
+
+                <p class="hero-description">
+                    Flutter Developer with a solid foundation in Dart and the Flutter framework. Experienced in building cross-platform mobile applications, integrating RESTful APIs, and implementing effective state management solutions. Passionate about writing clean, maintainable code and staying up-to-date with modern development trends. A quick learner with strong problem-solving skills, eager to contribute to team success and grow in a collaborative development environment.
+                </p>
+            </div>
+        </div>
+    </header>
+
+
+
+    <section class="skills-section" id="skills">
+        <div class="container" data-aos="fade-up">
+            <h2 class="section-title small">My Skills</h2>
+            <div class="skills-wrapper">
+                <div class="skill-item" data-tilt>
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Flutter</span>
+                </div>
+                <div class="skill-item" data-tilt>
+                    <i class="fas fa-code"></i>
+                    <span>Dart</span>
+                </div>
+                <div class="skill-item" data-tilt>
+                    <i class="fas fa-fire"></i>
+                    <span>Firebase</span>
+                </div>
+                <div class="skill-item" data-tilt>
+                    <i class="fas fa-cubes"></i>
+                    <span>Bloc/Cubit</span>
+                </div>
+                <div class="skill-item" data-tilt>
+                    <i class="fas fa-server"></i>
+                    <span>REST APIs</span>
+                </div>
+                <div class="skill-item" data-tilt>
+                    <i class="fab fa-git-alt"></i>
+                    <span>Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="experience-section" id="experience">
+        <div class="container">
+            <h2 class="section-title" data-aos="zoom-in">Professional Experience</h2>
+            <div class="timeline">
+                
+                <!-- Experience 1 -->
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <div class="date">05/2025 - Present</div>
+                        <h3>Flutter Developer</h3>
+                        <h4>4th Pyramids | Mansoura, Egypt</h4>
+                        <ul>
+                            <li>Developed <strong>E-Commerce App (Bynona)</strong> completely.</li>
+                            <li>Implemented authentication, product listings, search, categories, and filtering.</li>
+                            <li>Added cart, wishlist, checkout, order summary, and user profile management.</li>
+                            <li>Integrated backend APIs for products, categories, orders, and wishlist management.</li>
+                            <li>Implemented pagination, caching, and real-time updates for stock changes.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Experience 2 -->
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <div class="date">2022 - 2023</div>
+                        <h3>Flutter Developer</h3>
+                        <h4>Aliens Software | Mansoura, Egypt</h4>
+                        <ul>
+                            <li>Developed a full <strong>E-Learning App</strong> with video playback & quizzes.</li>
+                            <li>Implemented role-based access (Students & Instructors) and tracked progress.</li>
+                            <li>Built <strong>Smart Scanner App</strong> for documents, QR codes, and barcodes.</li>
+                            <li>Implemented automatic cropping, enhancement, and PDF export.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title" data-aos="zoom-in">Portfolio</h2>
+            <div class="projects-grid">
+                
+                <!-- E-Commerce (Detailed) -->
+                <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <h3>E-commerce App</h3>
+                        <p>A complete e-commerce app enabling users to browse products, manage cart, track orders, and pay securely via Stripe/PayPal. Uses Bloc for scalable state management.</p>
+                        <div class="tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">Bloc</span>
+                            <span class="tag">Stripe</span>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="link-btn github"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colon Cancer Detection -->
+                <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3>Colon Cancer Detection</h3>
+                        <p>Developed a mobile app using Flutter to assist in early detection of colon cancer by analyzing patient data using a Machine Learning model.</p>
+                        <div class="tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">ML API</span>
+                            <span class="tag">Healthcare</span>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="link-btn github"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Application -->
+                <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-comments"></i></div>
+                        <h3>Chat Application</h3>
+                        <p>Real-time chat app supporting authentication, online/offline status, and instant messaging/media sharing using Firebase Cloud Firestore.</p>
+                        <div class="tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">Firebase</span>
+                            <span class="tag">Chat</span>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="link-btn github"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-Learning -->
+                <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="400">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3>E-Learning Platform</h3>
+                        <p>Full e-learning platform allowing students to watch lessons, take quizzes, and track progress, with role management for instructors.</p>
+                        <div class="tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">Video Player</span>
+                            <span class="tag">Education</span>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="link-btn github"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Muslim App -->
+                <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="500">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-quran"></i></div>
+                        <h3>Muslim App</h3>
+                        <p>A comprehensive religious app containing Azkar, Holy Quran, and Prayer Times with a user-friendly UI.</p>
+                        <div class="tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">API</span>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="link-btn google-play"><i class="fab fa-google-play"></i> Google Play</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h2 class="section-title small" data-aos="fade-down">Contact Me</h2>
+            <div class="contact-info" data-aos="fade-up">
+                <p><i class="fas fa-envelope"></i> mahmodmansour2001@gmail.com</p>
+                <p><i class="fas fa-phone"></i> 01555798495 / 01090617609</p>
+                <p><i class="fas fa-map-marker-alt"></i> Cairo, Egypt</p>
+            </div>
+            <div class="socials" data-aos="zoom-in">
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p class="copyright">Mahmoud Magdy Mansour &copy; 2026</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

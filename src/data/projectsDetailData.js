@@ -316,7 +316,7 @@ export const projectsDetailData = {
         'Robust 401 token refresh interceptor in DioHelper for seamless retries'
       ],
       walkthrough: {
-        videoPath: null,
+        videoPath: '/bynona/bynona_video.mp4',
         fallbackImg: '/images/bynona.png'
       }
     },
@@ -418,10 +418,20 @@ export const projectsDetailData = {
       diDetails: 'All dependencies are registered in setupDi() using GetIt. ViewModels are registered as Factories for clean instances, while core helpers (DioHelper, SharedPreferences) and repository services are registered as Singletons at startup.'
     },
     screenshots: [
-      { id: 1, mockType: 'bynona-catalog', title: 'E-Commerce Catalog Screen', desc: 'Wholesale / Retail mode active view with quick category carousels.' },
-      { id: 2, mockType: 'bynona-detail', title: 'Product Detail & Volume Discounts', desc: 'Highlights bulk discount pricing levels based on purchase volumes.' },
-      { id: 3, mockType: 'bynona-cart', title: 'Active Checkout Cart', desc: 'Manage purchase totals, view active discounts, and input payment details.' },
-      { id: 4, mockType: 'bynona-notifications', title: 'Push Notification Alerts', desc: 'Inbox showing order confirmations, ship tracking updates, and local alerts.' }
+      { id: 1, path: '/bynona/1.jpeg', title: 'Wholesale Catalog Feed', desc: 'Active wholesale mode catalog featuring bulk category carousels.' },
+      { id: 2, path: '/bynona/2.jpeg', title: 'Retail Pricing Mode Toggle', desc: 'Instantly toggle catalog pricing to standard retail value rules.' },
+      { id: 3, path: '/bynona/3.jpeg', title: 'Detailed Product View', desc: 'Exposes specifications, images, and descriptions for item lists.' },
+      { id: 4, path: '/bynona/4.jpeg', title: 'Wholesale Pricing Tiers Matrix', desc: 'Highlights bulk volume discounts and price-cuts per quantity range.' },
+      { id: 5, path: '/bynona/5.jpeg', title: 'Active Wholesale Checkout Cart', desc: 'Adjust quantities and dynamically calculate overall wholesale discount savings.' },
+      { id: 6, path: '/bynona/6.jpeg', title: 'OTP Registration & Sign In', desc: 'Secure phone auth flow verifying business profiles before granting wholesale logs.' },
+      { id: 7, path: '/bynona/7.jpeg', title: 'Multi-Warehouse Address Book', desc: 'Manage delivery destinations using mapped coordinate pins and detail forms.' },
+      { id: 8, path: '/bynona/8.jpeg', title: 'COD & Card Payment Gateways', desc: 'Choose between Cash on Delivery, wallet payments, or credit card transactions.' },
+      { id: 9, path: '/bynona/9.jpeg', title: 'Bilingual RTL Arabic Layout', desc: 'Full Arabic catalog feed layout optimized with Cairo font alignments.' },
+      { id: 10, path: '/bynona/10.jpeg', title: 'Arabic Product Specifications', desc: 'Arabic translations for specifications, pricing rules, and item controls.' },
+      { id: 11, path: '/bynona/11.jpeg', title: 'Push Notification Alert Hub', desc: 'Ledger listing freight dispatches, order confirmations, and price reductions.' },
+      { id: 12, path: '/bynona/12.jpeg', title: 'State-Aware Connection Loss Screen', desc: 'Shows internet status monitoring and triggers retry streams on recovery.' },
+      { id: 13, path: '/bynona/13.jpeg', title: 'Premium System-Adaptive Dark Mode', desc: 'Sleek dark theme layout optimized for night catalog browsing.' },
+      { id: 14, path: '/bynona/14.jpeg', title: 'User Settings & Local Cache Panel', desc: 'Manage app profiles, active language/theme states, and cache cleanups.' }
     ]
   },
 

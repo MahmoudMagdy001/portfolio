@@ -16,8 +16,8 @@ const socialLinks = [
   },
   {
     label: 'LinkedIn',
-    value: 'mahmoud-magdy-mansour',
-    href: 'https://linkedin.com/in/mahmoud-magdy-mansour',
+    value: 'mahmoudmagdy001',
+    href: 'https://www.linkedin.com/in/mahmoudmagdy001/',
     Icon: FaLinkedin,
     color: '#0ea5e9',
     bg: 'rgba(14,165,233,0.08)',
@@ -34,8 +34,8 @@ const socialLinks = [
   },
   {
     label: 'WhatsApp',
-    value: '+20 155 579 8495',
-    href: 'https://wa.me/201555798495',
+    value: '+20 109 061 7609',
+    href: 'https://wa.me/201090617609',
     Icon: SiWhatsapp,
     color: '#10b981',
     bg: 'rgba(16,185,129,0.08)',
@@ -78,7 +78,7 @@ const Contact = () => {
     setTimeout(() => {
       try {
         const text = `*New Portfolio Message*\n\n*Name:* ${name.trim()}\n*Email:* ${email.trim()}\n*Subject:* ${subject.trim() || 'No Subject'}\n*Message:* ${message.trim()}`;
-        const whatsappUrl = `https://wa.me/201555798495?text=${encodeURIComponent(text)}`;
+        const whatsappUrl = `https://wa.me/201090617609?text=${encodeURIComponent(text)}`;
         
         // Open WhatsApp in a new tab
         window.open(whatsappUrl, '_blank');
@@ -294,7 +294,7 @@ const Contact = () => {
               <a href="https://github.com/MahmoudMagdy001" target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="GitHub">
                 <SiGithub size={14} aria-hidden="true" />
               </a>
-              <a href="https://linkedin.com/in/mahmoud-magdy-mansour" target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/mahmoudmagdy001/" target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="LinkedIn">
                 <FaLinkedin size={14} aria-hidden="true" />
               </a>
               <a href="mailto:mahmodmansour2001@gmail.com" className="text-slate-600 hover:text-white transition-colors" aria-label="Email">

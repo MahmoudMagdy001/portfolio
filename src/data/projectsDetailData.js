@@ -11,7 +11,7 @@ export const projectsDetailData = {
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
       { label: 'Architecture', value: '3-Layer Clean Arch', isIcon: false },
-      { label: 'Scale', value: 'Multi-Domain', isIcon: false }
+      { label: 'Scale', value: '19 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
@@ -35,35 +35,35 @@ export const projectsDetailData = {
         id: 1,
         iconName: 'Truck',
         title: 'Goods On-Demand Dispatch',
-        desc: 'Supports multi-item checkout from different stores. The ordering flow manages item availability, tax computations, delivery charges, and live route status updates.',
-        tags: ['Dio Rest Client', 'Cart Cubit', 'Multi-Store Engine']
+        desc: 'Supports item checkout and ordering flows. The dispatch system manages item availability, coupons, delivery charges, and live route status updates.',
+        tags: ['CartBloc', 'Dio Rest Client', 'E-Commerce Checkout']
       },
       {
         id: 2,
         iconName: 'Users',
         title: 'Professional Service Booking',
-        desc: 'Allows users to book vetted home professionals (handymen, plumbers, electricians). It coordinates scheduled times, priority logs, and multi-part media uploads.',
-        tags: ['Multipart Form Data', 'Service Cubit', 'Calendar Grid']
+        desc: 'Coordinates the selection and scheduling of available days and times for professional services. The booking form validates customer details, problem statements, and addresses, sending them reactively via BLoC.',
+        tags: ['ServiceBookingBloc', 'ServiceDetailEntity', 'Governorates & Centers API']
       },
       {
         id: 3,
         iconName: 'MapPin',
-        title: 'Live Tracking Interface',
-        desc: 'Uses flutter_map and Geolocator coordinates to render the user\'s current destination and plot the active delivery rider on a real-time path.',
-        tags: ['flutter_map', 'geolocator', 'latlong2']
+        title: 'Interactive Order Tracking Timeline',
+        desc: 'Provides a stepper-based status tracker widget (OrderTrackerWidget) that maps and animates order progression stages (Pending, Accepted, Processing, Shipped, Delivered) using custom icons, responsive scaling, and state-specific timeline coloring.',
+        tags: ['OrderTrackerWidget', 'Stepper Timeline', 'OrderActionStatus']
       },
       {
         id: 4,
         iconName: 'ShieldAlert',
-        title: 'Network-Aware Storage',
-        desc: 'Ensures transactions are written to a localized cache if requests fail. When internet restabilizes, the connectivityRestoredStream triggers auto-retries.',
-        tags: ['InternetService', 'Hive DB', 'Dio Interceptors']
+        title: 'Network-Aware Sync & Caching',
+        desc: 'Uses Hive to cache cart items, favorite lists, orders, and notifications locally. When the internet connection restabilizes, the InternetConnectionService fires connectivityRestoredStream to automatically retry failed requests and sync offline modifications.',
+        tags: ['Hive DB', 'InternetConnectionService', 'connectivityRestoredStream']
       }
     ],
     alert: {
       type: 'warning',
       title: 'Automated Token & Thread Lifecycle',
-      desc: 'All HTTP threads are tied to their respective Bloc contexts. If a user navigates away or closes a screen, the parent SafeBloc calls CancelRequestService to abort active threads, preventing background battery drain.'
+      desc: 'All Dio HTTP request threads are linked to their parent Bloc or Cubit lifecycle via unique Zone keys. When a Bloc or Cubit is closed, the base SafeBloc/SafeCubit automatically triggers CancelRequestService to abort active network queries, preventing background memory leaks and battery drain.'
     },
     architecture: {
       folderTree: [
@@ -78,8 +78,8 @@ export const projectsDetailData = {
               isOpen: false,
               children: [
                 { name: 'config', type: 'dir', children: [{ name: 'app_config.dart', type: 'file' }] },
-                { name: 'services', type: 'dir', children: [{ name: 'dio_service.dart', type: 'file' }, { name: 'firebase_service.dart', type: 'file' }] },
-                { name: 'utils', type: 'dir', children: [{ name: 'task_runner.dart', type: 'file' }, { name: 'failures.dart', type: 'file' }] }
+                { name: 'services', type: 'dir', children: [{ name: 'cancel_request_service.dart', type: 'file' }, { name: 'dio_service.dart', type: 'file' }, { name: 'hive_service.dart', type: 'file' }, { name: 'internet_connection_service.dart', type: 'file' }] },
+                { name: 'utils', type: 'dir', children: [{ name: 'task_runner.dart', type: 'file' }, { name: 'failure.dart', type: 'file' }, { name: 'error_handler.dart', type: 'file' }] }
               ]
             },
             {
@@ -92,9 +92,9 @@ export const projectsDetailData = {
                   type: 'dir',
                   isOpen: true,
                   children: [
-                    { name: 'data', type: 'dir', children: [{ name: 'models', type: 'dir' }, { name: 'repositories', type: 'dir' }] },
-                    { name: 'domain', type: 'dir', children: [{ name: 'entities', type: 'dir' }, { name: 'usecases', type: 'dir' }] },
-                    { name: 'presentation', type: 'dir', children: [{ name: 'bloc', type: 'dir' }, { name: 'screens', type: 'dir' }] }
+                    { name: 'data', type: 'dir', children: [{ name: 'datasources', type: 'dir' }, { name: 'models', type: 'dir' }, { name: 'repositories', type: 'dir' }] },
+                    { name: 'domain', type: 'dir', children: [{ name: 'entities', type: 'dir' }, { name: 'repositories', type: 'dir' }, { name: 'usecases', type: 'dir' }] },
+                    { name: 'presentation', type: 'dir', children: [{ name: 'bloc', type: 'dir' }, { name: 'screens', type: 'dir' }, { name: 'widgets', type: 'dir' }] }
                   ]
                 }
               ]
@@ -104,7 +104,7 @@ export const projectsDetailData = {
       ],
       folderCaption: 'Standard 3-Layer Clean Architecture structure',
       techTitle: 'Unidirectional Clean Architecture',
-      techDesc: 'Wassaly strictly segregates dependencies. The presentation layer imports only domain contracts. Concrete datasources (Dio, Firebase) are isolated inside the data layer, ensuring business rules in the domain layer remain pure Dart code with zero external library bloat.',
+      techDesc: 'Wassaly strictly segregates dependencies. The presentation layer imports only domain contracts. Concrete datasources (Dio, Hive) are isolated inside the data layer, ensuring business rules in the domain layer remain pure Dart code with zero external library bloat.',
       layers: [
         {
           name: 'Presentation',
@@ -117,12 +117,12 @@ export const projectsDetailData = {
           desc: 'Pure Dart codebase. Houses core business usecases and Equatable value entities, acting as the single source of truth.'
         },
         {
-          name: 'Data',
+          name: 'Data & Datasources',
           color: 'emerald',
           desc: 'Implements repository interfaces. Handles API request maps, local caching serialization, and throws normalized Failures.'
         }
       ],
-      diDetails: 'Dependencies are registered as LazySingletons for data abstractions (DioService, InternetService) and Factories for BLoC/Cubit elements. This ensures clean startup execution without bloating device memory allocations.'
+      diDetails: 'Dependencies are registered as LazySingletons for data abstractions (DioService, HiveService, InternetConnectionService) and Factories for BLoC/Cubit elements. This ensures clean startup execution without bloating device memory allocations.'
     },
     screenshots: [
       { id: 1, mockType: 'wassaly-dashboard', title: 'Interactive Main Dashboard', desc: 'Featured grocery stores, service categories, and quick banners for active promotions.' },
@@ -143,23 +143,23 @@ export const projectsDetailData = {
     stats: [
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
-      { label: 'Architecture', value: 'MVVM Feature-First', isIcon: false },
-      { label: 'Scale', value: '19+ Modules', isIcon: false }
+      { label: 'Architecture', value: 'Feature-First MVVM', isIcon: false },
+      { label: 'Scale', value: '19 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'Real estate exploration platforms are often plagued by sluggish response times, cluttered listing pages, and rigid architectures that fail when adding integrations like mapping, booking, or live messaging.',
-      goalDesc2: 'Propix8 was engineered to solve these core limitations. The goal was to build a mobile experience that acts as a unified hub for high-fidelity property discovery, side-by-side spec comparison, live virtual video tours, and home service bookings. It achieves 60fps scrolling using a rigid Feature-First MVVM layer structure, preventing side-effects from crossing module boundaries.',
+      goalDesc2: 'Propix8 was engineered to solve these core limitations. Built using a rigid Feature-First MVVM structure with Repository Pattern, the codebase isolates each of its 19 features (like property discovery, compound details, search, comparison, and booking) into discrete folders containing models, repositories, services, viewmodels, and views. It achieves 60fps scrolling and high reliability by leveraging local secure persistence, lazy video loading, and state-aware network request handling.',
       outcomes: [
-        'Consistent 60fps performance across nested lists & maps',
-        'Modular codebase allowing 19+ distinct modules to scale',
-        'Clean reactive state transitions with zero state leaks',
-        'Fully functional offline caching using local DB abstractions',
-        'Responsive sizing utilizing screenutil guidelines',
-        'Seamless deep-linking integration for marketing sharing'
+        'Feature-First MVVM + Repository architecture with strict unidirectional flow',
+        'Custom video preloading and offscreen auto-pausing via VisibilityDetector and Chewie',
+        'Dynamic comparison matrix highlighting property specifications and advantages',
+        'Full multilingual support (Arabic/English) with system-adaptive themes and custom localizations',
+        'Robust token and user data caching using FlutterSecureStorage and SharedPreferences',
+        'State-aware network connection tracking and auto-retry via internet_state_manager'
       ],
       walkthrough: {
-        videoPath: '/propix8/propix-preview.mp4',
+        videoPath: '/propix8/propix_video.mp4',
         fallbackImg: '/images/propix.png'
       }
     },
@@ -167,36 +167,36 @@ export const projectsDetailData = {
       {
         id: 1,
         iconName: 'MapPin',
-        title: 'Geographic Map Plotting',
-        desc: 'Integrated flutter_map with OpenStreetMap tiles for location discovery. The map computes distance variables dynamically on the client, plotting clustered markers of properties. Users can swipe cards at the bottom of the map page to instantly pan to matching map pins.',
-        tags: ['flutter_map', 'geolocator', 'latlong2']
+        title: 'Geographical Map & GPS Services',
+        desc: 'Integrates flutter_map with OpenStreetMap tiles. Renders location coordinates for individual units with animated markers. In the profile setup phase, it retrieves current GPS coordinates and reverse-geocodes them to get full text addresses using the geocoding service.',
+        tags: ['flutter_map', 'geocoding', 'geolocator']
       },
       {
         id: 2,
         iconName: 'Layers3',
-        title: 'Property Comparison Engine',
-        desc: 'Allows users to queue properties and compounds into a comparative matrix. The comparative module scans properties across dozens of spec attributes (pricing, ratings, total size, number of units, amenities, security level) and highlights winning parameters.',
-        tags: ['Cubit Matrix', 'Equatable model comparison']
+        title: 'Dynamic Comparison Matrix',
+        desc: 'Compiles a side-by-side comparison matrix between a base unit and a selected unit. It automatically formats attributes (like price per m², internal area, rooms, average rating) and calculates advantages dynamically based on specific criteria.',
+        tags: ['ComparisonHelper', 'ComparisonAdvantage', 'Cubit State']
       },
       {
         id: 3,
-        iconName: 'Smartphone',
-        title: 'Virtual Video Tours',
-        desc: 'Properties are accompanied by immersive walkthrough tours. The media player engine lazily initializes videos and handles buffer statuses using customizable shimmer loading skeletons, preventing layout shifting on slow networks.',
-        tags: ['chewie', 'video_player']
+        iconName: 'Play',
+        title: 'Custom Video Preloading & Playback',
+        desc: 'Handles virtual video tours using Chewie and video_player. Implements active-page controller caching and preloading (preloads adjacent videos while disposing of distant ones to manage memory) and uses VisibilityDetector to pause playing media when scrolled off-screen.',
+        tags: ['chewie', 'video_player', 'visibility_detector']
       },
       {
         id: 4,
-        iconName: 'MessageSquareCode',
-        title: 'Home Services & Maintenance',
-        desc: 'A post-contract booking ecosystem. Tenancy agreements unlock maintenance services (electrical, plumbing, housekeeping). Users can log requests, select priority levels, upload camera photos, and schedule provider arrival times.',
-        tags: ['image_picker', 'Dio Multi-part form']
+        iconName: 'Settings',
+        title: 'Home & Technical Maintenance Booking',
+        desc: 'Provides a service booking dashboard where maintenance tasks are categorized into Home and Technical categories. The booking request form automatically pre-populates user details (phone and address) cached in memory and sends submissions reactively via a dedicated Cubit.',
+        tags: ['StorageService cache', 'MaintenanceServicesCubit', 'Reactive Form Validation']
       }
     ],
     alert: {
-      type: 'warning',
-      title: 'Network Failure Handling',
-      desc: 'All remote API queries are bound to custom TaskRunner wrappers. If internet connections fail or packets drop, the client isolates errors into Failure models (ServerFailure, NetworkFailure) and falls back to localized hive DB caches to render cached exploration grids.'
+      type: 'info',
+      title: 'Network Resilience & State Tracking',
+      desc: 'Application-wide connectivity tracking is powered by internet_state_manager. An automatic RetryInterceptor with exponential backoff handles transient network failures (e.g. status codes 500, 503) for GET requests. For authentication and user sessions, sensitive data is securely encrypted in FlutterSecureStorage.'
     },
     architecture: {
       folderTree: [
@@ -208,27 +208,31 @@ export const projectsDetailData = {
             {
               name: 'core',
               type: 'dir',
-              isOpen: true,
+              isOpen: false,
               children: [
-                { name: 'config', type: 'dir', children: [{ name: 'app_config.dart', type: 'file' }] },
-                { name: 'services', type: 'dir', children: [{ name: 'dio_service.dart', type: 'file' }, { name: 'internet_service.dart', type: 'file' }] },
-                { name: 'utils', type: 'dir', children: [{ name: 'task_runner.dart', type: 'file' }, { name: 'failures.dart', type: 'file' }] },
-                { name: 'shared', type: 'dir', children: [{ name: 'widgets', type: 'dir' }] }
+                { name: 'di', type: 'dir', children: [{ name: 'locator.dart', type: 'file' }] },
+                { name: 'network', type: 'dir', children: [{ name: 'auth_interceptor.dart', type: 'file' }, { name: 'dio_client.dart', type: 'file' }, { name: 'retry_interceptor.dart', type: 'file' }] },
+                { name: 'public_feature', type: 'dir' },
+                { name: 'router', type: 'dir', children: [{ name: 'app_router.dart', type: 'file' }] },
+                { name: 'theme', type: 'dir', children: [{ name: 'app_theme.dart', type: 'file' }] },
+                { name: 'utils', type: 'dir', children: [{ name: 'auth_constants.dart', type: 'file' }, { name: 'auth_exceptions.dart', type: 'file' }] }
               ]
             },
             {
-              name: 'features',
+              name: 'feature',
               type: 'dir',
               isOpen: true,
               children: [
                 {
-                  name: 'property_discovery',
+                  name: 'unit_details',
                   type: 'dir',
                   isOpen: false,
                   children: [
-                    { name: 'data', type: 'dir', children: [{ name: 'models', type: 'dir' }, { name: 'repositories', type: 'dir' }] },
-                    { name: 'domain', type: 'dir', children: [{ name: 'entities', type: 'dir' }, { name: 'repositories', type: 'dir' }, { name: 'usecases', type: 'dir' }] },
-                    { name: 'presentation', type: 'dir', children: [{ name: 'bloc', type: 'dir' }, { name: 'screens', type: 'dir' }, { name: 'widgets', type: 'dir' }] }
+                    { name: 'models', type: 'dir', children: [{ name: 'unit_details_model.dart', type: 'file' }] },
+                    { name: 'repositories', type: 'dir', children: [{ name: 'unit_details_repository.dart', type: 'file' }] },
+                    { name: 'services', type: 'dir', children: [{ name: 'unit_details_service.dart', type: 'file' }] },
+                    { name: 'viewmodels', type: 'dir', children: [{ name: 'unit_details_cubit.dart', type: 'file' }] },
+                    { name: 'views', type: 'dir', children: [{ name: 'unit_details_view.dart', type: 'file' }, { name: 'widgets', type: 'dir' }] }
                   ]
                 }
               ]
@@ -236,27 +240,27 @@ export const projectsDetailData = {
           ]
         }
       ],
-      folderCaption: 'Interactive Feature-First structure',
-      techTitle: 'Unidirectional Dependency Rule',
-      techDesc: 'In line with Mahmoud\'s standard architectural practices, Propix8 isolates modules using Clean Architecture patterns. Presentation layer classes have zero interaction with remote service queries; instead, they fire UI triggers via Cubits that communicate through abstraction contracts in the Domain layer.',
+      folderCaption: 'Clean Feature-First MVVM directory structure',
+      techTitle: 'Feature-First MVVM + Repository Pattern',
+      techDesc: 'Propix8 decouples features into self-contained vertical slices. Each feature holds its own models, repositories, network services, viewmodels (Cubits), and passive views. This prevents features from spilling details into each other and ensures that changing one module (like booking or comparison) has zero side effects on others.',
       layers: [
         {
-          name: 'Presentation',
+          name: 'Views & Widgets',
           color: 'indigo',
-          desc: 'Built with reactive Cubit structures. Uses BlocSelector filters to narrow rendering scopes, ensuring widgets only rebuild if their specific data updates.'
+          desc: 'Passive UI screens that render state data reactively. Implements responsive sizing via ScreenUtil (.w, .h, .sp, .r) and localized text via context.l10n.'
         },
         {
-          name: 'Domain',
+          name: 'ViewModels (Cubit)',
           color: 'sky',
-          desc: 'Pure Dart layer. Contains usecase implementations, repositories boundaries, and immutable entities that extend Equatable for reliable state comparison.'
+          desc: 'State machines extending BLoC\'s Cubit. Manages business logic and state transitions using a single state class with a standard RequestStatus enum.'
         },
         {
-          name: 'Data',
+          name: 'Repositories & Services',
           color: 'emerald',
-          desc: 'Contains DTO models (extending domain entities) with fromJson/toJson conversions, Dio Rest API implementations, and local cache layers.'
+          desc: 'Decoupled data boundaries. Services execute raw Dio queries and handle auth headers/retries, while repositories map JSON to Equatable models.'
         }
       ],
-      diDetails: 'Dependencies are initialized via GetIt lazily. Cubits inherit from a customized SafeCubit class that intercepts close routines. When the UI disposes of a page, any active Dio HTTP threads tied to that context are automatically cancelled via a centralized CancelToken controller.'
+      diDetails: 'Dependencies are registered lazily via GetIt in setupLocator(). ViewModels are registered as Factories to ensure fresh instances, while services and repositories are Singletons. SharedPreferences and FlutterSecureStorage handle local data caching, user session details, and theme configurations.'
     },
     screenshots: [
       { id: 1, path: '/propix8/1.jpeg', title: 'Dashboard & Discovery', desc: 'Featured properties, quick filters, and personalized real-estate dashboard.' },
@@ -287,20 +291,20 @@ export const projectsDetailData = {
     stats: [
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
-      { label: 'Architecture', value: 'Feature BLoC', isIcon: false },
-      { label: 'Scale', value: 'Wholesale/Retail', isIcon: false }
+      { label: 'Architecture', value: 'Feature-First MVVM', isIcon: false },
+      { label: 'Scale', value: '15 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'E-Commerce apps often struggle to support both wholesale (bulk discount rules) and retail business models without building separate applications or introducing complex condition branches in views.',
-      goalDesc2: 'Bynona solves this by offering an dynamic dual-mode framework. The catalog, cart items, and tax layouts change instantly in response to a global Profile Cubit state. It runs with full English & Arabic (RTL) localization, localizes notifications using awesome_notifications, and caches pages to survive cellular network losses.',
+      goalDesc2: 'Bynona solves this by offering an dynamic dual-mode framework. The catalog, cart items, and layouts change instantly in response to a global PriceModeCubit state. It runs with full English & Arabic (RTL) localization, uses internet_state_manager to handle cellular connection drops, and delivers push notifications using awesome_notifications.',
       outcomes: [
         'Instantaneous UI toggle between wholesale pricing tiers and retail mode',
         'Deep Arabic RTL layout alignment and font swaps using Cairo',
-        'Stateful BLoC controllers for carts and favorites with persistence',
-        'Rich push alerts scheduled locally via Awesome Notifications',
-        'Offline image and catalog caching for slow-network situations',
-        'Robust Dio error handler mapping to specialized failure states'
+        'Lightweight Cubit controllers for carts, layout, search, and favorites',
+        'Rich push alerts scheduled locally via awesome_notifications & deep links',
+        'Offline session caching via SharedPreferences and image caching',
+        'Robust 401 token refresh interceptor in DioHelper for seamless retries'
       ],
       walkthrough: {
         videoPath: null,
@@ -311,36 +315,36 @@ export const projectsDetailData = {
       {
         id: 1,
         iconName: 'ShoppingCart',
-        title: 'Wholesale Purchase Grid',
-        desc: 'Detects and highlights bulk discount brackets (e.g., buy 10+ items for 15% off). The pricing adjustments apply automatically to individual cart items.',
-        tags: ['Pricing Engine', 'Cart Bloc', 'Bulk Discount Model']
+        title: 'Dual-Mode Pricing Engine',
+        desc: 'Leverages PriceModeCubit to toggle between wholesale and retail mode. Attaches the selected pricing mode directly as a request header (Price-Mode) in DioHelper, adjusting catalog and cart pricing rules dynamically.',
+        tags: ['PriceModeCubit', 'CartCubit', 'Dio Interceptor']
       },
       {
         id: 2,
-        iconName: 'Layers',
+        iconName: 'Globe',
         title: 'Bilingual RTL Architecture',
-        desc: 'Provides fluid swapping between English and Arabic layouts. Directionality, layouts, and font hierarchies (Cairo / Outfit) adjust instantly.',
-        tags: ['RTL Support', 'Cairo Font', 'l10n localization']
+        desc: 'Integrates LanguageCubit to swap between English (Outfit font) and Arabic (Cairo font) layouts. Arb translations dynamically shift text alignment and directionality (RTL/LTR) instantly.',
+        tags: ['LanguageCubit', 'RTL Support', 'Cairo & Outfit Fonts']
       },
       {
         id: 3,
-        iconName: 'Play',
-        title: 'Awesome Push Alerts',
-        desc: 'Receives backend Firebase alerts and pipes them locally. Allows scheduling reminder triggers (e.g., checking out abandoned carts).',
-        tags: ['FCM', 'awesome_notifications', 'Local Alarm']
+        iconName: 'Bell',
+        title: 'Push Notification Ecosystem',
+        desc: 'Combines firebase_messaging for receiving FCM tokens/payloads and awesome_notifications for scheduling local visual alerts. Features DeepLinkService to route users directly to specific product screens from notification clicks.',
+        tags: ['FCM', 'awesome_notifications', 'DeepLinkService']
       },
       {
         id: 4,
-        iconName: 'ShieldAlert',
-        title: 'Local Sync Storage',
-        desc: 'Caches catalogs and item reviews using Hive. If the internet fails, users can continue reviewing catalogs and editing drafts offline.',
-        tags: ['Hive Cache', 'ConnectivityService', 'Offline Sync']
+        iconName: 'WifiOff',
+        title: 'State-Aware Connection Manager',
+        desc: 'Coordinates internet_state_manager and connectivity_plus to observe and broadcast network changes, showing immediate offline/no-internet screens and retrying failed requests. User sessions and tokens are persisted in SharedPreferences.',
+        tags: ['connectivity_plus', 'internet_state_manager', 'SharedPreferences']
       }
     ],
     alert: {
       type: 'info',
-      title: 'Context Semantic Shortcuts',
-      desc: 'To keep style rules unified, all colors, localizations, and sizes are resolved through BuildContext extensions like context.colors, context.l10n, and ScreenUtil values.'
+      title: 'Automated 401 Token Refresh Interceptor',
+      desc: 'DioHelper handles authentication expirations by injecting an interceptor that catches 401 Unauthorized errors. It automatically calls refreshAccessToken(), updates the cached tokens in SharedPreferences, and seamlessly retries the original request with the new access token.'
     },
     architecture: {
       folderTree: [
@@ -354,9 +358,10 @@ export const projectsDetailData = {
               type: 'dir',
               isOpen: false,
               children: [
-                { name: 'theme', type: 'dir' },
-                { name: 'l10n', type: 'dir' },
-                { name: 'services', type: 'dir', children: [{ name: 'cache_service.dart', type: 'file' }] }
+                { name: 'di', type: 'dir', children: [{ name: 'locator.dart', type: 'file' }] },
+                { name: 'main', type: 'dir', children: [{ name: 'app_content.dart', type: 'file' }, { name: 'app_initializer.dart', type: 'file' }] },
+                { name: 'service', type: 'dir', children: [{ name: 'dio_helper.dart', type: 'file' }, { name: 'cache_helper.dart', type: 'file' }, { name: 'deep_link_service.dart', type: 'file' }] },
+                { name: 'theme', type: 'dir' }
               ]
             },
             {
@@ -365,41 +370,43 @@ export const projectsDetailData = {
               isOpen: true,
               children: [
                 {
-                  name: 'products',
+                  name: 'wholesale_or_retail',
                   type: 'dir',
-                  isOpen: true,
+                  isOpen: false,
                   children: [
-                    { name: 'data', type: 'dir', children: [{ name: 'models', type: 'dir' }] },
-                    { name: 'logic', type: 'dir', children: [{ name: 'product_bloc.dart', type: 'file' }] },
-                    { name: 'views', type: 'dir', children: [{ name: 'widgets', type: 'dir' }, { name: 'catalog_screen.dart', type: 'file' }] }
+                    { name: 'repo', type: 'dir' },
+                    { name: 'service', type: 'dir' },
+                    { name: 'view_model', type: 'dir', children: [{ name: 'price_mode_cubit.dart', type: 'file' }] },
+                    { name: 'view', type: 'dir' }
                   ]
                 }
               ]
-            }
+            },
+            { name: 'l10n', type: 'dir' }
           ]
         }
       ],
-      folderCaption: 'Feature-First with logic folder separation',
-      techTitle: 'Feature-First Business Logic Architecture',
-      techDesc: 'Bynona organizes widgets and logic components directly under their target feature subfolder, which simplifies scaling. Logic components inherit from SafeBloc, preserving clean state emissions.',
+      folderCaption: 'Feature-First vertical slice directory structure',
+      techTitle: 'Feature-First MVVM + Service/Repository Pattern',
+      techDesc: 'Bynona organizes each feature into fully self-contained slices containing views, viewmodels (Cubits), service logic, and repositories. Shared assets, routes, and helpers reside in the core module. This eliminates coupling and simplifies scaling across the 15 independent functional modules.',
       layers: [
         {
           name: 'Views (UI)',
           color: 'indigo',
-          desc: 'Renders templates based on active BLoC states, using ScreenUtil sizes for consistent rendering across screen dimensions.'
+          desc: 'Renders templates based on active Cubit states, using ScreenUtil sizes for consistent rendering across screen dimensions.'
         },
         {
-          name: 'Logic (BLoC)',
+          name: 'ViewModels (Cubit)',
           color: 'sky',
-          desc: 'Houses state machines that orchestrate inputs, process API calls, and emit immutable statuses.'
+          desc: 'Lightweight controllers extending Cubit that orchestrate business logic, handle user actions, and emit immutable state models.'
         },
         {
-          name: 'Data (Models/API)',
+          name: 'Repositories & Services',
           color: 'emerald',
-          desc: 'Queries API repositories, handles local Hive databases, and parses JSON feeds into safe model instances.'
+          desc: 'Services interact with DioHelper or CacheHelper, while repositories map response payloads into localized model classes, returning them safely to viewmodels.'
         }
       ],
-      diDetails: 'All features utilize GetIt for service dependency queries. Local storage adapters and network instances are created as Singletons during application startup.'
+      diDetails: 'All dependencies are registered in setupDi() using GetIt. ViewModels are registered as Factories for clean instances, while core helpers (DioHelper, SharedPreferences) and repository services are registered as Singletons at startup.'
     },
     screenshots: [
       { id: 1, mockType: 'bynona-catalog', title: 'E-Commerce Catalog Screen', desc: 'Wholesale / Retail mode active view with quick category carousels.' },
@@ -420,20 +427,20 @@ export const projectsDetailData = {
     stats: [
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
-      { label: 'Audio Engine', value: 'just_audio', isIcon: false },
-      { label: 'CI/CD', value: 'Codemagic', isIcon: false }
+      { label: 'Architecture', value: '3-Layer Clean Arch', isIcon: false },
+      { label: 'Scale', value: '11 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'Lifestyle companion apps must operate with high reliability offline, calculate complex math variables (like astronomical prayer positions) on the client, and play background media feeds without being terminated by OS battery optimizations.',
       goalDesc2: 'Muslim App incorporates background native service hooks. It embeds just_audio + audio_service for uninterrupted Quran playback, utilizes the adhan library for coordinates calculations, and retrieves device sensor data to run a real-time Qibla compass. The repository is delivered with fully automated Codemagic pipelines.',
       outcomes: [
-        'Persistent background Quran audio playback with lock-screen widget widgets',
-        'Automatic offline prayer time calculator using GPS coordinates',
+        'Persistent background Quran audio playback with lock-screen controls via just_audio',
+        'Automatic offline prayer time calculations using GPS and the adhan library',
         'Dynamic compass needle tracking the Qibla using magnetometer sensors',
-        'Zakat calculator with live gold-rate pricing integration via JSON API',
-        'Pre-seeded SQLite database for instant Quran search and Azkar lists',
-        'Continuous Integration & App Store deployment builds configured in Codemagic'
+        'Zakat calculator with live gold-rate pricing integration via HTTP API',
+        'Offline Azkar, Hadith, and Names of Allah loaded dynamically from JSON assets',
+        'Background task scheduling via WorkManager and hourly reminders via AwesomeNotifications'
       ],
       walkthrough: {
         videoPath: null,
@@ -445,35 +452,35 @@ export const projectsDetailData = {
         id: 1,
         iconName: 'Play',
         title: 'Immersive Quran Player',
-        desc: 'Uses just_audio to queue audio tracks. Pipes metadata to the native OS container, enabling playback control from locks and external controls.',
-        tags: ['just_audio', 'audio_service', 'Audio Isolate']
+        desc: 'Uses just_audio and just_audio_background to play full surah streams or page-range playlists. Stores playback progress in SharedPreferences and integrates lock-screen media notifications.',
+        tags: ['just_audio', 'audio_service', 'SharedPreferences']
       },
       {
         id: 2,
         iconName: 'MapPin',
-        title: 'GPS Coordinate Prayer times',
-        desc: 'Calculates the five daily prayer milestones offline using geographic formulas, adjusting rules instantly based on local guidelines.',
-        tags: ['adhan package', 'geolocator', 'Coord Math']
+        title: 'Location-Aware Prayer Times',
+        desc: 'Calculates five daily prayer milestones offline using geographic equations from the adhan library. Triggers native Adhan voice notifications and schedules notifications in the background via WorkManager.',
+        tags: ['adhan package', 'geolocator', 'WorkManager']
       },
       {
         id: 3,
-        iconName: 'Cpu',
+        iconName: 'Compass',
         title: 'Sensor-Based Qibla Compass',
-        desc: 'Polls device rotation and magnetic heading data. Smooths the compass needle movement in response to sensor updates.',
-        tags: ['flutter_qiblah', 'Magnetometer', 'Sensors']
+        desc: 'Retrieves magnetic heading values via magnetometer sensors and flutter_qiblah. Renders an interactive, animated compass pointing to the Kaaba.',
+        tags: ['flutter_qiblah', 'Magnetometer', 'Compass Animation']
       },
       {
         id: 4,
-        iconName: 'Layers3',
-        title: 'Live Wealth Calculator',
-        desc: 'Pulls current precious metal pricing data. Deducts basic costs to compute required Zakat distributions automatically.',
-        tags: ['Zakat Cubit', 'REST API', 'Form Validation']
+        iconName: 'BookOpen',
+        title: 'Offline-First Assets Library',
+        desc: 'Parses morning/evening Azkar, authentic Hadiths, and Names of Allah offline from preloaded local JSON assets, maintaining ultra-fast lookups without network overhead.',
+        tags: ['JSON Parser', 'Hadith Books', 'Asma ul-Husna']
       }
     ],
     alert: {
       type: 'warning',
-      title: 'Magnetometer Accuracy Warning',
-      desc: 'The live compass monitors the system magnetic accuracy flag. If interference is detected, it alerts the user to calibrate their device coordinates.'
+      title: 'Battery Optimization Warning',
+      desc: 'To guarantee that background prayer alarms and periodic reminders trigger accurately, the app includes disable_battery_optimization to prompt the user to exclude the app from native OS battery restrictions.'
     },
     architecture: {
       folderTree: [
@@ -487,9 +494,9 @@ export const projectsDetailData = {
               type: 'dir',
               isOpen: false,
               children: [
-                { name: 'audio', type: 'dir', children: [{ name: 'audio_handler.dart', type: 'file' }] },
-                { name: 'location', type: 'dir' },
-                { name: 'database', type: 'dir', children: [{ name: 'sqlite_helper.dart', type: 'file' }] }
+                { name: 'di', type: 'dir', children: [{ name: 'service_locator.dart', type: 'file' }, { name: 'register_cubits.dart', type: 'file' }] },
+                { name: 'main', type: 'dir', children: [{ name: 'app_initializer.dart', type: 'file' }] },
+                { name: 'service', type: 'dir', children: [{ name: 'periodic_reminder_service.dart', type: 'file' }, { name: 'location_service.dart', type: 'file' }] }
               ]
             },
             {
@@ -498,20 +505,25 @@ export const projectsDetailData = {
               isOpen: true,
               children: [
                 {
-                  name: 'quran',
-                  type: 'dir',
-                  isOpen: true,
-                  children: [
-                    { name: 'logic', type: 'dir', children: [{ name: 'player_bloc.dart', type: 'file' }] },
-                    { name: 'screens', type: 'dir', children: [{ name: 'quran_screen.dart', type: 'file' }] }
-                  ]
-                },
-                {
-                  name: 'qibla',
+                  name: 'prayer_times',
                   type: 'dir',
                   isOpen: false,
                   children: [
-                    { name: 'logic', type: 'dir', children: [{ name: 'compass_cubit.dart', type: 'file' }] }
+                    { name: 'data', type: 'dir' },
+                    { name: 'domain', type: 'dir' },
+                    { name: 'presentation', type: 'dir', children: [{ name: 'cubit', type: 'dir' }] }
+                  ]
+                },
+                {
+                  name: 'quran',
+                  type: 'dir',
+                  isOpen: false,
+                  children: [
+                    { name: 'model', type: 'dir' },
+                    { name: 'repository', type: 'dir' },
+                    { name: 'service', type: 'dir', children: [{ name: 'quran_service.dart', type: 'file' }] },
+                    { name: 'viewmodel', type: 'dir', children: [{ name: 'quran_player_cubit', type: 'dir' }] },
+                    { name: 'view', type: 'dir' }
                   ]
                 }
               ]
@@ -519,27 +531,27 @@ export const projectsDetailData = {
           ]
         }
       ],
-      folderCaption: 'Audio core helper with domain-separated features',
-      techTitle: 'Audio Isolate & Database Architecture',
-      techDesc: 'Muslim App uses SQLite databases to handle heavy lookup searches. Background audio playbacks run inside isolated threads to avoid UI rendering lags, maintaining 60fps scrolling.',
+      folderCaption: '3-Layer Clean Architecture & MVVM vertical slices',
+      techTitle: 'Clean Domain-Driven & MVVM Hybrid Pattern',
+      techDesc: 'Muslim App segregates features based on their complexity. Core system layers (like prayer times, Hadiths, and Azkar) follow strict 3-Layer Clean Architecture (Data -> Domain <- Presentation), while media and reading layers (like Quran player) employ a decoupled MVVM workflow to ensure modular scalability.',
       layers: [
         {
-          name: 'User Interface',
+          name: 'Presentation (UI & Cubit)',
           color: 'indigo',
-          desc: 'Renders dynamic prayer progress, Quran pages, and rotating compass layouts using ScreenUtil dimensions.'
+          desc: 'Renders Material 3 interfaces utilizing ScreenUtil sizes. Updates state reactively via dedicated Cubits (e.g. QuranPlayerCubit, QiblahCubit).'
         },
         {
-          name: 'State Control',
+          name: 'Domain (Use Cases & Contracts)',
           color: 'sky',
-          desc: 'Calculates active audio track states, compass angles, and coordinates calculations via BLoC/Cubit.'
+          desc: 'Defines the pure business logic and contracts (e.g. PlayAzkarAudioUseCase, GetQiblahStreamUseCase) separated from platform frameworks.'
         },
         {
-          name: 'SQLite / Sensor Services',
+          name: 'Data & Local Services',
           color: 'emerald',
-          desc: 'Scans device compass, coordinates hardware feeds, and reads Quran verses from local SQLite tables.'
+          desc: 'Provides concrete implementations of repositories. Handles local JSON parsing, location providers, SharedPreferences key caches, and background players.'
         }
       ],
-      diDetails: 'Services are mapped via GetIt. The audio player service is registered as a Singleton, allowing active audio instances to persist across app page closures.'
+      diDetails: 'Services, repositories, data sources, and use cases are registered in setupLocator() via GetIt. ViewModels/Cubits are registered as Factories to allow page-level isolation, while core background workers and the Quran player service are Singletons.'
     },
     screenshots: [
       { id: 1, mockType: 'muslim-dashboard', title: 'Main Daily Dashboard', desc: 'Shows upcoming prayer countdowns, coordinates location, and custom greeting widgets.' },
@@ -560,20 +572,20 @@ export const projectsDetailData = {
     stats: [
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
-      { label: 'Backend', value: 'Supabase', isIcon: true, iconType: 'supabase' },
-      { label: 'Charts Engine', value: 'fl_chart', isIcon: false }
+      { label: 'Architecture', value: 'Feature-First Clean/MVVM', isIcon: false },
+      { label: 'Scale', value: '12 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'Clinical healthcare applications require absolute security standards, precise input formats (like genetic strings), and intuitive tools to track patient indicators over long intervals.',
       goalDesc2: 'Cancer Detection AI is a secure clinical frontend. The app connects to Supabase database layers utilizing Row-Level Security rules. It displays patient indicators using fl_chart diagrams and passes parameters to a custom Machine Learning backend to output colorectal cancer risk calculations.',
       outcomes: [
-        'HIPAA-aligned data structure using Supabase Auth & DB access rules',
-        'Interactive charts displaying patient indicators over time',
-        'Diagnostic input forms with strict verification triggers',
-        'Direct ML API linkage displaying risk category outputs',
-        'Fast patient list filtering and diagnosis updates',
-        'Clean MVVM directory structure separating UI elements from DB queries'
+        'Fully secure clinical client integrated with Supabase Authentication and Database',
+        'Multi-stage medical image analysis for Endoscopy and Histopathology via a Flask ML REST API',
+        'Polyp classification and bounding box localization drawn reactively via CustomPainter',
+        'Interactive tumor marker CEA & CA19-9 tracking plotted via fl_chart and syncfusion_flutter_charts',
+        'Clinical patient records management and real-time medical forum boards powered by Supabase RLS',
+        'Declarative routing utilizing GoRouter and state management via lightweight Cubits'
       ],
       walkthrough: {
         videoPath: null,
@@ -583,37 +595,37 @@ export const projectsDetailData = {
     features: [
       {
         id: 1,
-        iconName: 'Cpu',
-        title: 'ML Risk Analysis Engine',
-        desc: 'Passes diagnostic parameters (age, genetic factors, indicators) to a custom ML REST API to fetch risk percentages.',
-        tags: ['ML REST API', 'Risk Cubit', 'JSON Parser']
+        iconName: 'Activity',
+        title: 'Multi-Stage Endoscopy Analyzer',
+        desc: 'Uploads endoscopic images to a local Flask ML REST API for adenoma/hyperplastic binary prediction. Proceeds to polyp detection with bounding box localization coordinate offsets (xmin, ymin, xmax, ymax) rendered using CustomPainter.',
+        tags: ['Flask REST API', 'Polyp Detection', 'CustomPainter']
       },
       {
         id: 2,
-        iconName: 'Layers3',
-        title: 'Tumor Marker Visualizer',
-        desc: 'Plots patient CEA/CA19-9 tumor marker test results over time. Highlights target limits and critical alert zones.',
-        tags: ['fl_chart', 'Time Series', 'Diagnostic Bloc']
+        iconName: 'Microscope',
+        title: 'Histopathological Tissue Classifier',
+        desc: 'Sends tissue biopsy scans to the Flask predict endpoint to classify cells. Renders confidence level and class predictions instantly to assist clinicians.',
+        tags: ['Histopathology', 'Biopsy Classifier', 'Image Upload']
       },
       {
         id: 3,
-        iconName: 'Users',
-        title: 'Secure Patient Profiles',
-        desc: 'Displays comprehensive clinical cards containing medications, genetic flags, diagnostic records, and past predictions.',
-        tags: ['Supabase DB', 'Search Filter', 'Clinical DTO']
+        iconName: 'LineChart',
+        title: 'CEA & CA19-9 Tumor Tracker',
+        desc: 'Plots patient tumor indicators over time using fl_chart and syncfusion_flutter_charts, highlighting critical limit boundaries and showing temporal trends.',
+        tags: ['fl_chart', 'syncfusion_charts', 'TumorCubit']
       },
       {
         id: 4,
-        iconName: 'ShieldAlert',
-        title: 'Row-Level DB Security',
-        desc: 'Authenticates requests with individual security tokens. Triggers postgres rules, preventing data leakage between accounts.',
-        tags: ['Supabase Auth', 'RLS rules', 'Secure Session']
+        iconName: 'ShieldCheck',
+        title: 'Supabase Security & RLS',
+        desc: 'Enforces HIPAA-grade security policies by routing queries through Supabase Auth. Row-Level Security (RLS) policies prevent cross-clinician leakages, securing forum data and patient records.',
+        tags: ['Supabase Auth', 'Row-Level Security', 'GoRouter Guard']
       }
     ],
     alert: {
-      type: 'warning',
-      title: 'Supabase RLS Rules Enforced',
-      desc: 'All queries must include active authentication header keys. The DB rules intercept queries at the database layer to block unauthorized lookups.'
+      type: 'info',
+      title: 'Global State & Route Guards',
+      desc: 'Clinician navigation routes are managed declaratively using GoRouter. Global state transitions are monitored via a custom BlocObserver (MyBlocObserver), logging active Cubit creations and events.'
     },
     architecture: {
       folderTree: [
@@ -627,8 +639,8 @@ export const projectsDetailData = {
               type: 'dir',
               isOpen: false,
               children: [
-                { name: 'security', type: 'dir', children: [{ name: 'rls_client.dart', type: 'file' }] },
-                { name: 'database', type: 'dir', children: [{ name: 'supabase_client.dart', type: 'file' }] }
+                { name: 'utlis', type: 'dir', children: [{ name: 'app_router.dart', type: 'file' }, { name: 'service_locator.dart', type: 'file' }] },
+                { name: 'widgets', type: 'dir', children: [{ name: 'custom_drawer.dart', type: 'file' }] }
               ]
             },
             {
@@ -637,12 +649,25 @@ export const projectsDetailData = {
               isOpen: true,
               children: [
                 {
-                  name: 'patients',
+                  name: 'endoscopy',
                   type: 'dir',
-                  isOpen: true,
+                  isOpen: false,
                   children: [
-                    { name: 'data', type: 'dir', children: [{ name: 'models', type: 'dir' }] },
-                    { name: 'presentation', type: 'dir', children: [{ name: 'bloc', type: 'dir' }, { name: 'screens', type: 'dir' }, { name: 'widgets', type: 'dir' }] }
+                    {
+                      name: 'presentation',
+                      type: 'dir',
+                      children: [
+                        { name: 'views', type: 'dir', children: [{ name: 'endoscopy_view.dart', type: 'file' }, { name: 'widgets', type: 'dir', children: [{ name: 'endoscopy_details.dart', type: 'file' }, { name: 'predict_endo_image.dart', type: 'file' }] }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'forum',
+                  type: 'dir',
+                  isOpen: false,
+                  children: [
+                    { name: 'presentation', type: 'dir', children: [{ name: 'manager/cubit/patient_cubit.dart', type: 'file' }] }
                   ]
                 }
               ]
@@ -650,27 +675,27 @@ export const projectsDetailData = {
           ]
         }
       ],
-      folderCaption: 'Supabase-driven data client and medical record flow',
-      techTitle: 'Clinical Security & fl_chart plotting',
-      techDesc: 'Colorectal Cancer AI ensures data is isolated. The presentation layer connects to reactive Blocs that communicate with Supabase repositories. No raw SQL commands run in UI modules.',
+      folderCaption: 'Modular feature-focused Clean/MVVM structure',
+      techTitle: 'Feature-Focused Clean/MVVM Architecture',
+      techDesc: 'Colorectal Cancer AI isolates functional domains into 12 self-contained feature slices under the lib/features folder. Core router files, models, and shared utilities reside in the core/ directory. Views consume state reactively via Cubits, while Supabase and Flask REST integrations are encapsulated in data handlers.',
       layers: [
         {
-          name: 'Clinical Screens',
+          name: 'Presentation Views',
           color: 'indigo',
-          desc: 'Renders patient search, marker charts, diagnostic details, and risk evaluations using responsive ScreenUtil margins.'
+          desc: 'Renders passive UI dashboards, forum threads, and chart plots, adapting dynamically to layout constraints.'
         },
         {
-          name: 'State Manager',
+          name: 'Cubit State Controllers',
           color: 'sky',
-          desc: 'Coordinates patient loading, form validation, and ML risk evaluation requests via Cubits.'
+          desc: 'Lightweight cubits (e.g. TumorCubit, PatientTrackingCubit) that process inputs, fetch clinical data, and emit immutable states.'
         },
         {
-          name: 'Supabase / Rest API',
+          name: 'Supabase & API Services',
           color: 'emerald',
-          desc: 'Pipes auth tokens, runs queries against RLS tables, and calls ML models over REST channels.'
+          desc: 'Performs user authentication, executes RLS-authorized database queries, and runs HTTP Multipart requests to the Flask ML endpoints.'
         }
       ],
-      diDetails: 'Clinical instances are registered using GetIt. The Supabase wrapper is injected as a LazySingleton, preserving unified session keys.'
+      diDetails: 'Services and repositories are configured inside setupServiceLocator() using GetIt, separating backend API calls from view rendering. The Supabase connection is established at startup.'
     },
     screenshots: [
       { id: 1, mockType: 'cancer-dashboard', title: 'Clinician Patient Directory', desc: 'Patient records list with rapid search, vital flags, and register actions.' },
@@ -691,20 +716,20 @@ export const projectsDetailData = {
     stats: [
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
-      { label: 'Router Engine', value: 'GoRouter', isIcon: false },
-      { label: 'Backend', value: 'Supabase', isIcon: true, iconType: 'supabase' }
+      { label: 'Architecture', value: 'Feature-First Clean/MVVM', isIcon: false },
+      { label: 'Scale', value: '11 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'E-learning apps must coordinate complex customer journeys, including catalog lookups, video playback resume states, multi-tier subscription locks, and interactive quizzes, all with offline support.',
       goalDesc2: 'Mansy Learning uses an MVVM structure. It integrates GoRouter guards to intercept route requests, caches playback timestamps using SharedPreferences, and connects to a serverless Supabase backend to synchronize progress markers.',
       outcomes: [
-        'Unified course catalogue with status markers and subscription cards',
-        'GoRouter route guards verifying subscription states prior to playing lessons',
-        'Custom video controller caching active playback positions',
-        'Interactive quiz layouts displaying immediate results and breakdown cards',
-        'Bilingual English & Arabic UI with theme tokens and Cairo fonts',
-        'Auto-synced progress logs matching Supabase tables'
+        'Course access control showing lock icons on lessons/quizzes based on SubscriptionCubit state',
+        'Subscribed content launching via url_launcher in-app webview (videos) and external apps (PDFs)',
+        'Interactive QuizView using QuizCubit to render progress bars and compare scores with passing marks',
+        'Authentication-responsive GoRouter setups listening to AuthCubit streams for automatic page routing',
+        'Secure user registration and login endpoints utilizing Supabase Authentication',
+        'Clean dependency injection registration inside injection.dart using GetIt'
       ],
       walkthrough: {
         videoPath: null,
@@ -714,37 +739,37 @@ export const projectsDetailData = {
     features: [
       {
         id: 1,
-        iconName: 'Play',
-        title: 'Video Position Caching',
-        desc: 'Tracks progress indicators during video playback. Saves seconds milestones to local storage, letting users resume seamlessly.',
-        tags: ['video_player', 'Shared Preferences', 'Course Cubit']
+        iconName: 'Lock',
+        title: 'Subscription Verification',
+        desc: 'Checks the user subscription state before allowing access to videos, PDF files, or quizzes, rendering locking icons on list items and displaying warnings if locked material is clicked.',
+        tags: ['SubscriptionCubit', 'Access Control', 'SnackBar Prompt']
       },
       {
         id: 2,
-        iconName: 'Cpu',
-        title: 'Role-Based Route Guards',
-        desc: 'Intercepts route paths using GoRouter. Checks subscription claims before allowing access to premium course contents.',
-        tags: ['go_router', 'Route Guards', 'Auth Claims']
+        iconName: 'Play',
+        title: 'Video & Document Launcher',
+        desc: 'For subscribed users, lessons are loaded dynamically. Videos open using url_launcher in-app webviews, and study resources are triggered in external PDF reading applications.',
+        tags: ['url_launcher', 'In-App Webview', 'PDF Reader']
       },
       {
         id: 3,
-        iconName: 'MessageSquareCode',
+        iconName: 'HelpCircle',
         title: 'Interactive Quiz Engine',
-        desc: 'Interactive quiz sheet that computes scores, highlights incorrect questions, and updates progress records.',
-        tags: ['Quiz Bloc', 'Timer Cubit', 'Score DTO']
+        desc: 'Presents dynamic multiple-choice sheets from QuizModel. It tracks selected answers, updates linear progress indicators, and displays completion overlays comparing marks with passing levels.',
+        tags: ['QuizCubit', 'QuizModel', 'LinearProgressIndicator']
       },
       {
         id: 4,
-        iconName: 'ShieldAlert',
-        title: 'Real-Time Progress Sync',
-        desc: 'Synchronizes completed lessons and scores to Supabase DB tables in the background, recovering if connections drop.',
-        tags: ['Supabase DB', 'Background Sync', 'Queue Manager']
+        iconName: 'Database',
+        title: 'Supabase Course Synchronizer',
+        desc: 'Interacts directly with Supabase database tables to query courses, fetch course content lists, check user enrollments, and retrieve active profiles.',
+        tags: ['Supabase Client', 'CourseService', 'ProfileRepository']
       }
     ],
     alert: {
       type: 'info',
-      title: 'GoRouter Routing Engine',
-      desc: 'All route navigation paths are defined declaratively in GoRouter. Dynamic route queries (like /course/:id) parse route identifiers safely.'
+      title: 'GoRouter Auth Refresh Listeners',
+      desc: 'The app uses AppRouter with GoRouter to manage routes. It implements a _GoRouterRefreshStream that observes AuthCubit stream changes, automatically triggering route re-evaluations and redirecting users when login/logout events occur.'
     },
     architecture: {
       folderTree: [
@@ -758,8 +783,9 @@ export const projectsDetailData = {
               type: 'dir',
               isOpen: false,
               children: [
+                { name: 'di', type: 'dir', children: [{ name: 'injection.dart', type: 'file' }] },
                 { name: 'router', type: 'dir', children: [{ name: 'app_router.dart', type: 'file' }] },
-                { name: 'theme', type: 'dir', children: [{ name: 'app_theme.dart', type: 'file' }] }
+                { name: 'theme', type: 'dir' }
               ]
             },
             {
@@ -768,12 +794,15 @@ export const projectsDetailData = {
               isOpen: true,
               children: [
                 {
-                  name: 'courses',
+                  name: 'course',
                   type: 'dir',
-                  isOpen: true,
+                  isOpen: false,
                   children: [
-                    { name: 'data', type: 'dir', children: [{ name: 'models', type: 'dir' }] },
-                    { name: 'presentation', type: 'dir', children: [{ name: 'bloc', type: 'dir' }, { name: 'screens', type: 'dir' }, { name: 'widgets', type: 'dir' }] }
+                    { name: 'models', type: 'dir', children: [{ name: 'course_model.dart', type: 'file' }] },
+                    { name: 'repositories', type: 'dir', children: [{ name: 'course_repository_impl.dart', type: 'file' }] },
+                    { name: 'services', type: 'dir', children: [{ name: 'course_service.dart', type: 'file' }] },
+                    { name: 'viewmodels', type: 'dir', children: [{ name: 'course_cubit.dart', type: 'file' }] },
+                    { name: 'views', type: 'dir', children: [{ name: 'course_view.dart', type: 'file' }] }
                   ]
                 }
               ]
@@ -781,27 +810,27 @@ export const projectsDetailData = {
           ]
         }
       ],
-      folderCaption: 'Feature-First MVVM with declarative routing config',
-      techTitle: 'MVVM & Declarative Route Management',
-      techDesc: 'Mansy Learning decouples user navigation rules from the widgets. Route rules verify user claims, while course states are tracked in clean Cubits.',
+      folderCaption: 'Feature-First structure with service/repository segregation',
+      techTitle: 'Feature-First Clean/MVVM Architecture',
+      techDesc: 'Mansy Learning segregates functionality into 11 distinct feature slices under the lib/features folder. Shared router paths, theme configs, and DI setups reside in the lib/core module. Inside each feature slice, services fetch data from Supabase, repositories format them into Equatable models, and passive views read state reactively from Cubits.',
       layers: [
         {
-          name: 'Presentation View',
+          name: 'Presentation (UI & Router)',
           color: 'indigo',
-          desc: 'Renders video feeds, quiz forms, progress charts, and catalog listings using ScreenUtil scale rules.'
+          desc: 'Renders passive screens and tabs using AppTypography. Manages navigation paths using GoRouter and route arguments.'
         },
         {
-          name: 'ViewModel (Cubit)',
+          name: 'ViewModels (Cubit)',
           color: 'sky',
-          desc: 'Coordinates product listings, processes responses, and updates localized progress variables.'
+          desc: 'State controllers (e.g. CourseCubit, SubscriptionCubit, QuizCubit) that process inputs, verify claims, and emit immutable statuses.'
         },
         {
-          name: 'Model Repository',
+          name: 'Repositories & Services',
           color: 'emerald',
-          desc: 'Requests tables from Supabase, updates local progress indices, and serializes JSON profiles.'
+          desc: 'Services fetch raw JSON from Supabase database tables, and repositories serialize them into safe models, throwing Exceptions on failure.'
         }
       ],
-      diDetails: 'Registered dependencies inside injection wrappers. Services (like GoRouter, SupabaseClient) are singletons; Blocs are Factories.'
+      diDetails: 'Dependency injection is configured in setupDependencyInjection() using GetIt. Services, repositories, and viewmodels are registered as LazySingletons (with factory registrations for SignupCubit) to optimize memory.'
     },
     screenshots: [
       { id: 1, mockType: 'learning-dashboard', title: 'Main Course Dashboard', desc: 'Enrolled courses grid showing progress bars, achievements, and search tabs.' },
@@ -810,7 +839,6 @@ export const projectsDetailData = {
       { id: 4, mockType: 'learning-profile', title: 'Subscription Management', desc: 'Exposes billing cycles, account tiers, and upgrade calls-to-action.' }
     ]
   },
-
   'music-player': {
     questNumber: 'Quest 07',
     category: 'Media App',
@@ -822,20 +850,20 @@ export const projectsDetailData = {
     stats: [
       { label: 'Framework', value: 'Flutter', isIcon: true, iconType: 'flutter' },
       { label: 'Language', value: 'Dart', isIcon: true, iconType: 'dart' },
-      { label: 'Audio Engine', value: 'just_audio', isIcon: false },
-      { label: 'Platform Scale', value: 'Multi-OS Desktop', isIcon: false }
+      { label: 'Architecture', value: 'Feature-Separated with Provider', isIcon: false },
+      { label: 'Scale', value: '2 Modules', isIcon: false }
     ],
     overview: {
       goalTitle: 'The Quest Goal',
-      goalDesc1: 'Building a local music application that performs identically across Android, iOS, macOS, and Linux demands a lightweight scan engine, persistent library databases, and lockscreen integration without background leaks.',
-      goalDesc2: 'Music Player merges just_audio with native C bindings to inspect local files on desktop and mobile platforms. The interface features custom glassmorphic panels, an active playlist drag-and-drop queue, and a floating music bar. Heavy scanning steps run inside background Dart Isolates.',
+      goalDesc1: 'Building a local music application that performs identically across Android and iOS demands a lightweight media engine, reliable background audio playbacks, and OS lockscreen integration without leaks.',
+      goalDesc2: 'Music Player merges just_audio and just_audio_background to support background audio streaming with native notifications. The interface features custom player sliders, search filters, and persistent bottom playback bars. Authentication flows are managed securely via Firebase Auth.',
       outcomes: [
-        'Cross-platform desktop & mobile execution (macOS, Linux, iOS, Android)',
-        'Low-overhead local directory scan engine utilizing native C headers',
-        'Custom glassmorphism design tokens matching album art color schemes',
-        'Interactive playlist queues supporting drag-and-drop ordering',
-        'Isolate-isolated metadata extraction to avoid UI frame drop rates',
-        'Background audio service coordinating locks and widgets controls'
+        'Cross-platform execution on Android and iOS (configured for background services)',
+        'Low-overhead local directory assets loading for preloaded audio tracks',
+        'Persistent audio player state bar at the bottom with real-time controls and titles',
+        'Interactive playlist search filter querying titles/artists reactively',
+        'Background audio player with lock-screen media notifications via just_audio_background',
+        'Secure user authentication using Firebase Auth and Google Sign-In'
       ],
       walkthrough: {
         videoPath: null,
@@ -845,37 +873,37 @@ export const projectsDetailData = {
     features: [
       {
         id: 1,
-        iconName: 'Play',
-        title: 'Cross-Platform Engine',
-        desc: 'Compiles with unified audio controls for Android, iOS, macOS, and Linux, scanning folders using local paths.',
-        tags: ['just_audio', 'Native Bindings', 'Multi-Platform']
+        iconName: 'Music',
+        title: 'Concatenating Playlist Engine',
+        desc: 'Constructs a playlist using ConcatenatingAudioSource to stream local asset audio tracks (such as MUSliM and Eminem mixes) with network album art caching.',
+        tags: ['ConcatenatingAudioSource', 'just_audio', 'Asset Loader']
       },
       {
         id: 2,
-        iconName: 'Cpu',
-        title: 'Background Metadata Scan',
-        desc: 'Retrieves album metadata and audio files using background Dart Isolates, preserving smooth 60fps scrolling in lists.',
-        tags: ['Dart Isolates', 'Metadata Scanner', 'SQLite Library']
+        iconName: 'Search',
+        title: 'Reactive Track Search Filter',
+        desc: 'Integrates a real-time search field inside the music list screen. Employs StreamBuilder to filter active playlist metadata (title/artist) reactively as the user types.',
+        tags: ['StreamBuilder', 'TextEditingController', 'RxDart']
       },
       {
         id: 3,
-        iconName: 'Layers3',
-        title: 'Interactive Playlist Grid',
-        desc: 'Allows users to customize queues. Drag-and-drop layout components rearrange tracks dynamically.',
-        tags: ['ReorderableList', 'Queue Cubit', 'Persistent DB']
+        iconName: 'Play',
+        title: 'Background Audio Service',
+        desc: 'Integrates just_audio_background and audio_service to enable uninterrupted playback when the app is minimized, linking controls to lock-screen widgets.',
+        tags: ['just_audio_background', 'audio_service', 'Lockscreen Controls']
       },
       {
         id: 4,
-        iconName: 'Smartphone',
-        title: 'Album Color Theming',
-        desc: 'Inspects active album covers to extract dominant color variables, adapting interface gradients dynamically.',
-        tags: ['Palette Generator', 'Glassmorphism', 'Framer Motion UI']
+        iconName: 'Fingerprint',
+        title: 'Secure Firebase Authentication',
+        desc: 'Protects client data by routing redirects through Firebase Auth. Prompts sign-in/up views (including Google Sign-In integration) if no session is active.',
+        tags: ['Firebase Auth', 'Google Sign-In', 'Connectivity check']
       }
     ],
     alert: {
       type: 'warning',
-      title: 'Isolate Memory Footprint',
-      desc: 'Library scanning spins up background Dart Isolates. These run on separate CPU threads and self-terminate once scans finish to keep memory clean.'
+      title: 'Background Playback Support',
+      desc: 'To prevent battery save loops from shutting down background music threads, the player uses native Android service channels registered at start. The audio player state is automatically disposed when the controller lifecycle ends to prevent leakage.'
     },
     architecture: {
       folderTree: [
@@ -885,54 +913,56 @@ export const projectsDetailData = {
           isOpen: true,
           children: [
             {
-              name: 'core',
-              type: 'dir',
-              isOpen: false,
-              children: [
-                { name: 'player', type: 'dir', children: [{ name: 'player_engine.dart', type: 'file' }] },
-                { name: 'metadata', type: 'dir', children: [{ name: 'metadata_helper.dart', type: 'file' }] }
-              ]
-            },
-            {
-              name: 'features',
+              name: 'screens',
               type: 'dir',
               isOpen: true,
               children: [
                 {
-                  name: 'library',
+                  name: 'player_screen',
                   type: 'dir',
-                  isOpen: true,
+                  isOpen: false,
                   children: [
-                    { name: 'logic', type: 'dir', children: [{ name: 'library_cubit.dart', type: 'file' }] },
-                    { name: 'views', type: 'dir', children: [{ name: 'library_screen.dart', type: 'file' }] }
+                    { name: 'data', type: 'dir', children: [{ name: 'position_data.dart', type: 'file' }] },
+                    { name: 'widgets', type: 'dir', children: [{ name: 'controls.dart', type: 'file' }, { name: 'player_screen.dart', type: 'file' }] },
+                    { name: 'music_list.dart', type: 'file' }
+                  ]
+                },
+                {
+                  name: 'auth_screen',
+                  type: 'dir',
+                  isOpen: false,
+                  children: [
+                    { name: 'auth_screen.dart', type: 'file' }
                   ]
                 }
               ]
-            }
+            },
+            { name: 'check.dart', type: 'file' },
+            { name: 'main.dart', type: 'file' }
           ]
         }
       ],
-      folderCaption: 'Cross-platform audio features structure',
-      techTitle: 'Isolate & Native Bindings Architecture',
-      techDesc: 'Music Player segregates folder scanning routines. Heavy folder listings and metadata parsing run in a Dart Isolate, returning parsed structures to the BLoC layer.',
+      folderCaption: 'Clean feature-separated screen modules layout',
+      techTitle: 'Feature-Separated MVC Layout with Provider',
+      techDesc: 'Music Player structures its components into dedicated screens (Auth & Player) under the screens/ directory. Global app boot logic and routing coordinates reside in check.dart and main.dart. The media engine is run via stream subscriptions (position, buffered position, duration) combined reactively with RxDart, updating views cleanly.',
       layers: [
         {
-          name: 'Cinematic Views',
+          name: 'Views & Widgets',
           color: 'indigo',
-          desc: 'Glassmorphic screens that adapt their color palettes to match the playing song\'s album art.'
+          desc: 'Renders clean player sliders, song lists, search inputs, and sign-in forms. Adapts colors to matching assets.'
         },
         {
-          name: 'Audio Controller',
+          name: 'Audio Player Engine',
           color: 'sky',
-          desc: 'Coordinates play lists, scans, shuffle, repeat, and volume variables in response to events.'
+          desc: 'Orchestrates audio playbacks, loop modes, track selections, and timeline seeks in response to user taps.'
         },
         {
-          name: 'Native Scanning',
+          name: 'Firebase & Asset Services',
           color: 'emerald',
-          desc: 'Interacts with filesystem directories across platforms to index metadata and paths.'
+          desc: 'Pipes authentication credentials to Firebase Auth, loads local mp3 resources from asset files, and fetches network art headers.'
         }
       ],
-      diDetails: 'Registered audio services as Singletons to prevent playback interruptions during navigation, and registered page-level loaders as Factories.'
+      diDetails: 'Services and state providers are initialized in main() and check.dart. The main audio controller and background task dependencies are registered as singletons at application startup, preserving player status throughout user navigation.'
     },
     screenshots: [
       { id: 1, mockType: 'music-dashboard', title: 'Dynamic Music Library', desc: 'Scan results displaying albums, artists, folders, and recent tracks.' },

@@ -2,18 +2,12 @@ import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ExternalLink, Home, ShoppingCart, Heart, MessageSquare, GraduationCap, Music, Users, Truck, BookOpen } from 'lucide-react';
 import { SiGithub, SiFlutter, SiFirebase, SiDart, SiSupabase, SiGooglemaps } from 'react-icons/si';
+import { projectsDetailData } from '../data/projectsDetailData';
 
-const projects = [
-  {
-    id: 1,
-    slug: 'wassaly',
-    chapter: '01',
-    title: 'Wassaly',
-    tagline: 'Smart planning & on-demand goods delivery, built for scale.',
-    category: 'Delivery & Services',
+const projectMeta = {
+  wassaly: {
     icon: Truck,
-    logo: '/images/waslay.png',
-    color: '#6366f1',
+    gradient: 'from-indigo-900/20 to-purple-900/10',
     challenge:
       'Architecting a multi-domain platform that unifies e-commerce, professional service booking, real-time order tracking, and push notifications — all under a single, maintainable codebase with zero business-logic leakage across layers.',
     solution:
@@ -31,21 +25,11 @@ const projects = [
       { name: 'BLoC / Cubit', Icon: null },
       { name: 'fpdart', Icon: null },
       { name: 'Firebase', Icon: SiFirebase },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/wassaly',
-    github: 'https://github.com/MahmoudMagdy001/wassaly',
-    gradient: 'from-indigo-900/20 to-purple-900/10',
+    ]
   },
-  {
-    id: 2,
-    slug: 'propix8',
-    chapter: '02',
-    title: 'Propix8 Real Estate',
-    tagline: 'High-fidelity property discovery & booking ecosystem.',
-    category: 'Real Estate Platform',
+  propix8: {
     icon: Home,
-    logo: '/images/propix.png',
-    color: '#0ea5e9',
+    gradient: 'from-sky-900/20 to-cyan-900/10',
     challenge:
       'Designing a modular, highly scalable real estate ecosystem capable of handling 19+ distinct modules — listings, map routing, side-by-side comparisons, video walkthroughs, and maintenance bookings — while maintaining strict layer isolation and smooth state transitions.',
     solution:
@@ -63,21 +47,11 @@ const projects = [
       { name: 'Feature MVVM', Icon: null },
       { name: 'Flutter Map', Icon: null },
       { name: 'Dio', Icon: null },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/propix8',
-    github: 'https://github.com/MahmoudMagdy001/propix8',
-    gradient: 'from-sky-900/20 to-cyan-900/10',
+    ]
   },
-  {
-    id: 3,
-    slug: 'bynona',
-    chapter: '03',
-    title: 'Bynona E-Commerce',
-    tagline: 'Dual-mode wholesale & retail shopping, done right.',
-    category: 'E-Commerce App',
+  bynona: {
     icon: ShoppingCart,
-    logo: '/images/bynona.png',
-    color: '#06b6d4',
+    gradient: 'from-cyan-900/20 to-teal-900/10',
     challenge:
       'Building a feature-rich e-commerce application that seamlessly switches between wholesale and retail pricing modes, supports full bilingual (AR/EN) localization, and handles real-time cart, favorites, order management, and push notifications without sacrificing UI fluidity.',
     solution:
@@ -95,21 +69,11 @@ const projects = [
       { name: 'Firebase', Icon: SiFirebase },
       { name: 'Dio', Icon: null },
       { name: 'REST API', Icon: null },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/bynona',
-    github: 'https://github.com/MahmoudMagdy001/bynona',
-    gradient: 'from-cyan-900/20 to-teal-900/10',
+    ]
   },
-  {
-    id: 4,
-    slug: 'muslim',
-    chapter: '04',
-    title: 'Muslim App',
-    tagline: 'An elegant all-in-one Islamic companion for daily worship.',
-    category: 'Lifestyle App',
+  muslim: {
     icon: BookOpen,
-    logo: '/images/muslim_logo.png',
-    color: '#10b981',
+    gradient: 'from-emerald-900/20 to-teal-900/10',
     challenge:
       'Delivering a feature-dense Islamic app — Quran playback, GPS-based prayer times, live Qibla compass, Hadith library, Zakat calculator, and Azkar — while keeping it fully offline-capable, battery-efficient, and production-ready with CI/CD on Codemagic.',
     solution:
@@ -127,21 +91,11 @@ const projects = [
       { name: 'just_audio', Icon: null },
       { name: 'adhan', Icon: null },
       { name: 'Codemagic', Icon: null },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/Muslim',
-    github: 'https://github.com/MahmoudMagdy001/Muslim',
-    gradient: 'from-emerald-900/20 to-teal-900/10',
+    ]
   },
-  {
-    id: 5,
-    slug: 'cancer-detection',
-    chapter: '05',
-    title: 'Cancer Detection AI',
-    tagline: 'AI-assisted colorectal cancer diagnosis and patient tracking.',
-    category: 'Healthcare App',
+  'cancer-detection': {
     icon: Heart,
-    logo: '/images/colon.png',
-    color: '#f43f5e',
+    gradient: 'from-rose-900/20 to-pink-900/10',
     challenge:
       'Building a reliable clinical-grade Flutter client for colorectal cancer risk assessment that communicates with a trained ML backend, manages patient records, tracks tumor markers over time, and visualizes longitudinal data with charts.',
     solution:
@@ -158,21 +112,11 @@ const projects = [
       { name: 'Supabase', Icon: SiSupabase },
       { name: 'ML API', Icon: null },
       { name: 'Charts', Icon: null },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/colon_app',
-    github: 'https://github.com/MahmoudMagdy001/colon_app',
-    gradient: 'from-rose-900/20 to-pink-900/10',
+    ]
   },
-  {
-    id: 6,
-    slug: 'mansy-learning',
-    chapter: '06',
-    title: 'Mansy Learning',
-    tagline: 'Premium e-learning platform with courses, quizzes & subscriptions.',
-    category: 'Education App',
+  'mansy-learning': {
     icon: GraduationCap,
-    logo: '/images/mansy.png',
-    color: '#a855f7',
+    gradient: 'from-purple-900/20 to-fuchsia-900/10',
     challenge:
       'Delivering a fluid e-learning experience supporting course catalogs, video lectures, downloadable resources, interactive quizzes, progress tracking, role-based access control, and a subscription enrollment flow backed by a serverless Supabase backend.',
     solution:
@@ -190,21 +134,11 @@ const projects = [
       { name: 'Cubit', Icon: null },
       { name: 'go_router', Icon: null },
       { name: 'GetIt', Icon: null },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/Mansy_learning',
-    github: 'https://github.com/MahmoudMagdy001/Mansy_learning',
-    gradient: 'from-purple-900/20 to-fuchsia-900/10',
+    ]
   },
-  {
-    id: 7,
-    slug: 'music-player',
-    chapter: '07',
-    title: 'Music Player',
-    tagline: 'Cinematic local music player with a premium audio experience.',
-    category: 'Media App',
+  'music-player': {
     icon: Music,
-    logo: '/images/music-player.png',
-    color: '#f59e0b',
+    gradient: 'from-amber-900/20 to-orange-900/10',
     challenge:
       'Building a cross-platform (Android, iOS, macOS, Linux) local music player with smooth playlist management, background audio, lock-screen controls, and a visually polished interface — all without relying on any streaming backend.',
     solution:
@@ -221,12 +155,31 @@ const projects = [
       { name: 'just_audio', Icon: null },
       { name: 'BLoC', Icon: null },
       { name: 'Multi-Platform', Icon: null },
-    ],
-    link: 'https://github.com/MahmoudMagdy001/music_player',
-    github: 'https://github.com/MahmoudMagdy001/music_player',
-    gradient: 'from-amber-900/20 to-orange-900/10',
-  },
-];
+    ]
+  }
+};
+
+const projects = Object.entries(projectsDetailData).map(([slug, detail], index) => {
+  const meta = projectMeta[slug] || {};
+  return {
+    id: index + 1,
+    slug,
+    chapter: detail.questNumber.replace('Quest ', ''),
+    title: detail.title,
+    tagline: detail.tagline,
+    category: detail.category,
+    icon: meta.icon || BookOpen,
+    logo: detail.overview.walkthrough.fallbackImg,
+    color: detail.color,
+    challenge: meta.challenge || detail.overview.goalDesc1,
+    solution: meta.solution || detail.overview.goalDesc2,
+    results: meta.results || detail.overview.outcomes,
+    tech: meta.tech || [],
+    link: detail.repository,
+    github: detail.repository,
+    gradient: meta.gradient || 'from-slate-900/20 to-slate-900/10'
+  };
+});
 
 const cardLinkHover = { y: -2 };
 const cardLinkTap   = { scale: 0.98 };

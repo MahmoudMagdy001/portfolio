@@ -26,7 +26,7 @@ export const projectsDetailData = {
         'Automated model mapping from backend REST responses to Equatable entities'
       ],
       walkthrough: {
-        videoPath: null,
+        videoPath: '/wassaly/wassaly_video.mp4',
         fallbackImg: '/images/waslay.png'
       }
     },
@@ -125,10 +125,19 @@ export const projectsDetailData = {
       diDetails: 'Dependencies are registered as LazySingletons for data abstractions (DioService, HiveService, InternetConnectionService) and Factories for BLoC/Cubit elements. This ensures clean startup execution without bloating device memory allocations.'
     },
     screenshots: [
-      { id: 1, mockType: 'wassaly-dashboard', title: 'Interactive Main Dashboard', desc: 'Featured grocery stores, service categories, and quick banners for active promotions.' },
-      { id: 2, mockType: 'wassaly-cart', title: 'Dynamic Checkout Cart', desc: 'Real-time item count updates, promo code validations, and delivery fee calculators.' },
-      { id: 3, mockType: 'wassaly-map', title: 'Live Delivery Map', desc: 'Renders map overlay, rider location pins, and a bottom sheet displaying the courier\'s details.' },
-      { id: 4, mockType: 'wassaly-service', title: 'Home Services Dispatch', desc: 'Selecting skilled maintenance personnel with prioritized descriptions and calendar bookings.' }
+      { id: 1, path: '/wassaly/1.jpeg', title: 'Main Dashboard & Categories', desc: 'Sleek dashboard featuring dynamic banner carousels, categories grid, and quick links.' },
+      { id: 2, path: '/wassaly/2.jpeg', title: 'E-Commerce Catalog Feed', desc: 'Browse and filter available stores, restaurants, pharmacies, and service agents.' },
+      { id: 3, path: '/wassaly/3.jpeg', title: 'Product Catalog Details', desc: 'Select items with dynamic price calculators, descriptions, and add-to-cart controls.' },
+      { id: 4, path: '/wassaly/4.jpeg', title: 'Active Checkout Cart', desc: 'Real-time item lists, subtotals, promo code input fields, and delivery fee calculators.' },
+      { id: 5, path: '/wassaly/5.jpeg', title: 'Professional Service Booking', desc: 'Choose plumbing, electrical, or other handymen categories with scheduling parameters.' },
+      { id: 6, path: '/wassaly/6.jpeg', title: 'Service Details & Form Validation', desc: 'Select priority status, input description logs, and verify customer contact info.' },
+      { id: 7, path: '/wassaly/7.jpeg', title: 'Address Book Coordinates', desc: 'Manage saved delivery destinations using geolocator mappings and address details.' },
+      { id: 8, path: '/wassaly/8.jpeg', title: 'Live Map Location Tracking', desc: 'Displays courier location pins, active routes, and driver information sheets.' },
+      { id: 9, path: '/wassaly/9.jpeg', title: 'Order History Ledger', desc: 'Keep track of previous dispatches, orders, and service transactions.' },
+      { id: 10, path: '/wassaly/10.jpeg', title: 'Stepper Tracker Status', desc: 'Chronological timeline mapping order milestones from Pending to Completed.' },
+      { id: 11, path: '/wassaly/11.jpeg', title: 'Responsive Settings Panel', desc: 'Manage user profiles, local caching sizes, and offline notification options.' },
+      { id: 12, path: '/wassaly/12.jpeg', title: 'Dark Mode UI Design', desc: 'Premium system-adaptive dark mode theme optimized with Cairo & Outfit fonts.' },
+      { id: 13, path: '/wassaly/13.jpeg', title: 'Offline-State Sync Alert', desc: 'Observe Internet state loss and trigger sync streams automatically on reconnection.' }
     ]
   },
 

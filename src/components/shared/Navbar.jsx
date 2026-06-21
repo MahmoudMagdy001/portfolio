@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
-import { useMagneticEffect } from '../hooks/useAnimations';
-import { useActiveSection } from '../hooks/useActiveSection';
+import { useMagneticEffect, useActiveSection } from '../../hooks';
+import { CV_URL } from '../../constants';
 
 const navItems = [
   { label: 'Story',    href: '#beginning' },
@@ -40,7 +40,7 @@ const Navbar = () => {
     setMenuOpen(false);
     const id = href.replace('#', '');
     if (window.location.hash.startsWith('#/project/')) {
-      window.location.hash = href;
+      window.location.assign(href);
     } else {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -139,7 +139,7 @@ const Navbar = () => {
             <div className="flex items-center gap-4">
               <motion.a
                 ref={hireRef}
-                href="/Mahmoud_Magdy_Mansour_CV.pdf"
+                href={CV_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ x: hireX, y: hireY }}
@@ -218,7 +218,7 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: navItems.length * 0.05 }}
-                    href="/Mahmoud_Magdy_Mansour_CV.pdf"
+                    href={CV_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setMenuOpen(false)}

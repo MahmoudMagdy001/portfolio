@@ -1,8 +1,9 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ExternalLink, Home, ShoppingCart, Heart, MessageSquare, GraduationCap, Music, Users, Truck, BookOpen } from 'lucide-react';
-import { SiGithub, SiFlutter, SiFirebase, SiDart, SiSupabase, SiGooglemaps } from 'react-icons/si';
-import { projectsDetailData } from '../data/projectsDetailData';
+import { ExternalLink, Home, ShoppingCart, Heart, GraduationCap, Music, Truck, BookOpen } from 'lucide-react';
+import { SiGithub, SiFlutter, SiFirebase, SiDart, SiSupabase } from 'react-icons/si';
+import { projectsDetailData } from '../../data/projectsDetailData';
+import { useIsDesktop } from '../../hooks';
 
 const projectMeta = {
   wassaly: {
@@ -184,38 +185,6 @@ const projects = Object.entries(projectsDetailData).map(([slug, detail], index) 
 const cardLinkHover = { y: -2 };
 const cardLinkTap   = { scale: 0.98 };
 
-// Logo box — shows the real app logo if provided, else falls back to the lucide icon
-const ProjectLogo = ({ project, size = 28, boxClass = '' }) => {
-  const [imgErr, setImgErr] = useState(false);
-
-  if (project.logo && !imgErr) {
-    return (
-      <div
-        className={`flex items-center justify-center flex-shrink-0 bg-white/5 border border-white/10 group-hover:border-white/20 transition-all duration-500 ${boxClass}`}
-        style={{ boxShadow: `0 0 30px ${project.color}15` }}
-      >
-        <img
-          src={project.logo}
-          alt={`${project.title} logo`}
-          onError={() => setImgErr(true)}
-          className="w-3/4 h-3/4 object-contain"
-          style={{ filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.08))' }}
-        />
-      </div>
-    );
-  }
-
-  const Icon = project.icon;
-  return (
-    <div
-      className={`flex items-center justify-center flex-shrink-0 bg-white/5 border border-white/10 group-hover:border-white/20 transition-all duration-500 ${boxClass}`}
-      style={{ boxShadow: `0 0 30px ${project.color}10` }}
-    >
-      <Icon size={size} style={{ color: project.color }} />
-    </div>
-  );
-};
-
 // Watermark background logo
 const ProjectWatermark = ({ project }) => {
   const [imgErr, setImgErr] = useState(false);
@@ -226,6 +195,8 @@ const ProjectWatermark = ({ project }) => {
         <img
           src={project.logo}
           alt=""
+          loading="lazy"
+          decoding="async"
           onError={() => setImgErr(true)}
           className="w-full h-full object-contain"
         />
@@ -335,7 +306,40 @@ const ProjectCard = ({ project }) => (
   </article>
 );
 
-const Projects = () => {
+const ProjectsMobile = () => {
+  return (
+    <section id="projects" className="relative bg-transparent py-20 px-6">
+      <div className="container mx-auto relative z-10">
+        <div className="max-w-2xl mb-12">
+          <p className="chapter-label mb-3">Chapter 04 — The Portfolio of Quests</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tighter leading-none">
+            Digital <span className="gradient-text">Mastery.</span>
+          </h2>
+          <p className="text-slate-400 text-sm sm:text-base font-light leading-relaxed">
+            A selection of high-fidelity mobile experiences where performance meets cinematic aesthetics.
+          </p>
+        </div>
+
+        <div className="space-y-8">
+          {projects.map((project) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8 }}
+              className="w-full"
+            >
+              <ProjectCard project={project} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectsDesktop = () => {
   const containerRef = useRef(null);
   const trackRef     = useRef(null);
   const [endX, setEndX] = useState(0);
@@ -397,6 +401,11 @@ const Projects = () => {
       </div>
     </section>
   );
+};
+
+const Projects = () => {
+  const isDesktop = useIsDesktop();
+  return isDesktop ? <ProjectsDesktop /> : <ProjectsMobile />;
 };
 
 export default Projects;

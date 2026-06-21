@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
 import { Zap, Shield, Smartphone } from 'lucide-react';
 import { SiFlutter, SiDart } from 'react-icons/si';
+import { useIsDesktop } from '../hooks/useIsDesktop';
 
 const FloatingCard = ({ icon: Icon, label, techLabel, x, y, delay, color, scrollYProgress, tiltX, tiltY, shouldReduceMotion }) => {
   // Parallax scroll drift (mid-background depth)
@@ -58,6 +59,7 @@ const mouseSpringConfig = { damping: 35, stiffness: 100 }; // softer spring for 
 
 const GlobalBackground = () => {
   const shouldReduceMotion = useReducedMotion();
+  const isDesktop = useIsDesktop();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(mouseX, mouseSpringConfig);
@@ -115,7 +117,7 @@ const GlobalBackground = () => {
 
   // Canvas particle system logic
   useEffect(() => {
-    if (shouldReduceMotion) return;
+    if (shouldReduceMotion || !isDesktop) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -385,7 +387,7 @@ const GlobalBackground = () => {
       <div className="absolute inset-0 overflow-hidden opacity-30 pointer-events-none">
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full bg-primary/20 blur-[130px]"
-          animate={shouldReduceMotion ? {} : {
+          animate={shouldReduceMotion || !isDesktop ? {} : {
             x: [0, 80, -40, 0],
             y: [0, -100, 60, 0],
             scale: [1, 1.15, 0.95, 1],
@@ -399,7 +401,7 @@ const GlobalBackground = () => {
         />
         <motion.div
           className="absolute w-[500px] h-[500px] rounded-full bg-secondary/15 blur-[120px]"
-          animate={shouldReduceMotion ? {} : {
+          animate={shouldReduceMotion || !isDesktop ? {} : {
             x: [0, -100, 70, 0],
             y: [0, 70, -90, 0],
             scale: [1, 0.9, 1.1, 1],
@@ -414,7 +416,7 @@ const GlobalBackground = () => {
         />
         <motion.div
           className="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[140px]"
-          animate={shouldReduceMotion ? {} : {
+          animate={shouldReduceMotion || !isDesktop ? {} : {
             x: [0, 60, -50, 0],
             y: [0, 80, -70, 0],
             scale: [1, 1.05, 0.9, 1],
@@ -430,7 +432,7 @@ const GlobalBackground = () => {
       </div>
 
       {/* Interactive canvas constellation overlay */}
-      {!shouldReduceMotion && (
+      {!shouldReduceMotion && isDesktop && (
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full pointer-events-none"
@@ -438,7 +440,9 @@ const GlobalBackground = () => {
       )}
 
       {/* Cinematic Asset Drifting (Floating Cards) */}
-      <FloatingCard 
+      {isDesktop && (
+        <>
+          <FloatingCard 
         icon={Zap} 
         label="Performance" 
         techLabel="[FPS: 120]"
@@ -598,6 +602,8 @@ const GlobalBackground = () => {
         
         <SiDart size={130} style={{ fill: 'url(#dartGradient)', filter: 'drop-shadow(0 0 24px rgba(6, 182, 212, 0.2))' }} className="transition-all duration-500 group-hover:filter-[drop-shadow(0_0_36px_rgba(6,182,212,0.4))]" />
       </motion.div>
+      </>
+      )}
     </div>
   );
 };

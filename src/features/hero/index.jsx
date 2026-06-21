@@ -1,12 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion';
-
-const roles = ['Flutter Developer.', 'Problem Solver.', 'Architect.', 'Visionary.'];
-
-
-
-const roleTransition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
-const scrollIndicatorTransition = { duration: 2, repeat: Infinity };
+import { roles } from './data/heroData';
+import { roleTransition, scrollIndicatorTransition } from '../../components/animations';
 
 const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0);

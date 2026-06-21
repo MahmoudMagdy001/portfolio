@@ -1,26 +1,42 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { useIsDesktop } from '../../hooks';
+import { storyParagraphs } from './data/beginningData';
 
-const storyParagraphs = [
-  {
-    text: "It started in Bioinformatics — exploring the complex algorithms of biological life, finding the patterns hidden within the data.",
-    id: 1
-  },
-  {
-    text: "Then came Dart & Flutter. The discovery that code could not only analyze information, but shape highly fluid mobile experiences.",
-    id: 2
-  },
-  {
-    text: "Clean Architecture and BLoC state management became the signature. Turning complex mobile projects into predictable, scalable systems.",
-    id: 3
-  },
-  {
-    text: "Today, mobile engineering is a craft. A daily commitment to writing clean, maintainable code that empowers users worldwide.",
-    id: 4
-  }
-];
+const BeginningMobile = () => {
+  return (
+    <section id="beginning" className="relative bg-transparent py-20 px-6">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/5 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 grid-pattern opacity-5" />
+      </div>
+      <div className="container mx-auto max-w-3xl relative z-10">
+        <p className="chapter-label text-center mb-12">
+          Chapter 02 — The Prologue
+        </p>
+        <div className="space-y-16">
+          {storyParagraphs.map((para) => (
+            <motion.div
+              key={para.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8 }}
+              className="text-center px-4"
+            >
+              <h3 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+                {para.text}
+              </h3>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
-const Beginning = () => {
+const BeginningDesktop = () => {
   const containerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -70,7 +86,7 @@ const Beginning = () => {
         style={{ transform: 'translate3d(0, 0, 0)', backfaceVisibility: 'hidden', willChange: 'transform' }}
       >
         {/* Cinematic Background Layer */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <motion.div
             style={{ scale: bgScale, opacity: bgOpacity, willChange: 'transform' }}
             className="w-full h-full"
@@ -106,6 +122,11 @@ const Beginning = () => {
       </div>
     </section>
   );
+};
+
+const Beginning = () => {
+  const isDesktop = useIsDesktop();
+  return isDesktop ? <BeginningDesktop /> : <BeginningMobile />;
 };
 
 export default Beginning;

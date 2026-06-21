@@ -1,41 +1,42 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Send, ArrowUpRight, CheckCircle, Loader2 } from 'lucide-react';
 import { SiGithub, SiWhatsapp } from 'react-icons/si';
 import { FaLinkedin } from 'react-icons/fa';
+import { SOCIAL_LINKS } from '../../constants';
 
 const socialLinks = [
   {
-    label: 'Email',
-    value: 'mahmodmansour2001@gmail.com',
-    href: 'mailto:mahmodmansour2001@gmail.com',
+    label: SOCIAL_LINKS.email.label,
+    value: SOCIAL_LINKS.email.value,
+    href: SOCIAL_LINKS.email.href,
     Icon: Mail,
     color: '#6366f1',
     bg: 'rgba(99,102,241,0.08)',
     border: 'rgba(99,102,241,0.2)',
   },
   {
-    label: 'LinkedIn',
-    value: 'mahmoudmagdy001',
-    href: 'https://www.linkedin.com/in/mahmoudmagdy001/',
+    label: SOCIAL_LINKS.linkedin.label,
+    value: SOCIAL_LINKS.linkedin.value,
+    href: SOCIAL_LINKS.linkedin.href,
     Icon: FaLinkedin,
     color: '#0ea5e9',
     bg: 'rgba(14,165,233,0.08)',
     border: 'rgba(14,165,233,0.2)',
   },
   {
-    label: 'GitHub',
-    value: 'MahmoudMagdy001',
-    href: 'https://github.com/MahmoudMagdy001',
+    label: SOCIAL_LINKS.github.label,
+    value: SOCIAL_LINKS.github.value,
+    href: SOCIAL_LINKS.github.href,
     Icon: SiGithub,
     color: '#f1f5f9',
     bg: 'rgba(241,245,249,0.06)',
     border: 'rgba(241,245,249,0.12)',
   },
   {
-    label: 'WhatsApp',
-    value: '+20 109 061 7609',
-    href: 'https://wa.me/201090617609',
+    label: SOCIAL_LINKS.whatsapp.label,
+    value: SOCIAL_LINKS.whatsapp.value,
+    href: SOCIAL_LINKS.whatsapp.href,
     Icon: SiWhatsapp,
     color: '#10b981',
     bg: 'rgba(16,185,129,0.08)',
@@ -85,7 +86,7 @@ const Contact = () => {
         
         setSubmitted(true);
         setFormState(EMPTY_FORM);
-      } catch (err) {
+      } catch {
         setError('Something went wrong. Please try again or reach me via email.');
       } finally {
         setLoading(false);
@@ -291,13 +292,13 @@ const Contact = () => {
               <span>Open to work</span>
             </div>
             <div className="flex items-center gap-3">
-              <a href="https://github.com/MahmoudMagdy001" target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="GitHub">
+              <a href={SOCIAL_LINKS.github.href} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="GitHub">
                 <SiGithub size={14} aria-hidden="true" />
               </a>
-              <a href="https://www.linkedin.com/in/mahmoudmagdy001/" target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="LinkedIn">
+              <a href={SOCIAL_LINKS.linkedin.href} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" aria-label="LinkedIn">
                 <FaLinkedin size={14} aria-hidden="true" />
               </a>
-              <a href="mailto:mahmodmansour2001@gmail.com" className="text-slate-600 hover:text-white transition-colors" aria-label="Email">
+              <a href={SOCIAL_LINKS.email.href} className="text-slate-600 hover:text-white transition-colors" aria-label="Email">
                 <Mail size={14} aria-hidden="true" />
               </a>
             </div>

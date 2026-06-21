@@ -1,36 +1,45 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 /**
  * Tracks which section is currently centered in the viewport.
- * Returns null when no section is centered (e.g. while viewing the Hero),
- * so the navbar doesn't highlight any link unnecessarily.
+ * Uses IntersectionObserver for optimal performance, avoiding expensive scroll event
+ * listeners and layout thrashing (getBoundingClientRect).
  */
 export const useActiveSection = (sectionIds) => {
   const [activeSection, setActiveSection] = useState(null);
 
-  const handleScroll = useCallback(() => {
-    const centerOfViewport = window.innerHeight / 2;
-    let matched = null;
-
-    for (const id of sectionIds) {
-      const element = document.getElementById(id);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        if (rect.top <= centerOfViewport && rect.bottom >= centerOfViewport) {
-          matched = id;
-          break;
-        }
-      }
-    }
-
-    setActiveSection(matched);
-  }, [sectionIds]);
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // run once on mount
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
+    if (typeof window === 'undefined') return;
+
+    const elements = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+    if (elements.length === 0) return;
+
+    // Track intersection state of each section
+    const intersectingMap = new Map();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          intersectingMap.set(entry.target.id, entry.isIntersecting);
+        });
+
+        // Find the first section that is intersecting the center line
+        const active = sectionIds.find(id => intersectingMap.get(id));
+        setActiveSection(active || null);
+      },
+      {
+        // 10px vertical band at the center of the viewport
+        rootMargin: '-49% 0px -49% 0px',
+        threshold: 0,
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [sectionIds]);
 
   return { activeSection };
 };

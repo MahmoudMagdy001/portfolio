@@ -1,9 +1,19 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Numbers from './Numbers';
-import Skills from './Skills';
+import Numbers from '../numbers';
+import Skills from '../skills';
+import { useIsDesktop } from '../../hooks';
 
-const Expertise = () => {
+const ExpertiseMobile = () => {
+  return (
+    <div id="skills" className="relative bg-transparent">
+      <Numbers scrollYProgress={null} />
+      <Skills scrollYProgress={null} />
+    </div>
+  );
+};
+
+const ExpertiseDesktop = () => {
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -41,6 +51,11 @@ const Expertise = () => {
       </div>
     </section>
   );
+};
+
+const Expertise = () => {
+  const isDesktop = useIsDesktop();
+  return isDesktop ? <ExpertiseDesktop /> : <ExpertiseMobile />;
 };
 
 export default Expertise;

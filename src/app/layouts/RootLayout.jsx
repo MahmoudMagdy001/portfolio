@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Lenis from 'lenis';
 
-const Layout = ({ children }) => {
+const RootLayout = ({ children }) => {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.4,
@@ -29,4 +29,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default RootLayout;

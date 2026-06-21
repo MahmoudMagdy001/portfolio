@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, ExternalLink, Cpu, Layers, Smartphone, 
-  Play, Pause, Volume2, VolumeX, Folder, FolderOpen, 
+  ArrowLeft, Cpu, Layers, Smartphone, 
+  Play, Pause, Volume2, VolumeX, Folder, FolderOpen,  
   ChevronLeft, ChevronRight, CheckCircle2, MapPin, 
   Layers3, ShieldAlert, Sparkles, MessageSquareCode,
   Truck, ShoppingCart, Heart, GraduationCap, Music, Users,
@@ -930,20 +930,6 @@ const DeviceScreenPreview = ({ mockType, themeColor }) => {
 };
 
 const ProjectDetail = ({ slug }) => {
-  const data = projectsDetailData[slug];
-
-  // If slug is invalid, redirect back
-  if (!data) {
-    return (
-      <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col items-center justify-center p-6" style={{ paddingTop: '90px' }}>
-        <h2 className="text-2xl font-bold text-white mb-4">Case Study Not Found</h2>
-        <a href="#projects" onClick={() => window.location.hash = '#projects'} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white font-medium transition-colors">
-          <ArrowLeft size={16} /> Back to Projects
-        </a>
-      </div>
-    );
-  }
-
   const [activeTab, setActiveTab] = useState('overview');
   const [videoPlaying, setVideoPlaying] = useState(true);
   const [videoMuted, setVideoMuted] = useState(true);
@@ -951,13 +937,17 @@ const ProjectDetail = ({ slug }) => {
   const [activeSlide, setActiveSlide] = useState(0);
   
   const videoRef = useRef(null);
+  const data = projectsDetailData[slug];
 
   // Auto-scroll to top when page mounts or slug changes
   useEffect(() => {
     window.scrollTo(0, 0);
-    setActiveTab('overview');
-    setActiveSlide(0);
-    setLightboxIndex(null);
+    const frameId = requestAnimationFrame(() => {
+      setActiveTab('overview');
+      setActiveSlide(0);
+      setLightboxIndex(null);
+    });
+    return () => cancelAnimationFrame(frameId);
   }, [slug]);
 
   const handleVideoToggle = () => {
@@ -979,21 +969,23 @@ const ProjectDetail = ({ slug }) => {
   };
 
   const nextSlide = () => {
+    if (!data?.screenshots?.length) return;
     setActiveSlide((prev) => (prev + 1) % data.screenshots.length);
   };
 
   const prevSlide = () => {
+    if (!data?.screenshots?.length) return;
     setActiveSlide((prev) => (prev - 1 + data.screenshots.length) % data.screenshots.length);
   };
 
-  const handleLightboxNav = (direction) => {
-    if (lightboxIndex === null) return;
+  const handleLightboxNav = useCallback((direction) => {
+    if (!data?.screenshots?.length || lightboxIndex === null) return;
     if (direction === 'next') {
       setLightboxIndex((prev) => (prev + 1) % data.screenshots.length);
     } else {
       setLightboxIndex((prev) => (prev - 1 + data.screenshots.length) % data.screenshots.length);
     }
-  };
+  }, [data, lightboxIndex]);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -1005,7 +997,19 @@ const ProjectDetail = ({ slug }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxIndex, data.screenshots]);
+  }, [lightboxIndex, handleLightboxNav]);
+
+  // If slug is invalid, redirect back
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col items-center justify-center p-6" style={{ paddingTop: '90px' }}>
+        <h2 className="text-2xl font-bold text-white mb-4">Case Study Not Found</h2>
+        <a href="#projects" onClick={() => window.location.hash = '#projects'} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white font-medium transition-colors">
+          <ArrowLeft size={16} /> Back to Projects
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-[#030712] text-slate-100 overflow-x-hidden pb-20 animate-fade-in" style={{ paddingTop: '90px' }}>
@@ -1373,6 +1377,7 @@ const ProjectDetail = ({ slug }) => {
                         <img 
                           src={data.screenshots[activeSlide].path} 
                           alt={data.screenshots[activeSlide].title} 
+                          decoding="async"
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -1406,7 +1411,7 @@ const ProjectDetail = ({ slug }) => {
                           }}
                         >
                           {s.path ? (
-                            <img src={s.path} alt="" className="w-full h-full object-cover" />
+                            <img src={s.path} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full scale-[0.35] origin-top-left overflow-hidden select-none pointer-events-none">
                               <div className="w-[143px] h-[310px]">
@@ -1476,6 +1481,7 @@ const ProjectDetail = ({ slug }) => {
                   <img 
                     src={data.screenshots[lightboxIndex].path} 
                     alt={data.screenshots[lightboxIndex].title} 
+                    decoding="async"
                     className="w-full h-full object-contain"
                   />
                 ) : (

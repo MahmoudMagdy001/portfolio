@@ -1,72 +1,7 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-const milestones = [
-{
-year: '2019',
-title: 'Curiosity',
-description:
-'During my final year at university, I discovered Flutter and instantly became fascinated by the idea of building beautiful applications for multiple platforms from a single codebase. What started as curiosity quickly became a passion.',
-color: '#6366f1',
-},
-
-{
-year: '2020',
-title: 'Learning',
-description:
-'Spent countless hours exploring Dart, Flutter widgets, layouts, navigation, and APIs. Moved beyond tutorials and started building complete applications while developing a strong foundation in mobile development.',
-color: '#10b981',
-},
-
-{
-year: '2021',
-title: 'Discipline',
-description:
-'Began focusing on software architecture, clean code, state management, and reusable components. Learned how professional applications are structured and how maintainable products are built.',
-color: '#06b6d4',
-},
-
-{
-year: '2022',
-title: 'Professionalism',
-description:
-'Started working on real-world projects and transforming ideas into production-ready applications. Gained experience with authentication, backend integration, performance optimization, and deployment.',
-color: '#ec4899',
-},
-
-{
-year: '2023',
-title: 'Growth',
-description:
-'Expanded into multiple industries including healthcare, education, media, and business solutions. Every project introduced new challenges, pushing my technical and problem-solving abilities further.',
-color: '#8b5cf6',
-},
-
-{
-year: '2024',
-title: 'Ownership',
-description:
-'Took responsibility for complete products from concept to delivery. Worked closely with stakeholders, refined user experiences, and focused on building scalable and reliable mobile solutions.',
-color: '#f59e0b',
-},
-
-{
-year: '2025',
-title: 'Scale',
-description:
-'Delivered advanced applications across e-commerce, real estate, learning platforms, and service systems using Flutter, Supabase, BLoC/Cubit, and modern software architecture patterns.',
-color: '#14b8a6',
-},
-
-{
-year: 'Today',
-title: 'Building the Future',
-description:
-'Now focused on creating exceptional digital experiences through Flutter, scalable architectures, and modern technologies—while continuously learning, improving, and preparing for even bigger challenges ahead.',
-color: '#f43f5e',
-},
-];
-
+import { useIsDesktop } from '../../hooks';
+import { milestones } from './data/journeyData';
 
 const MilestoneCard = ({ milestone, index }) => (
   <motion.div
@@ -119,7 +54,66 @@ const MilestoneCard = ({ milestone, index }) => (
   </motion.div>
 );
 
-const Journey = () => {
+const JourneyMobile = () => {
+  return (
+    <section id="journey" className="relative bg-transparent py-20 px-6">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px]" />
+      </div>
+      <div className="container mx-auto max-w-3xl relative z-10">
+        <div className="mb-12">
+          <p className="chapter-label mb-4">Chapter 03 — The Chronicle</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            A journey of <span className="gradient-text">relentless</span> craft.
+          </h2>
+        </div>
+
+        {/* Vertical Timeline */}
+        <div className="relative pl-8 border-l border-white/10 space-y-12">
+          {milestones.map((milestone, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.6, delay: index * 0.05 }}
+              className="relative group"
+            >
+              {/* Timeline Bullet Node */}
+              <div className="absolute -left-[41px] top-1.5 w-6 h-6 rounded-full bg-dark border border-white/10 flex items-center justify-center">
+                <motion.div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: milestone.color }}
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
+
+              <div className="glass-card rounded-[22px] p-6 border border-white/5 relative overflow-hidden transition-all duration-300">
+                <div className="flex items-center gap-3 mb-3">
+                  <span
+                    className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full"
+                    style={{ background: `${milestone.color}15`, color: milestone.color, border: `1px solid ${milestone.color}30` }}
+                  >
+                    {milestone.year}
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-white mb-2">
+                  {milestone.title}
+                </h4>
+                <p className="text-slate-400 text-sm leading-relaxed font-light">
+                  {milestone.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const JourneyDesktop = () => {
   const targetRef = useRef(null);
   const trackRef  = useRef(null);
   const [endX, setEndX] = useState(0);
@@ -151,7 +145,7 @@ const Journey = () => {
     <section ref={targetRef} id="journey" className="relative h-[400vh]">
       <div className="sticky top-[80px] h-[calc(100vh-80px)] overflow-hidden flex flex-col justify-center">
         {/* Cinematic Background */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-primary/5 rounded-full blur-[160px]" />
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -180,11 +174,16 @@ const Journey = () => {
           </motion.div>
 
           {/* Background Timeline Rail */}
-          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-white/5 -z-10" />
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-white/5 -z-10" aria-hidden="true" />
         </div>
       </div>
     </section>
   );
+};
+
+const Journey = () => {
+  const isDesktop = useIsDesktop();
+  return isDesktop ? <JourneyDesktop /> : <JourneyMobile />;
 };
 
 export default Journey;

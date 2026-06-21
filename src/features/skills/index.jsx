@@ -1,65 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useTransform, AnimatePresence, useMotionValue, useReducedMotion } from 'framer-motion';
-import { SiFlutter, SiDart, SiFirebase, SiGithub } from 'react-icons/si';
-import { Layers, Cpu, Box, Code, Brain, Bell, MapPin, Send } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useTransform, AnimatePresence, useMotionValue, useReducedMotion, useInView } from 'framer-motion';
+import { skillCategories } from './data/skillsData';
 
-const skillCategories = [
-  {
-    id: 'core',
-    label: 'Core Stack',
-    color: '#7F77DD',
-    glow: 'rgba(127,119,221,0.5)',
-    radiusX: 290,
-    radiusY: 74,
-    tilt: 0,
-    speed: 0.35,
-    skills: [
-      { name: 'Flutter',  Icon: SiFlutter },
-      { name: 'Dart',     Icon: SiDart },
-      { name: 'Firebase', Icon: SiFirebase },
-      { name: 'Hive DB',  Icon: Box },
-    ],
-  },
-  {
-    id: 'architecture',
-    label: 'Architecture',
-    color: '#5DCAA5',
-    glow: 'rgba(93,202,165,0.5)',
-    radiusX: 210,
-    radiusY: 52,
-    tilt: 8,
-    speed: -0.45,
-    skills: [
-      { name: 'BLoC Pattern', Icon: Cpu },
-      { name: 'Clean Arch.',  Icon: Layers },
-      { name: 'FCM Push',     Icon: Send },
-      { name: 'AI Tools',     Icon: Brain },
-    ],
-  },
-  {
-    id: 'integration',
-    label: 'Integration',
-    color: '#F0997B',
-    glow: 'rgba(240,153,123,0.5)',
-    radiusX: 130,
-    radiusY: 32,
-    tilt: -6,
-    speed: 0.6,
-    skills: [
-      { name: 'REST APIs',    Icon: Code },
-      { name: 'Google Maps',  Icon: MapPin },
-      { name: 'Git & GitHub', Icon: SiGithub },
-      { name: 'Local Alerts', Icon: Bell },
-    ],
-  },
-];
-
-/**
- * H-3 Fix: replaced useState + rAF with useMotionValue.
- * This eliminates ~720 React state updates/sec (12 items × 60fps).
- * Framer Motor updates MotionValues without triggering React re-renders.
- */
-const OrbitItem = ({ skill, color, glow, radiusX, radiusY, tilt, speed, phase, isActive }) => {
+const OrbitItem = ({ skill, color, glow, radiusX, radiusY, tilt, speed, phase, isActive, isInView }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const scale = useMotionValue(1);
@@ -67,8 +10,7 @@ const OrbitItem = ({ skill, color, glow, radiusX, radiusY, tilt, speed, phase, i
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      // Park items at their natural position
+    if (shouldReduceMotion || !isInView) {
       const angle = phase / 1000;
       const tiltRad = (tilt * Math.PI) / 180;
       const rawX = radiusX * Math.cos(angle);
@@ -96,7 +38,7 @@ const OrbitItem = ({ skill, color, glow, radiusX, radiusY, tilt, speed, phase, i
 
     frameId = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(frameId);
-  }, [radiusX, radiusY, tilt, speed, phase, x, y, scale, zIndex, shouldReduceMotion]);
+  }, [radiusX, radiusY, tilt, speed, phase, x, y, scale, zIndex, shouldReduceMotion, isInView]);
 
   return (
     <motion.div
@@ -149,7 +91,9 @@ const OrbitRing = ({ cat, isActive, opacity, scale }) => (
   </motion.div>
 );
 
-const Skills = ({ scrollYProgress }) => {
+const SkillsDesktop = ({ scrollYProgress }) => {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { amount: 0.1 });
   const [scrollActiveCategory, setScrollActiveCategory] = useState('core');
   const currentActive = scrollActiveCategory;
 
@@ -160,7 +104,7 @@ const Skills = ({ scrollYProgress }) => {
       else                     setScrollActiveCategory('integration');
     });
     return () => unsubscribe();
-  }, [scrollYProgress]); // L-5 fix: scrollYProgress in deps
+  }, [scrollYProgress]);
 
   const opacityTitle = useTransform(scrollYProgress, [0, 0.15],  [0, 1]);
   const yTitle       = useTransform(scrollYProgress, [0, 0.15],  [30, 0]);
@@ -180,7 +124,6 @@ const Skills = ({ scrollYProgress }) => {
   const activeColor = activeCategoryData.color;
   const activeGlow  = activeCategoryData.glow;
 
-  // Per-category opacity/scale lookup (avoid if/else in map)
   const ringMotion = {
     core:         { opacity: opacityCore,  scale: scaleCore  },
     architecture: { opacity: opacityArch,  scale: scaleArch  },
@@ -192,8 +135,7 @@ const Skills = ({ scrollYProgress }) => {
       <div className="absolute inset-0 grid-pattern opacity-10" aria-hidden="true" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[200px] pointer-events-none" aria-hidden="true" />
 
-      <motion.div style={{ opacity: contentOpacity }} className="container-safe relative z-10 flex flex-col items-center justify-center h-full py-4">
-        {/* Header */}
+      <motion.div ref={containerRef} style={{ opacity: contentOpacity }} className="container-safe relative z-10 flex flex-col items-center justify-center h-full py-4">
         <motion.div style={{ opacity: opacityTitle, y: yTitle }} className="text-center mb-8 max-w-2xl">
           <p className="chapter-label mb-1.5">Chapter 08 — The Expertise Ecosystem</p>
           <h2 className="text-2xl md:text-4xl font-bold text-white mb-3">
@@ -204,14 +146,12 @@ const Skills = ({ scrollYProgress }) => {
           </p>
         </motion.div>
 
-        {/* Orbit Visualization */}
         <div
           className="relative w-full h-[340px] flex items-center justify-center scale-90 sm:scale-100 md:scale-110"
           style={{ perspective: '1200px' }}
           role="img"
           aria-label="3D orbit visualization of skill categories"
         >
-          {/* Central Node */}
           <motion.div
             className="relative z-20"
             animate={{ y: [0, -6, 0] }}
@@ -258,7 +198,6 @@ const Skills = ({ scrollYProgress }) => {
               </div>
             </motion.div>
 
-            {/* Pulse rings */}
             <motion.div
               key={`pulse-${activeCategoryData.id}`}
               className="absolute inset-0 rounded-full border pointer-events-none"
@@ -276,7 +215,6 @@ const Skills = ({ scrollYProgress }) => {
             />
           </motion.div>
 
-          {/* Orbits — deepest first */}
           {[...skillCategories].reverse().map((cat) => {
             const { opacity: orbitOpacity, scale: orbitScale } = ringMotion[cat.id];
             const isCatActive = currentActive === cat.id;
@@ -296,6 +234,7 @@ const Skills = ({ scrollYProgress }) => {
                     speed={cat.speed}
                     phase={(skillIdx / cat.skills.length) * (2 * Math.PI / Math.abs(cat.speed)) * 1000}
                     isActive={isCatActive}
+                    isInView={isInView}
                   />
                 ))}
               </div>
@@ -305,6 +244,68 @@ const Skills = ({ scrollYProgress }) => {
       </motion.div>
     </>
   );
+};
+
+const SkillsMobile = () => {
+  return (
+    <section className="relative py-20 px-6">
+      <div className="absolute inset-0 grid-pattern opacity-10" aria-hidden="true" />
+      <div className="container mx-auto max-w-4xl relative z-10">
+        <div className="text-center mb-12">
+          <p className="chapter-label mb-2">Chapter 08 — The Expertise Ecosystem</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            A universe of <span className="gradient-text">mastered</span> tools.
+          </h2>
+        </div>
+
+        <div className="space-y-6">
+          {skillCategories.map((cat, i) => (
+            <motion.div
+              key={cat.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="glass-card rounded-[22px] p-6 border border-white/5 relative overflow-hidden"
+            >
+              <div 
+                className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 transition-all duration-700 blur-2xl"
+                style={{ background: cat.color }}
+                aria-hidden="true"
+              />
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cat.color }} />
+                {cat.label}
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {cat.skills.map((skill, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-xs font-semibold tracking-wide"
+                    style={{
+                      background: `${cat.color}08`,
+                      borderColor: `${cat.color}20`,
+                      boxShadow: `0 0 12px ${cat.color}03`,
+                    }}
+                  >
+                    <skill.Icon size={16} style={{ color: cat.color }} aria-hidden="true" />
+                    <span className="text-slate-200">{skill.name}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Skills = ({ scrollYProgress }) => {
+  if (scrollYProgress) {
+    return <SkillsDesktop scrollYProgress={scrollYProgress} />;
+  }
+  return <SkillsMobile />;
 };
 
 export default Skills;

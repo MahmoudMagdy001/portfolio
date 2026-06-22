@@ -53,9 +53,9 @@ const BeginningDesktop = () => {
   const bgOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.6, 0.3]);
 
   // --- Paragraph 0 (i=0, range 0.00 → 0.25) ---
-  const p0Opacity = useTransform(scrollYProgress, [0,    0.05, 0.20, 0.25], [0, 1, 1, 0]);
-  const p0Y       = useTransform(scrollYProgress, [0,    0.25], shouldReduceMotion ? [0, 0] : [40, -40]);
-  const p0Scale   = useTransform(scrollYProgress, [0,    0.25], shouldReduceMotion ? [1, 1] : [0.95, 1.05]);
+  const p0Opacity = useTransform(scrollYProgress, [0,    0.20, 0.25], [1, 1, 0]);
+  const p0Y       = useTransform(scrollYProgress, [0,    0.25], shouldReduceMotion ? [0, 0] : [0, -40]);
+  const p0Scale   = useTransform(scrollYProgress, [0,    0.25], shouldReduceMotion ? [1, 1] : [1, 1.05]);
 
   // --- Paragraph 1 (i=1, range 0.25 → 0.50) ---
   const p1Opacity = useTransform(scrollYProgress, [0.25, 0.30, 0.45, 0.50], [0, 1, 1, 0]);

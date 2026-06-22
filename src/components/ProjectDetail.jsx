@@ -938,6 +938,8 @@ const ProjectDetail = ({ slug }) => {
   
   const videoRef = useRef(null);
   const data = projectsDetailData[slug];
+  const hasWalkthrough = !!data?.overview?.walkthrough?.videoPath;
+  const hasGallery = !!(data?.screenshots && data.screenshots.length > 0 && data.screenshots.some(s => s.path));
 
   // Auto-scroll to top when page mounts or slug changes
   useEffect(() => {
@@ -1093,7 +1095,7 @@ const ProjectDetail = ({ slug }) => {
 
         {/* Tab Navigation */}
         <div className="flex border-b border-white/5 mb-12 relative">
-          {['overview', 'features', 'architecture', 'gallery'].map((tab) => (
+          {['overview', 'features', 'architecture', hasGallery ? 'gallery' : null].filter(Boolean).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -1127,8 +1129,8 @@ const ProjectDetail = ({ slug }) => {
             
             {/* OVERVIEW TAB */}
             {activeTab === 'overview' && (
-              <div className="grid md:grid-cols-5 gap-12 items-start">
-                <div className="md:col-span-3 space-y-8">
+              <div className={hasWalkthrough ? "grid md:grid-cols-5 gap-12 items-start" : "w-full space-y-8"}>
+                <div className={hasWalkthrough ? "md:col-span-3 space-y-8" : "w-full space-y-8"}>
                   <div className="glass-card p-6 md:p-8 rounded-2xl relative overflow-hidden">
                     <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                       <Sparkles size={18} style={{ color: data.color }} /> {data.overview.goalTitle}
@@ -1157,19 +1159,19 @@ const ProjectDetail = ({ slug }) => {
                 </div>
 
                 {/* Video / Device Mockup Sidebar */}
-                <div className="md:col-span-2 space-y-6">
-                  <div className="glass-card p-6 rounded-2xl flex flex-col items-center">
-                    <h3 className="text-base font-bold text-white mb-4 self-start">
-                      App Walkthrough
-                    </h3>
-                    
-                    {/* iPhone mockup */}
-                    <div 
-                      className="relative border-[6px] border-slate-800 rounded-[32px] bg-black shadow-2xl overflow-hidden aspect-[9/19.5] mx-auto ring-1 ring-white/10"
-                      style={{ maxWidth: '180px', width: '100%' }}
-                    >
-                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-900 rounded-full z-20" />
-                      {data.overview.walkthrough.videoPath ? (
+                {hasWalkthrough && (
+                  <div className="md:col-span-2 space-y-6">
+                    <div className="glass-card p-6 rounded-2xl flex flex-col items-center">
+                      <h3 className="text-base font-bold text-white mb-4 self-start">
+                        App Walkthrough
+                      </h3>
+                      
+                      {/* iPhone mockup */}
+                      <div 
+                        className="relative border-[6px] border-slate-800 rounded-[32px] bg-black shadow-2xl overflow-hidden aspect-[9/19.5] mx-auto ring-1 ring-white/10"
+                        style={{ maxWidth: '180px', width: '100%' }}
+                      >
+                        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-900 rounded-full z-20" />
                         <video
                           ref={videoRef}
                           src={data.overview.walkthrough.videoPath}
@@ -1182,13 +1184,8 @@ const ProjectDetail = ({ slug }) => {
                           onPlay={() => setVideoPlaying(true)}
                           onPause={() => setVideoPlaying(false)}
                         />
-                      ) : (
-                        // Render fallback mockup screen (typically dashboard)
-                        <DeviceScreenPreview mockType={data.screenshots[0].mockType} themeColor={data.color} />
-                      )}
-                    </div>
+                      </div>
 
-                    {data.overview.walkthrough.videoPath && (
                       <div className="flex gap-4 mt-4 justify-center">
                         <button 
                           onClick={handleVideoToggle}
@@ -1205,13 +1202,13 @@ const ProjectDetail = ({ slug }) => {
                           {videoMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
                         </button>
                       </div>
-                    )}
 
-                    <p className="text-[11px] font-mono text-center text-slate-500 mt-4 uppercase tracking-widest">
-                      {data.overview.walkthrough.videoPath ? 'Live walkthrough video' : 'Case study device preview'}
-                    </p>
+                      <p className="text-[11px] font-mono text-center text-slate-500 mt-4 uppercase tracking-widest">
+                        Live walkthrough video
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
 

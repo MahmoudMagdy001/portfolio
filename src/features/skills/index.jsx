@@ -106,17 +106,17 @@ const SkillsDesktop = ({ scrollYProgress }) => {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  const opacityTitle = useTransform(scrollYProgress, [0, 0.15],  [0, 1]);
-  const yTitle       = useTransform(scrollYProgress, [0, 0.15],  [30, 0]);
+  const opacityTitle = useTransform(scrollYProgress, [0, 0.15],  [1, 1]);
+  const yTitle       = useTransform(scrollYProgress, [0, 0.15],  [0, 0]);
 
-  const opacityCore  = useTransform(scrollYProgress, [0.05, 0.25], [0, 1]);
-  const scaleCore    = useTransform(scrollYProgress, [0.05, 0.25], [0.8, 1]);
+  const opacityCore  = useTransform(scrollYProgress, [0, 0.25], [1, 1]);
+  const scaleCore    = useTransform(scrollYProgress, [0, 0.25], [1, 1]);
 
-  const opacityArch  = useTransform(scrollYProgress, [0.3,  0.5],  [0, 1]);
-  const scaleArch    = useTransform(scrollYProgress, [0.3,  0.5],  [0.8, 1]);
+  const opacityArch  = useTransform(scrollYProgress, [0.25, 0.38], [0, 1]);
+  const scaleArch    = useTransform(scrollYProgress, [0.25, 0.38], [0.8, 1]);
 
-  const opacityInteg = useTransform(scrollYProgress, [0.6,  0.8],  [0, 1]);
-  const scaleInteg   = useTransform(scrollYProgress, [0.6,  0.8],  [0.8, 1]);
+  const opacityInteg = useTransform(scrollYProgress, [0.58, 0.72], [0, 1]);
+  const scaleInteg   = useTransform(scrollYProgress, [0.58, 0.72], [0.8, 1]);
 
   const contentOpacity = useTransform(scrollYProgress, [0.92, 1], [1, 0]);
 

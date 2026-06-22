@@ -42,7 +42,10 @@ const Navbar = () => {
     if (window.location.hash.startsWith('#/project/')) {
       window.location.assign(href);
     } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 

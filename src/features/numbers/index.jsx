@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion, useTransform } from 'framer-motion';
+import { motion, useTransform, useInView } from 'framer-motion';
 import { stats } from './data/numbersData';
 
-const CounterCard = ({ stat, index, startTrigger, scrollOpacity, scrollY }) => {
+const CounterCard = ({ stat, index, startTrigger }) => {
   const [count, setCount] = useState(0);
   const animatedRef = useRef(false);
 
@@ -35,7 +35,12 @@ const CounterCard = ({ stat, index, startTrigger, scrollOpacity, scrollY }) => {
   }, [startTrigger, stat.value, index]);
 
   return (
-    <motion.div style={{ opacity: scrollOpacity, y: scrollY }} className="h-full">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={startTrigger ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.8, delay: index * 0.12, ease: "easeOut" }}
+      className="h-full"
+    >
       <motion.div
         whileHover={{ y: -8 }}
         className="counter-card glass-card rounded-3xl p-8 md:p-10 text-center group hover:ring-1 hover:ring-primary/30 transition-all duration-500 h-full"
@@ -59,38 +64,15 @@ const CounterCard = ({ stat, index, startTrigger, scrollOpacity, scrollY }) => {
 };
 
 const NumbersDesktop = ({ scrollYProgress }) => {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { amount: 0.15, once: true });
   const [triggerCount, setTriggerCount] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      if (latest > 0.15) setTriggerCount(true);
-    });
-    return () => unsubscribe();
-  }, [scrollYProgress]);
-
-  // Header animations
-  const opacityTitle = useTransform(scrollYProgress, [0, 0.2],  [0, 1]);
-  const yTitle       = useTransform(scrollYProgress, [0, 0.2],  [30, 0]);
-
-  // Staggered entry for each stat card
-  const opacityC1 = useTransform(scrollYProgress, [0.05, 0.25], [0, 1]);
-  const yC1       = useTransform(scrollYProgress, [0.05, 0.25], [40, 0]);
-
-  const opacityC2 = useTransform(scrollYProgress, [0.12, 0.32], [0, 1]);
-  const yC2       = useTransform(scrollYProgress, [0.12, 0.32], [40, 0]);
-
-  const opacityC3 = useTransform(scrollYProgress, [0.19, 0.39], [0, 1]);
-  const yC3       = useTransform(scrollYProgress, [0.19, 0.39], [40, 0]);
-
-  const opacityC4 = useTransform(scrollYProgress, [0.26, 0.46], [0, 1]);
-  const yC4       = useTransform(scrollYProgress, [0.26, 0.46], [40, 0]);
-
-  const cardMotion = [
-    { opacity: opacityC1, y: yC1 },
-    { opacity: opacityC2, y: yC2 },
-    { opacity: opacityC3, y: yC3 },
-    { opacity: opacityC4, y: yC4 },
-  ];
+    if (isInView) {
+      setTriggerCount(true);
+    }
+  }, [isInView]);
 
   const contentOpacity = useTransform(scrollYProgress, [0.85, 1], [1, 0]);
 
@@ -99,12 +81,22 @@ const NumbersDesktop = ({ scrollYProgress }) => {
       <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/8 rounded-full blur-[100px] pointer-events-none" />
 
-      <motion.div style={{ opacity: contentOpacity }} className="container-safe relative z-10">
+      <motion.div ref={containerRef} style={{ opacity: contentOpacity }} className="container-safe relative z-10">
         <div className="text-center mb-16">
-          <motion.p style={{ opacity: opacityTitle, y: yTitle }} className="chapter-label mb-6">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={triggerCount ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="chapter-label mb-6"
+          >
             Chapter 07 — The Numbers
           </motion.p>
-          <motion.div style={{ opacity: opacityTitle, y: yTitle }} className="overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={triggerCount ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
             <h2 className="text-5xl md:text-7xl font-bold text-white mb-2">
               Impact in <span className="gradient-text">numbers.</span>
             </h2>
@@ -118,8 +110,6 @@ const NumbersDesktop = ({ scrollYProgress }) => {
               stat={stat}
               index={i}
               startTrigger={triggerCount}
-              scrollOpacity={cardMotion[i].opacity}
-              scrollY={cardMotion[i].y}
             />
           ))}
         </div>

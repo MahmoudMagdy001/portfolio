@@ -462,7 +462,7 @@ export const projectsDetailData = {
         'Background task scheduling via WorkManager and hourly reminders via AwesomeNotifications'
       ],
       walkthrough: {
-        videoPath: null,
+        videoPath: '/muslim/muslim_video.mp4',
         fallbackImg: '/images/muslim_logo.png'
       }
     },
@@ -573,10 +573,15 @@ export const projectsDetailData = {
       diDetails: 'Services, repositories, data sources, and use cases are registered in setupLocator() via GetIt. ViewModels/Cubits are registered as Factories to allow page-level isolation, while core background workers and the Quran player service are Singletons.'
     },
     screenshots: [
-      { id: 1, mockType: 'muslim-dashboard', title: 'Main Daily Dashboard', desc: 'Shows upcoming prayer countdowns, coordinates location, and custom greeting widgets.' },
-      { id: 2, mockType: 'muslim-player', title: 'Audio Quran Player', desc: 'Audio controls, page tracking, and active background player indicator.' },
-      { id: 3, mockType: 'muslim-compass', title: 'Sensor Qibla Compass', desc: 'Rotating indicator needle pointing to Kaaba, verifying sensor accuracy.' },
-      { id: 4, mockType: 'muslim-calculator', title: 'Live Wealth Calculator', desc: 'Input forms to calculate gold asset values and output distribution amounts.' }
+      { id: 1, path: '/muslim/1.jpeg', title: 'Main Prayer Times Dashboard', desc: 'Elegant home screen displaying next prayer countdowns, active coordinate locations, Zakat calculators, and core services.' },
+      { id: 2, path: '/muslim/2.jpeg', title: 'Surah Catalog Index', desc: 'Interactive list of all Holy Quran Surahs, with dynamic tab navigation for Juz and Hizb, and search functions.' },
+      { id: 3, path: '/muslim/3.jpeg', title: 'Quran Reader & Audio Player', desc: 'Read Quran texts offline with line-by-line verse highlighting synchronizing with the background just_audio play stream.' },
+      { id: 4, path: '/muslim/4.jpeg', title: 'Authentic Hadith Catalog', desc: 'Read of the day featured Hadith card, and search through collections of Sahih al-Bukhari, Sahih Muslim, and other authentic books.' },
+      { id: 5, path: '/muslim/5.jpeg', title: 'Offline Azkar Categories', desc: 'Expandable list grouped by category for Morning and Evening Azkar, Sleep, ablutions, and daily home supplications.' },
+      { id: 6, path: '/muslim/6.jpeg', title: 'Sensor-Based Qibla Compass', desc: 'Real-time compass needle showing the exact heading direction of the Kaaba, dynamically tracking magnetometer sensors.' },
+      { id: 7, path: '/muslim/7.jpeg', title: 'Electronic Tasbih Counter', desc: 'Tapping widget interface to count praises (Subhan Allah, Alhamdulillah) with customizable targets and reset options.' },
+      { id: 8, path: '/muslim/8.jpeg', title: 'Names of Allah & Meanings', desc: 'Browse the 99 Beautiful Names of Allah, complete with Arabic writing, phonetic spellings, descriptions, and sharing options.' },
+      { id: 9, path: '/muslim/9.jpeg', title: 'App Settings & Customization', desc: 'Swap reciters, scale fonts, configure periodic notifications, customize themes, and manage automated location sync.' }
     ]
   },
 
@@ -716,12 +721,7 @@ export const projectsDetailData = {
       ],
       diDetails: 'Services and repositories are configured inside setupServiceLocator() using GetIt, separating backend API calls from view rendering. The Supabase connection is established at startup.'
     },
-    screenshots: [
-      { id: 1, mockType: 'cancer-dashboard', title: 'Clinician Patient Directory', desc: 'Patient records list with rapid search, vital flags, and register actions.' },
-      { id: 2, mockType: 'cancer-detail', title: 'Comprehensive Medical History', desc: 'Displays patient metadata, gene classifications, and diagnostic timeline.' },
-      { id: 3, mockType: 'cancer-chart', title: 'Tumor Indicator Graph', desc: 'Displays markers over time with target markers using fl_chart widgets.' },
-      { id: 4, mockType: 'cancer-ml', title: 'Colorectal Risk Analysis', desc: 'Shows target prediction statistics returned from the custom ML API.' }
-    ]
+    screenshots: []
   },
 
   'mansy-learning': {
@@ -851,12 +851,7 @@ export const projectsDetailData = {
       ],
       diDetails: 'Dependency injection is configured in setupDependencyInjection() using GetIt. Services, repositories, and viewmodels are registered as LazySingletons (with factory registrations for SignupCubit) to optimize memory.'
     },
-    screenshots: [
-      { id: 1, mockType: 'learning-dashboard', title: 'Main Course Dashboard', desc: 'Enrolled courses grid showing progress bars, achievements, and search tabs.' },
-      { id: 2, mockType: 'learning-course', title: 'Video Lecture Interface', desc: 'Clean video player, cached playback indicators, and list of resources.' },
-      { id: 3, mockType: 'learning-quiz', title: 'Interactive Quiz Sheet', desc: 'Multi-choice question forms with timer banners and immediate review fields.' },
-      { id: 4, mockType: 'learning-profile', title: 'Subscription Management', desc: 'Exposes billing cycles, account tiers, and upgrade calls-to-action.' }
-    ]
+    screenshots: []
   },
   'music-player': {
     questNumber: 'Quest 07',
@@ -983,11 +978,6 @@ export const projectsDetailData = {
       ],
       diDetails: 'Services and state providers are initialized in main() and check.dart. The main audio controller and background task dependencies are registered as singletons at application startup, preserving player status throughout user navigation.'
     },
-    screenshots: [
-      { id: 1, mockType: 'music-dashboard', title: 'Dynamic Music Library', desc: 'Scan results displaying albums, artists, folders, and recent tracks.' },
-      { id: 2, mockType: 'music-playing', title: 'Immersive Player View', desc: 'Album art glowing panels, track position sliders, and queue controls.' },
-      { id: 3, mockType: 'music-playlist', title: 'Queue & Playlist Manager', desc: 'Sort queues using drag controls, create playlists, and update titles.' },
-      { id: 4, mockType: 'music-settings', title: 'Scan Directory Settings', desc: 'Add scan folders, configure cache sizes, and customize desktop bindings.' }
-    ]
+    screenshots: []
   }
 };

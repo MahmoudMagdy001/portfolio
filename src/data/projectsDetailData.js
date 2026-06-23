@@ -978,6 +978,11 @@ export const projectsDetailData = {
       ],
       diDetails: 'Services and state providers are initialized in main() and check.dart. The main audio controller and background task dependencies are registered as singletons at application startup, preserving player status throughout user navigation.'
     },
-    screenshots: []
+    screenshots: [
+      { id: 1, path: '/music/1.jpeg', title: 'Audio Library Dashboard', desc: 'A clean audio library listing all scanned tracks, displaying filenames, file paths, and file sizes dynamically.' },
+      { id: 2, path: '/music/2.jpeg', title: 'Premium Music Player', desc: 'Immersive playback interface with album art cover, interactive seek bar, and fully synchronized media controls.' },
+      { id: 3, path: '/music/3.jpeg', title: 'Queue & Playlist Manager', desc: 'Manages active song queue with drag-and-drop handles for instant track reordering and playback duration details.' },
+      { id: 4, path: '/music/4.jpeg', title: 'Scanner Customization Settings', desc: 'Fine-tunes the local directories media scanner options, target folders, and metadata caching parameters.' }
+    ]
   }
 };

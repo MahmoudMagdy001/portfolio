@@ -1,9 +1,9 @@
-import { useRef, useCallback, useEffect, useState, type FC, type ComponentType, type CSSProperties } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, type FC, type ComponentType, type CSSProperties } from 'react';
 import { ExternalLink, Home, ShoppingCart, Heart, GraduationCap, Music, Truck, BookOpen, type LucideIcon } from 'lucide-react';
-import { SiGithub, SiFlutter, SiFirebase, SiDart, SiSupabase } from 'react-icons/si';
+import { SiGithub, SiFlutter, SiFirebase, SiDart } from 'react-icons/si';
 import { projectsDetailData } from '../../data/projectsDetailData';
 import { useIsDesktop } from '../../hooks';
+import { gsap, useGSAP } from '../../lib/gsap';
 
 interface TechItem {
   name: string;
@@ -102,10 +102,10 @@ const projectMeta: Record<string, ProjectMetaItem> = {
     tech: [
       { name: 'Flutter', Icon: SiFlutter },
       { name: 'Dart', Icon: SiDart },
+      { name: 'Clean Arch.', Icon: null },
       { name: 'BLoC', Icon: null },
       { name: 'just_audio', Icon: null },
-      { name: 'adhan', Icon: null },
-      { name: 'Codemagic', Icon: null },
+      { name: 'Offline First', Icon: null },
     ]
   },
   'cancer-detection': {
@@ -114,17 +114,17 @@ const projectMeta: Record<string, ProjectMetaItem> = {
     challenge:
       'Building a reliable clinical-grade Flutter client for colorectal cancer risk assessment that communicates with a trained ML backend, manages patient records, tracks tumor markers over time, and visualizes longitudinal data with charts.',
     solution:
-      'Integrated Supabase as the backend for secure patient data storage and ML API calls. Implemented tumor marker charts for longitudinal tracking, gene analysis input forms with rigorous validation, fast patient search, and drug tracking workflows.',
+      'Integrated Firebase and secure REST endpoints for patient data storage and ML API calls. Implemented tumor marker charts for longitudinal tracking, gene analysis input forms with rigorous validation, fast patient search, and drug tracking workflows.',
     results: [
       'ML-backed risk prediction with instant probability feedback',
-      'Time-series tumor marker charts with Supabase persistence',
+      'Time-series tumor marker charts with cloud database persistence',
       'Comprehensive patient profiles: drugs, genes, and diagnostic history',
       'Colon cancer news feed and educational content integration',
     ],
     tech: [
       { name: 'Flutter', Icon: SiFlutter },
       { name: 'Dart', Icon: SiDart },
-      { name: 'Supabase', Icon: SiSupabase },
+      { name: 'Firebase', Icon: SiFirebase },
       { name: 'ML API', Icon: null },
       { name: 'Charts', Icon: null },
     ]
@@ -133,19 +133,19 @@ const projectMeta: Record<string, ProjectMetaItem> = {
     icon: GraduationCap,
     gradient: 'from-purple-900/20 to-fuchsia-900/10',
     challenge:
-      'Delivering a fluid e-learning experience supporting course catalogs, video lectures, downloadable resources, interactive quizzes, progress tracking, role-based access control, and a subscription enrollment flow backed by a serverless Supabase backend.',
+      'Delivering a fluid e-learning experience supporting course catalogs, video lectures, downloadable resources, interactive quizzes, progress tracking, role-based access control, and a subscription enrollment flow backed by a robust cloud backend.',
     solution:
-      'Built with Feature-First MVVM using Cubit for state and Supabase for auth, storage, and real-time data. Integrated GoRouter for declarative role-based navigation, SharedPreferences for local progress caching, and a premium RTL-ready design system with Cairo typography.',
+      'Built with Feature-First MVVM using Cubit for state and Firebase for auth, storage, and real-time data. Integrated GoRouter for declarative role-based navigation, SharedPreferences for local progress caching, and a premium RTL-ready design system with Cairo typography.',
     results: [
       'Full subscription flow with course enrollment and access control',
       'Video lectures, PDF downloads, and interactive quiz modules',
       'RTL-ready bilingual UI (Arabic / English) with Cairo design tokens',
-      'Persistent progress tracking with Supabase real-time sync',
+      'Persistent progress tracking with Firebase real-time sync',
     ],
     tech: [
       { name: 'Flutter', Icon: SiFlutter },
       { name: 'Dart', Icon: SiDart },
-      { name: 'Supabase', Icon: SiSupabase },
+      { name: 'Firebase', Icon: SiFirebase },
       { name: 'Cubit', Icon: null },
       { name: 'go_router', Icon: null },
       { name: 'GetIt', Icon: null },
@@ -155,74 +155,76 @@ const projectMeta: Record<string, ProjectMetaItem> = {
     icon: Music,
     gradient: 'from-amber-900/20 to-orange-900/10',
     challenge:
-      'Building a cross-platform (Android, iOS, macOS, Linux) local music player with smooth playlist management, background audio, lock-screen controls, and a visually polished interface — all without relying on any streaming backend.',
+      'Crafting an offline audio player with persistent background playback, lock-screen/notification controls, audio focus handling during calls, and playlist management with high performance.',
     solution:
-      "Leveraged Flutter's multi-platform capabilities with a native audio engine for device library scanning, background playback, and system media session integration. Implemented playlist queuing, shuffle/repeat logic, and an immersive now-playing screen with album art.",
+      'Leveraged just_audio for gapless playback and audio_service for background Android notification and lock-screen integration. Applied on_audio_query for permission-aware local audio querying and Cubit for playback state management.',
     results: [
-      'Cross-platform: Android, iOS, macOS & Linux from one codebase',
-      'Background playback with system lock-screen media controls',
-      'Full playlist management: create, edit, shuffle & repeat',
-      'Immersive now-playing UI with animated album artwork',
+      'Background playback with lock-screen and notification controls',
+      'Permission-aware local device audio scanner with on_audio_query',
+      'Dynamic playlist management, shuffle, repeat, and seek bar',
+      'Adaptive dark theme with fluid waveform visualization',
     ],
     tech: [
       { name: 'Flutter', Icon: SiFlutter },
       { name: 'Dart', Icon: SiDart },
       { name: 'just_audio', Icon: null },
-      { name: 'BLoC', Icon: null },
-      { name: 'Multi-Platform', Icon: null },
+      { name: 'audio_service', Icon: null },
+      { name: 'Cubit', Icon: null },
     ]
   }
 };
 
 interface ProjectCardItem {
-  id: number;
-  slug: string;
+  id: string;
   chapter: string;
   title: string;
   tagline: string;
   category: string;
-  icon: LucideIcon;
-  logo: string;
   color: string;
+  github?: string;
+  logo?: string;
+  icon: LucideIcon;
+  gradient: string;
   challenge: string;
   solution: string;
   results: string[];
   tech: TechItem[];
-  link: string;
-  github: string;
-  gradient: string;
 }
 
-const projects: ProjectCardItem[] = Object.entries(projectsDetailData).map(([slug, detail], index) => {
-  const meta = projectMeta[slug];
+const projects: readonly ProjectCardItem[] = Object.entries(projectsDetailData).map(([slug, p]) => {
+  const meta = projectMeta[slug] || {
+    icon: Home,
+    gradient: 'from-slate-900/20 to-slate-800/10',
+    challenge: p.subtitle,
+    solution: p.overview.goalDesc1,
+    results: p.overview.outcomes.slice(0, 4),
+    tech: [
+      { name: 'Flutter', Icon: SiFlutter },
+      { name: 'Dart', Icon: SiDart },
+    ]
+  };
+
   return {
-    id: index + 1,
-    slug,
-    chapter: detail.questNumber.replace('Quest ', ''),
-    title: detail.title,
-    tagline: detail.tagline,
-    category: detail.category,
-    icon: meta?.icon || BookOpen,
-    logo: detail.overview.walkthrough.fallbackImg,
-    color: detail.color,
-    challenge: meta?.challenge || detail.overview.goalDesc1,
-    solution: meta?.solution || detail.overview.goalDesc2,
-    results: meta?.results || detail.overview.outcomes,
-    tech: meta?.tech || [],
-    link: detail.repository,
-    github: detail.repository,
-    gradient: meta?.gradient || 'from-slate-900/20 to-slate-900/10'
+    id: slug,
+    chapter: p.questNumber.replace('Quest ', ''),
+    title: p.title,
+    tagline: p.subtitle,
+    category: p.category,
+    color: p.color,
+    github: p.repository,
+    icon: meta.icon,
+    gradient: meta.gradient,
+    challenge: meta.challenge,
+    solution: meta.solution,
+    results: meta.results,
+    tech: meta.tech,
   };
 });
-
-const cardLinkHover = { y: -2 };
-const cardLinkTap   = { scale: 0.98 };
 
 interface ProjectWatermarkProps {
   project: ProjectCardItem;
 }
 
-// Watermark background logo
 const ProjectWatermark: FC<ProjectWatermarkProps> = ({ project }) => {
   const [imgErr, setImgErr] = useState<boolean>(false);
 
@@ -266,7 +268,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project }) => (
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 relative z-10">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-[10px] font-mono tracking-[0.2em] uppercase py-1 px-3 rounded-full border border-white/5 bg-white/5" style={{ color: project.color }}>
+            <span className="text-[10px] font-mono tracking-[0.2em] uppercase py-1 px-3 rounded-full border border-white/5 bg-white/5 font-semibold" style={{ color: project.color }}>
               Quest {project.chapter}
             </span>
             <span className="text-[10px] font-mono tracking-[0.2em] uppercase py-1 px-3 rounded-full border border-white/5 bg-white/5 text-slate-400">
@@ -322,57 +324,72 @@ const ProjectCard: FC<ProjectCardProps> = ({ project }) => (
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-white/5">
-        <motion.a
-          href={`#/project/${project.slug}`}
-          whileHover={cardLinkHover}
-          whileTap={cardLinkTap}
-          className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-widest text-white shadow-lg transition-all duration-300"
-          style={{ backgroundColor: project.color, boxShadow: `0 10px 20px ${project.color}30` }}
+      <div className="mt-6 pt-5 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-xs font-mono tracking-wider text-slate-400 hover:text-white px-3.5 py-2 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-300"
+              aria-label={`View ${project.title} source on GitHub`}
+            >
+              <SiGithub size={14} aria-hidden="true" />
+              <span>Source</span>
+            </a>
+          )}
+        </div>
+
+        <a
+          href={`#/project/${project.id}`}
+          className="flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/20 transition-all duration-300 group/btn"
+          aria-label={`View full documentation for ${project.title}`}
         >
-          View Case Study <ExternalLink size={14} aria-hidden="true" />
-        </motion.a>
-        <motion.a
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={cardLinkHover}
-          whileTap={cardLinkTap}
-          className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-widest text-white glass border border-white/10 hover:bg-white/5 transition-all duration-300"
-        >
-          <SiGithub size={16} aria-hidden="true" /> Repository
-        </motion.a>
+          <span>Deep Dive</span>
+          <ExternalLink size={13} className="text-slate-400 group-hover/btn:text-primary transition-colors" aria-hidden="true" />
+        </a>
       </div>
     </div>
   </article>
 );
 
 const ProjectsMobile: FC = () => {
+  const containerRef = useRef<HTMLElement | null>(null);
+
+  useGSAP(() => {
+    const items = gsap.utils.toArray<HTMLElement>('.project-mobile-item');
+    items.forEach((item) => {
+      gsap.from(item, {
+        opacity: 0,
+        y: 35,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 85%',
+        },
+      });
+    });
+  }, { scope: containerRef });
+
   return (
-    <section id="projects" className="relative bg-transparent py-20 px-6">
-      <div className="container mx-auto relative z-10">
-        <div className="max-w-2xl mb-12">
+    <section ref={containerRef} id="projects" className="relative bg-transparent py-20 px-6">
+      <div className="container mx-auto max-w-3xl relative z-10">
+        <div className="mb-12">
           <p className="chapter-label mb-3">Chapter 04 — The Portfolio of Quests</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tighter leading-none">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-3">
             Digital <span className="gradient-text">Mastery.</span>
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base font-light leading-relaxed">
+          <p className="text-slate-400 text-base font-light">
             A selection of high-fidelity mobile experiences where performance meets cinematic aesthetics.
           </p>
         </div>
 
         <div className="space-y-8">
           {projects.map((project) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.8 }}
-              className="w-full"
-            >
+            <div key={project.id} className="project-mobile-item w-full">
               <ProjectCard project={project} />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -382,40 +399,44 @@ const ProjectsMobile: FC = () => {
 
 const ProjectsDesktop: FC = () => {
   const containerRef = useRef<HTMLElement | null>(null);
+  const pinWrapRef   = useRef<HTMLDivElement | null>(null);
   const trackRef     = useRef<HTMLDivElement | null>(null);
-  const [endX, setEndX] = useState<number>(0);
 
-  const updateEndX = useCallback(() => {
-    if (trackRef.current) {
-      const track    = trackRef.current;
-      const lastCard = track.lastElementChild as HTMLElement | null;
-      if (!lastCard) return;
-      const lastCardLeft  = lastCard.offsetLeft - track.offsetLeft;
-      const lastCardWidth = lastCard.offsetWidth;
-      const vw = window.innerWidth;
-      setEndX(vw / 2 - lastCardWidth / 2 - lastCardLeft - 180);
-    }
-  }, []);
+  useGSAP(() => {
+    if (typeof window === 'undefined') return;
+    const track = trackRef.current;
+    const section = containerRef.current;
+    const pinWrap = pinWrapRef.current;
+    if (!track || !section || !pinWrap) return;
 
-  useEffect(() => {
-    updateEndX();
-    window.addEventListener('resize', updateEndX);
-    return () => window.removeEventListener('resize', updateEndX);
-  }, [updateEndX]);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
 
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const x = useTransform(scrollYProgress, [0.1, 0.9], [0, endX]);
+    const getDistance = () => track.scrollWidth - window.innerWidth + window.innerWidth * 0.15;
+
+    gsap.to(track, {
+      x: () => -getDistance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        pin: pinWrap,
+        start: 'top top',
+        end: () => `+=${getDistance() + 1000}`,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+  }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="projects" className="relative h-[420vh] bg-transparent">
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden pt-24">
-
+    <section ref={containerRef} id="projects" className="relative bg-transparent">
+      <div ref={pinWrapRef} className="h-screen w-full flex flex-col justify-center overflow-hidden pt-24">
         <div className="relative z-10 flex items-center h-full w-full">
           <div className="w-full overflow-visible">
-            <motion.div
+            <div
               ref={trackRef}
-              style={{ x }}
               className="flex gap-8 items-stretch px-[10vw]"
+              style={{ willChange: 'transform' }}
             >
               <div className="w-[85vw] sm:w-[400px] md:w-[480px] flex-shrink-0 flex flex-col justify-center pr-8 md:pr-12">
                 <p className="chapter-label mb-3">Chapter 04 — The Portfolio of Quests</p>
@@ -436,7 +457,7 @@ const ProjectsDesktop: FC = () => {
                   <ProjectCard project={project} />
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

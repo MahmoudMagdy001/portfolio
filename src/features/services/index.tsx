@@ -1,8 +1,7 @@
 import { useRef, type FC } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import { useIsDesktop } from '../../hooks';
 import { services, principles, type ServiceItem, type PrincipleItem } from './data/servicesData';
-import { cardHoverVariant, cardTransition } from '../../components/animations';
+import { gsap, useGSAP } from '../../lib/gsap';
 
 interface ServiceCardProps {
   service: ServiceItem;
@@ -10,18 +9,16 @@ interface ServiceCardProps {
 
 const ServiceCard: FC<ServiceCardProps> = ({ service }) => (
   <div className="h-full">
-    <motion.div
-      whileHover={cardHoverVariant}
-      transition={cardTransition}
-      className="glass-card rounded-xl p-5 h-full group relative overflow-hidden cursor-default"
+    <div
+      className="glass-card rounded-xl p-5 h-full group relative overflow-hidden cursor-default transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30"
     >
       <div
         className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{ background: `linear-gradient(90deg, transparent, ${service.color}, transparent)` }}
         aria-hidden="true"
       />
-      <motion.div
-        className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-0 group-hover:opacity-10 transition-all duration-500 blur-2xl"
+      <div
+        className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-0 group-hover:opacity-10 transition-all duration-500 blur-2xl pointer-events-none"
         style={{ background: service.color }}
         aria-hidden="true"
       />
@@ -50,12 +47,12 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => (
         ))}
       </div>
 
-      <motion.div
+      <div
         className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500 origin-left"
         style={{ background: service.color }}
         aria-hidden="true"
       />
-    </motion.div>
+    </div>
   </div>
 );
 
@@ -66,13 +63,11 @@ interface PhilosophyCardProps {
 
 const PhilosophyCard: FC<PhilosophyCardProps> = ({ principle, index }) => (
   <div className="h-full">
-    <motion.div
-      whileHover={cardHoverVariant}
-      transition={cardTransition}
-      className="glass-card rounded-xl p-5 h-full relative overflow-hidden group cursor-default"
+    <div
+      className="glass-card rounded-xl p-5 h-full relative overflow-hidden group cursor-default transition-all duration-300 hover:-translate-y-1.5 hover:border-secondary/30"
     >
       <div
-        className="absolute -top-10 -right-10 w-24 h-24 rounded-full opacity-0 group-hover:opacity-20 transition-all duration-700 blur-3xl"
+        className="absolute -top-10 -right-10 w-24 h-24 rounded-full opacity-0 group-hover:opacity-20 transition-all duration-700 blur-3xl pointer-events-none"
         style={{ background: principle.color }}
         aria-hidden="true"
       />
@@ -97,27 +92,49 @@ const PhilosophyCard: FC<PhilosophyCardProps> = ({ principle, index }) => (
         style={{ background: `linear-gradient(90deg, ${principle.color}, transparent)` }}
         aria-hidden="true"
       />
-    </motion.div>
+    </div>
   </div>
 );
 
 const ServicesMobile: FC = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(() => {
+    const cards = gsap.utils.toArray<HTMLElement>('.service-card-mobile');
+    cards.forEach((card) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+        },
+      });
+    });
+  }, { scope: containerRef });
+
   return (
-    <>
+    <div ref={containerRef}>
       <section id="services" className="relative bg-transparent py-20 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[150px] pointer-events-none" aria-hidden="true" />
         <div className="container-safe relative z-10">
-          <p className="chapter-label mb-3">Chapter 05 — What I Build</p>
+          <p className="chapter-label mb-3">Chapter 06 — What I Build</p>
           <div className="flex flex-col md:flex-row gap-4 md:gap-12 items-start mb-8">
             <div className="flex-1 overflow-hidden">
               <h2 className="text-4xl md:text-5xl font-bold text-white">Products that<br /><span className="gradient-text">matter.</span></h2>
             </div>
             <p className="flex-1 text-slate-400 text-base leading-relaxed max-w-md mt-2 self-end">
-              From concept to production, every service is delivered with obsessive attention to quality and user experience.
+              From concept to production, every service is delivered with obsessive attention to quality, architecture, and user experience.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {services.map((service, i) => <ServiceCard key={i} service={service} />)}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {services.map((service, i) => (
+              <div key={i} className="service-card-mobile">
+                <ServiceCard service={service} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -125,7 +142,7 @@ const ServicesMobile: FC = () => {
       <section id="philosophy" className="relative bg-transparent py-20 overflow-hidden">
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" aria-hidden="true" />
         <div className="container-safe relative z-10">
-          <p className="chapter-label mb-3">Chapter 06 — How I Work</p>
+          <p className="chapter-label mb-3">Chapter 07 — How I Work</p>
           <div className="flex flex-col md:flex-row gap-4 md:gap-12 items-start mb-8">
             <div className="flex-1 overflow-hidden">
               <h2 className="text-4xl md:text-5xl font-bold text-white">The principles<br /><span className="gradient-text">I live by.</span></h2>
@@ -134,35 +151,67 @@ const ServicesMobile: FC = () => {
               Great software doesn't happen by accident. It's the result of deliberate decisions, repeatable processes, and an unwavering commitment to the craft.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {principles.map((p, i) => <PhilosophyCard key={i} principle={p} index={i} />)}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {principles.map((p, i) => (
+              <div key={i} className="service-card-mobile">
+                <PhilosophyCard principle={p} index={i} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
 const ServicesDesktop: FC = () => {
   const containerRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const x = useTransform(scrollYProgress, [0.15, 0.85], ["0%", "-50%"]);
+  const pinWrapRef   = useRef<HTMLDivElement | null>(null);
+  const trackRef     = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(() => {
+    if (typeof window === 'undefined') return;
+    const track = trackRef.current;
+    const section = containerRef.current;
+    const pinWrap = pinWrapRef.current;
+    if (!track || !section || !pinWrap) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    gsap.to(track, {
+      xPercent: -50,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        pin: pinWrap,
+        start: 'top top',
+        end: '+=150%',
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+  }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="services" className="relative h-[250vh] bg-transparent">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex w-[200vw] h-full items-stretch">
+    <section ref={containerRef} id="services" className="relative bg-transparent">
+      <div ref={pinWrapRef} className="h-screen w-full flex items-center overflow-hidden">
+        <div
+          ref={trackRef}
+          className="flex w-[200vw] h-full items-stretch"
+          style={{ willChange: 'transform' }}
+        >
           {/* Slide 1: Services */}
           <div className="w-[100vw] flex-shrink-0 h-full flex items-center relative">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[150px] pointer-events-none" aria-hidden="true" />
             <div className="container-safe relative z-10 pt-16">
-              <p className="chapter-label mb-3">Chapter 05 — What I Build</p>
+              <p className="chapter-label mb-3">Chapter 06 — What I Build</p>
               <div className="flex flex-col md:flex-row gap-4 md:gap-12 items-start mb-8">
                 <div className="flex-1 overflow-hidden">
                   <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">Products that<br /><span className="gradient-text">matter.</span></h2>
                 </div>
                 <p className="flex-1 text-slate-400 text-base leading-relaxed max-w-md mt-2 md:mt-2 self-end">
-                  From concept to production, every service is delivered with obsessive attention to quality and user experience.
+                  From concept to production, every service is delivered with obsessive attention to quality, architecture, and user experience.
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -175,7 +224,7 @@ const ServicesDesktop: FC = () => {
           <div id="philosophy" className="w-[100vw] flex-shrink-0 h-full flex items-center relative">
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" aria-hidden="true" />
             <div className="container-safe relative z-10 pt-16">
-              <p className="chapter-label mb-3">Chapter 06 — How I Work</p>
+              <p className="chapter-label mb-3">Chapter 07 — How I Work</p>
               <div className="flex flex-col md:flex-row gap-4 md:gap-12 items-start mb-8">
                 <div className="flex-1 overflow-hidden">
                   <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">The principles<br /><span className="gradient-text">I live by.</span></h2>
@@ -189,7 +238,7 @@ const ServicesDesktop: FC = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

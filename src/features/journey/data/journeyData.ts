@@ -52,7 +52,7 @@ export const milestones: readonly Milestone[] = [
     year: '2025',
     title: 'Scale',
     description:
-      'Delivered advanced applications across e-commerce, real estate, learning platforms, and service systems using Flutter, Supabase, BLoC/Cubit, and modern software architecture patterns.',
+      'Delivered advanced applications across e-commerce, real estate, learning platforms, and service systems using Flutter, Firebase, BLoC/Cubit, and modern software architecture patterns.',
     color: '#14b8a6',
   },
   {

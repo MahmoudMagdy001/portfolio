@@ -5,10 +5,11 @@ import { SectionLoader } from '../components/ui';
 // Lazy-loaded feature sections
 const Beginning    = lazy(() => import('../features/beginning'));
 const Journey      = lazy(() => import('../features/journey'));
-const Projects     = lazy(() => import('../features/projects'));
-const Services     = lazy(() => import('../features/services'));
-const Expertise    = lazy(() => import('../features/expertise'));
-const Contact      = lazy(() => import('../features/contact'));
+const Projects      = lazy(() => import('../features/projects'));
+const OtherProjects = lazy(() => import('../features/other-projects'));
+const Services      = lazy(() => import('../features/services'));
+const Numbers       = lazy(() => import('../features/numbers'));
+const Contact       = lazy(() => import('../features/contact'));
 
 const HomePage: FC = () => (
   <>
@@ -30,17 +31,22 @@ const HomePage: FC = () => (
       <Projects />
     </Suspense>
 
+    {/* Chapter 05 */}
+    <Suspense fallback={<SectionLoader />}>
+      <OtherProjects />
+    </Suspense>
+
     {/* Chapters 05 + 06 */}
     <Suspense fallback={<SectionLoader />}>
       <Services />
     </Suspense>
 
-    {/* Chapters 07 + 08 */}
+    {/* Chapter 07 */}
     <Suspense fallback={<SectionLoader />}>
-      <Expertise />
+      <Numbers />
     </Suspense>
 
-    {/* Chapter 09 */}
+    {/* Chapter 08 */}
     <Suspense fallback={<SectionLoader />}>
       <Contact />
     </Suspense>

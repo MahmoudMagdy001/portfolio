@@ -1,0 +1,82 @@
+[
+  {
+    "id": "elebtikar",
+    "name": "Elebtikar SA",
+    "url": "https://www.elebtikar-sa.com/",
+    "image": "/images/web/elebtikar.png",
+    "screenshot_saved": true,
+    "size": 915143,
+    "page_title": "",
+    "page_desc": ""
+  },
+  {
+    "id": "milaftours",
+    "name": "Milaf Tours",
+    "url": "https://www.milaftours.com/",
+    "image": "/images/web/milaf-tours.png",
+    "screenshot_saved": true,
+    "size": 9379,
+    "page_title": "",
+    "page_desc": ""
+  },
+  {
+    "id": "atelier-neon",
+    "name": "Atelier Neon",
+    "url": "https://atelier-neon-three.vercel.app/",
+    "image": "/images/web/atelier-neon.png",
+    "screenshot_saved": true,
+    "size": 11468,
+    "page_title": "S&I Atelier | Bespoke Luxury Furniture & Interiors",
+    "page_desc": "S&I Atelier - أثاث فاخر وتصاميم داخلية مخصصة تجسد الفخامة والأناقة في المملكة العربية السعودية. Bespoke luxury furniture and interior design crafted with perfection."
+  },
+  {
+    "id": "tionystudio",
+    "name": "Tiony Studio",
+    "url": "https://tionystudio.com/",
+    "image": "/images/web/tiony-studio.png",
+    "screenshot_saved": true,
+    "size": 104795,
+    "page_title": "Coming Soon",
+    "page_desc": ""
+  },
+  {
+    "id": "saqer-medical",
+    "name": "Saqer Elsahraa Medical",
+    "url": "https://saqerelsahraamedical.com/",
+    "image": "/images/web/saqer-elsahraa.png",
+    "screenshot_saved": true,
+    "size": 1017912,
+    "page_title": "صقر الصحراء الطبيه | مستلزمات طبية وأجهزة طبية في السعودية",
+    "page_desc": "صقر الصحراء الطبيه يوفر خدمة تسوق مريحه لمستلزمات طبية وأجهزة طبية ومستلزمات الرعاية المنزلية من صقر الصحراء الطبية نوفر منتجات متنوعة بجودة موثوقة وتوصيل داخل السعودية تسوق الان"
+  },
+  {
+    "id": "taibah-systems",
+    "name": "Taibah Systems",
+    "url": "https://taibah-systems.com/",
+    "image": "/images/web/taibah-systems.png",
+    "screenshot_saved": true,
+    "size": 462094,
+    "page_title": "متجر أنظمة طيبة كاميرات مراقبة وأنظمة أمنية وشبكات",
+    "page_desc": "متجر أنظمة طيبة توفر أحدث الحلول الأمنية والتقنية للشركات والأفراد تشمل كاميرات المراقبة أنظمة الإنذار والشبكات وتتبع المركبات وأنظمة التحكم بالدخول والبيت الذكي مع دعم فني متخصص وخدمة احترافية"
+  },
+  {
+    "id": "lasthome",
+    "name": "Last Home SA",
+    "url": "https://lasthomesa.com/",
+    "image": "/images/web/lasthome.png",
+    "screenshot_saved": true,
+    "size": 1088265,
+    "page_title": "لاست هوم | متجر أثاث منزلي فاخر بتصاميم عصرية في السعودية",
+    "page_desc": "متجر لاست هوم للأثاث المنزلي يقدم تصاميم عصرية تضيف فخامة لمنزلك اكتشف غرف نوم وكنب وطاولات بأسعار تنافسية مع توصيل سريع داخل السعودية تسوق الآن."
+  },
+  {
+    "id": "samurai-man",
+    "name": "Samurai Man",
+    "url": "https://samurai-man.com/ar",
+    "image": "/images/web/samurai-man.png",
+    "screenshot_saved": true,
+    "size": 514616,
+    "page_title": "متجر رجل الساموراي الجينسينج الكوري الاحمر لدعم النشاط والطاقة",
+    "page_desc": "متجر رجل الساموراي يقدم لكم الجينسينج الكوري الاحمر الأصلي لدعم الطاقة والنشاط البدني والتركيز مستخلص أعشاب طبيعية مختارة بعناية لدعم المناعة والصحة العامة"
+  }
+]

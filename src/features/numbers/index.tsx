@@ -1,244 +1,107 @@
-import { useEffect, useState, useRef, type FC } from 'react';
-import { motion, useTransform, useInView, useReducedMotion, type MotionValue } from 'framer-motion';
-import { stats, type NumberStat } from './data/numbersData';
+import { useRef, type FC } from 'react';
+import { stats } from './data/numbersData';
+import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap';
 
-interface CounterCardProps {
-  stat: NumberStat;
-  index: number;
-  startTrigger: boolean;
-}
+const Numbers: FC = () => {
+  const containerRef = useRef<HTMLElement | null>(null);
 
-const CounterCard: FC<CounterCardProps> = ({ stat, index, startTrigger }) => {
-  const [count, setCount] = useState<number>(0);
-  const animatedRef = useRef<boolean>(false);
-  const shouldReduceMotion = useReducedMotion();
+  useGSAP(() => {
+    if (typeof window === 'undefined') return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  useEffect(() => {
-    if (startTrigger && !animatedRef.current) {
-      animatedRef.current = true;
-      if (shouldReduceMotion) {
-        setCount(stat.value);
-        return;
-      }
-      const duration = 2000;
-      const start = Date.now();
-      let stepFrameId: number;
-      const step = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 4);
-        setCount(Math.floor(eased * stat.value));
-        if (progress < 1) {
-          stepFrameId = requestAnimationFrame(step);
-        } else {
-          setCount(stat.value);
-        }
-      };
-      const timerId = setTimeout(() => {
-        stepFrameId = requestAnimationFrame(step);
-      }, index * 100);
+    const cards = gsap.utils.toArray<HTMLElement>('.counter-card-item');
 
-      return () => {
-        clearTimeout(timerId);
-        if (stepFrameId) cancelAnimationFrame(stepFrameId);
-      };
+    if (prefersReducedMotion) {
+      cards.forEach((card, idx) => {
+        const numEl = card.querySelector('.counter-value');
+        if (numEl) numEl.textContent = stats[idx].value.toLocaleString();
+      });
+      return;
     }
-  }, [startTrigger, stat.value, index, shouldReduceMotion]);
+
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        gsap.from('.numbers-header', {
+          opacity: 0,
+          y: 25,
+          duration: 0.8,
+          ease: 'power2.out',
+          stagger: 0.1,
+        });
+
+        cards.forEach((card, idx) => {
+          gsap.from(card, {
+            opacity: 0,
+            y: 35,
+            duration: 0.8,
+            delay: idx * 0.1,
+            ease: 'power2.out',
+          });
+
+          const counterObj = { val: 0 };
+          const targetVal = stats[idx].value;
+
+          gsap.to(counterObj, {
+            val: targetVal,
+            duration: 2,
+            delay: idx * 0.12,
+            ease: 'power2.out',
+            onUpdate: () => {
+              const numEl = card.querySelector('.counter-value');
+              if (numEl) {
+                numEl.textContent = Math.floor(counterObj.val).toLocaleString();
+              }
+            },
+          });
+        });
+      },
+    });
+  }, { scope: containerRef });
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={startTrigger ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.8, delay: index * 0.12, ease: "easeOut" }}
-      className="h-full"
-    >
-      <motion.div
-        whileHover={{ y: -8 }}
-        className="counter-card glass-card rounded-3xl p-8 md:p-10 text-center group hover:ring-1 hover:ring-primary/30 transition-all duration-500 h-full"
-      >
-        <div className="mb-4">
-          <span className="text-5xl md:text-7xl font-bold gradient-text font-display">
-            {count.toLocaleString()}
-          </span>
-          <span className="text-3xl md:text-5xl font-bold text-primary">{stat.suffix}</span>
-        </div>
-
-        <h3 className="text-lg md:text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-          {stat.label}
-        </h3>
-        <p className="text-slate-500 text-sm leading-relaxed">{stat.description}</p>
-
-        <div className="mt-6 h-0.5 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary w-[40%] group-hover:w-[60%] transition-all duration-500" />
-      </motion.div>
-    </motion.div>
-  );
-};
-
-interface NumbersDesktopProps {
-  scrollYProgress: MotionValue<number>;
-}
-
-const NumbersDesktop: FC<NumbersDesktopProps> = ({ scrollYProgress }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(containerRef, { amount: 0.15, once: true });
-  const [triggerCount, setTriggerCount] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isInView) {
-      setTriggerCount(true);
-    }
-  }, [isInView]);
-
-  const contentOpacity = useTransform(scrollYProgress, [0.85, 1], [1, 0]);
-
-  return (
-    <>
+    <section ref={containerRef} id="numbers" className="relative py-24 md:py-32 px-6 bg-transparent overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/8 rounded-full blur-[100px] pointer-events-none" />
 
-      <motion.div ref={containerRef} style={{ opacity: contentOpacity }} className="container-safe relative z-10">
+      <div className="container-safe relative z-10">
         <div className="text-center mb-16">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={triggerCount ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="chapter-label mb-6"
-          >
+          <p className="numbers-header chapter-label mb-6">
             Chapter 07 — The Numbers
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={triggerCount ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-2">
+          </p>
+          <div className="overflow-hidden">
+            <h2 className="numbers-header text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-2">
               Impact in <span className="gradient-text">numbers.</span>
             </h2>
-          </motion.div>
+          </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {stats.map((stat, i) => (
-            <CounterCard
-              key={i}
-              stat={stat}
-              index={i}
-              startTrigger={triggerCount}
-            />
-          ))}
-        </div>
-      </motion.div>
-    </>
-  );
-};
+            <div key={i} className="counter-card-item h-full">
+              <div className="glass-card rounded-3xl p-8 md:p-10 text-center group hover:ring-1 hover:ring-primary/30 transition-all duration-500 hover:-translate-y-2 h-full cursor-default">
+                <div className="mb-4">
+                  <span className="counter-value text-5xl md:text-7xl font-bold gradient-text font-display">
+                    0
+                  </span>
+                  <span className="text-3xl md:text-5xl font-bold text-primary">{stat.suffix}</span>
+                </div>
 
-interface CounterCardMobileProps {
-  stat: NumberStat;
-  index: number;
-}
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                  {stat.label}
+                </h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{stat.description}</p>
 
-const CounterCardMobile: FC<CounterCardMobileProps> = ({ stat, index }) => {
-  const [count, setCount] = useState<number>(0);
-  const [inView, setInView] = useState<boolean>(false);
-  const animatedRef = useRef<boolean>(false);
-  const shouldReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (inView && !animatedRef.current) {
-      animatedRef.current = true;
-      if (shouldReduceMotion) {
-        setCount(stat.value);
-        return;
-      }
-      const duration = 2000;
-      const start = Date.now();
-      let stepFrameId: number;
-      const step = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 4);
-        setCount(Math.floor(eased * stat.value));
-        if (progress < 1) {
-          stepFrameId = requestAnimationFrame(step);
-        } else {
-          setCount(stat.value);
-        }
-      };
-      const timerId = setTimeout(() => {
-        stepFrameId = requestAnimationFrame(step);
-      }, index * 100);
-
-      return () => {
-        clearTimeout(timerId);
-        if (stepFrameId) cancelAnimationFrame(stepFrameId);
-      };
-    }
-  }, [inView, stat.value, index, shouldReduceMotion]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      onViewportEnter={() => setInView(true)}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="h-full"
-    >
-      <div className="counter-card glass-card rounded-3xl p-6 text-center group hover:ring-1 hover:ring-primary/30 transition-all duration-500 h-full">
-        <div className="mb-4">
-          <span className="text-4xl sm:text-5xl font-bold gradient-text font-display">
-            {count.toLocaleString()}
-          </span>
-          <span className="text-2xl sm:text-3xl font-bold text-primary">{stat.suffix}</span>
-        </div>
-
-        <h3 className="text-base font-bold text-white mb-2 group-hover:text-primary transition-colors">
-          {stat.label}
-        </h3>
-        <p className="text-slate-500 text-xs leading-relaxed">{stat.description}</p>
-
-        <div className="mt-6 h-0.5 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary w-[40%] group-hover:w-[60%] transition-all duration-500" />
-      </div>
-    </motion.div>
-  );
-};
-
-const NumbersMobile: FC = () => {
-  return (
-    <section className="relative py-20 px-6">
-      <div className="absolute inset-0 grid-pattern opacity-10 pointer-events-none" />
-      <div className="container mx-auto max-w-6xl relative z-10">
-        <div className="text-center mb-12">
-          <p className="chapter-label mb-4">Chapter 07 — The Numbers</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-            Impact in <span className="gradient-text">numbers.</span>
-          </h2>
-        </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, i) => (
-            <CounterCardMobile
-              key={i}
-              stat={stat}
-              index={i}
-            />
+                <div className="mt-6 h-0.5 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary w-[40%] group-hover:w-[60%] transition-all duration-500" />
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export interface NumbersProps {
-  scrollYProgress?: MotionValue<number>;
-}
-
-const Numbers: FC<NumbersProps> = ({ scrollYProgress }) => {
-  if (scrollYProgress) {
-    return <NumbersDesktop scrollYProgress={scrollYProgress} />;
-  }
-  return <NumbersMobile />;
 };
 
 export default Numbers;

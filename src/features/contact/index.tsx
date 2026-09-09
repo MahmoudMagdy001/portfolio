@@ -1,9 +1,9 @@
-import { useState, type FC, type ChangeEvent, type FormEvent, type ComponentType, type CSSProperties } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect, type FC, type ChangeEvent, type FormEvent, type ComponentType, type CSSProperties } from 'react';
 import { Mail, Send, ArrowUpRight, CheckCircle, Loader2 } from 'lucide-react';
 import { SiGithub, SiWhatsapp } from 'react-icons/si';
 import { FaLinkedin } from 'react-icons/fa';
 import { SOCIAL_LINKS } from '../../constants';
+import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap';
 
 interface ContactSocialLink {
   label: string;
@@ -69,6 +69,40 @@ const Contact: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
+  const containerRef = useRef<HTMLElement | null>(null);
+  const successRef = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(() => {
+    if (typeof window === 'undefined') return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        gsap.from('.contact-reveal', {
+          opacity: 0,
+          y: 25,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out',
+        });
+      },
+    });
+  }, { scope: containerRef });
+
+  useEffect(() => {
+    if (submitted && successRef.current) {
+      gsap.fromTo(
+        successRef.current,
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.5)' }
+      );
+    }
+  }, [submitted]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -78,7 +112,6 @@ const Contact: FC = () => {
 
     const { name, email, subject, message } = formState;
 
-    // Client-side validation
     if (!name.trim() || !email.trim() || !message.trim()) {
       setError('Please fill in all required fields.');
       return;
@@ -92,13 +125,11 @@ const Contact: FC = () => {
 
     setLoading(true);
 
-    // Simulate a brief loading state for a polished UX feel
     setTimeout(() => {
       try {
         const text = `*New Portfolio Message*\n\n*Name:* ${name.trim()}\n*Email:* ${email.trim()}\n*Subject:* ${subject.trim() || 'No Subject'}\n*Message:* ${message.trim()}`;
         const whatsappUrl = `https://wa.me/201090617609?text=${encodeURIComponent(text)}`;
         
-        // Open WhatsApp in a new tab
         window.open(whatsappUrl, '_blank');
         
         setSubmitted(true);
@@ -112,49 +143,36 @@ const Contact: FC = () => {
   };
 
   return (
-    <section id="contact" className="relative bg-transparent pt-24 pb-2 overflow-hidden">
+    <section ref={containerRef} id="contact" className="relative bg-transparent pt-24 pb-2 overflow-hidden">
       {/* Background */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary/8 rounded-full blur-[150px] pointer-events-none" aria-hidden="true" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" aria-hidden="true" />
 
       <div className="container-safe relative z-10 flex flex-col gap-1">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
-        >
-          <p className="chapter-label mb-1 text-xs tracking-widest text-primary/80 uppercase font-mono">Chapter 09 — Contact</p>
+        <div className="contact-reveal text-center">
+          <p className="chapter-label mb-1 text-xs tracking-widest text-primary/80 uppercase font-mono">Chapter 08 — Contact</p>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-1.5 leading-tight">
             Let's build something <span className="gradient-text">amazing together.</span>
           </h2>
           <p className="text-slate-400 text-xs md:text-sm max-w-lg mx-auto font-light">
             Ready to transform your vision into a cinematic mobile experience? Let's start the conversation.
           </p>
-        </motion.div>
+        </div>
 
         {/* Grid Content */}
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start xl:px-16 my-auto">
+        <div className="contact-reveal grid lg:grid-cols-2 gap-6 lg:gap-12 items-start xl:px-16 my-auto">
           {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="space-y-3"
-          >
+          <div className="space-y-3">
             <h3 className="text-lg font-bold text-white mb-2">Connect with me</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map((link, i) => (
-                <motion.a
+                <a
                   key={i}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ x: 4 }}
-                  className="flex items-center gap-3 p-3 rounded-lg transition-all duration-300 group"
+                  className="flex items-center gap-3 p-3 rounded-lg transition-all duration-300 group hover:translate-x-1"
                   style={{ background: link.bg, border: `1px solid ${link.border}` }}
                 >
                   <div
@@ -168,7 +186,7 @@ const Contact: FC = () => {
                     <p className="text-white text-[11px] font-medium truncate">{link.value}</p>
                   </div>
                   <ArrowUpRight size={12} className="text-slate-600 group-hover:text-white transition-colors flex-shrink-0" aria-hidden="true" />
-                </motion.a>
+                </a>
               ))}
             </div>
 
@@ -183,31 +201,19 @@ const Contact: FC = () => {
                 <p className="text-slate-500 text-[10px]">Usually responds within 24 hours</p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-          >
+          <div>
             {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+              <div
+                ref={successRef}
                 className="glass-card rounded-xl p-8 text-center"
               >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', bounce: 0.5, delay: 0.1 }}
-                >
-                  <CheckCircle size={40} className="text-emerald-400 mx-auto mb-3" aria-hidden="true" />
-                </motion.div>
+                <CheckCircle size={40} className="text-emerald-400 mx-auto mb-3" aria-hidden="true" />
                 <h4 className="text-lg font-bold text-white mb-1">Message Sent!</h4>
                 <p className="text-slate-400 text-xs">Thanks for reaching out. I'll get back to you within 24 hours.</p>
-              </motion.div>
+              </div>
             ) : (
               <form
                 onSubmit={handleSubmit}
@@ -282,32 +288,24 @@ const Contact: FC = () => {
                   <p id="contact-error" role="alert" className="text-red-400 text-[10px] font-mono">{error}</p>
                 )}
 
-                <motion.button
+                <button
                   type="submit"
                   disabled={loading}
-                  whileHover={loading ? {} : { scale: 1.01, boxShadow: '0 0 20px rgba(99,102,241,0.3)' }}
-                  whileTap={loading ? {} : { scale: 0.99 }}
-                  className="w-full py-2.5 bg-primary text-white rounded-md font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-primary/10 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full py-2.5 bg-primary text-white rounded-md font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-primary/10 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <><Loader2 size={14} className="animate-spin" aria-hidden="true" /> Sending…</>
                   ) : (
                     <>Send Message <Send size={14} aria-hidden="true" /></>
                   )}
-                </motion.button>
+                </button>
               </form>
             )}
-          </motion.div>
+          </div>
         </div>
 
         {/* Footer */}
-        <motion.footer
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="pt-3 mt-4 border-t border-white/5 text-center px-4"
-        >
+        <footer className="contact-reveal pt-3 mt-4 border-t border-white/5 text-center px-4">
           <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 max-w-6xl">
             <p className="text-slate-600 text-[10px] font-mono">
               © 2026 Mahmoud Magdy Mansour. Crafted with Flutter-level precision.
@@ -328,7 +326,7 @@ const Contact: FC = () => {
               </a>
             </div>
           </div>
-        </motion.footer>
+        </footer>
       </div>
     </section>
   );

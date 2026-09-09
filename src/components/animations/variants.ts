@@ -1,24 +1,22 @@
-import type { Variants, Transition, TargetAndTransition } from 'framer-motion';
+/**
+ * GSAP Animation Tokens and Constants
+ * Curated from ui-ux-pro-max and gsap-react skills
+ */
 
-// ponytail: shared Framer Motion variants — hoist here to avoid per-file duplication
+export const GSAP_EASE = {
+  smooth: 'power2.out',
+  cinematic: 'power3.out',
+  snappy: 'power1.out',
+  elastic: 'elastic.out(1, 0.4)',
+  expo: 'expo.out',
+} as const;
 
-/** Standard fade-up entry: use with whileInView on section content */
-export const fadeUpVariant: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-};
+export const GSAP_DURATION = {
+  micro: 0.2,
+  quick: 0.35,
+  standard: 0.6,
+  cinematic: 0.9,
+  slow: 1.4,
+} as const;
 
-/** Card hover lift — hoist outside components to avoid object allocation per render */
-export const cardHoverVariant: TargetAndTransition = { y: -6 };
-export const cardTapVariant: TargetAndTransition   = { scale: 0.98 };
-export const cardTransition: Transition            = { duration: 0.3 };
-
-/** Role text cycle (Hero) */
-export const roleTransition: Transition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
-
-/** Scroll indicator bounce */
-export const scrollIndicatorTransition: Transition = { duration: 2, repeat: Infinity };
-
-/** Standard viewport settings */
-export const viewportOnce = { once: true } as const;
-export const viewportOnceMargin = { once: true, margin: '-10%' } as const;
+export const roleTransitionDuration = 0.8;

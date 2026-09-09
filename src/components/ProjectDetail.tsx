@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback, type FC, type ReactNode, type CSSProperties } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, Cpu, Layers, Smartphone, 
   Play, Pause, Volume2, VolumeX, Folder, FolderOpen,  
@@ -8,7 +7,7 @@ import {
   Truck, ShoppingCart, Heart, GraduationCap, Music, Users,
   BookOpen, Info, Settings, Compass, Search, Calendar, Plus, Minus
 } from 'lucide-react';
-import { SiGithub, SiFlutter, SiDart, SiFirebase, SiSupabase } from 'react-icons/si';
+import { SiGithub, SiFlutter, SiDart, SiFirebase } from 'react-icons/si';
 import { projectsDetailData, type FolderNode } from '../data/projectsDetailData';
 
 // Map icon strings to component nodes
@@ -40,7 +39,6 @@ const getStatIcon = (type?: string): ReactNode => {
   switch (type) {
     case 'flutter': return <SiFlutter className="text-sky-400" />;
     case 'dart': return <SiDart className="text-sky-500" />;
-    case 'supabase': return <SiSupabase className="text-[#3ECF8E]" />;
     case 'firebase': return <SiFirebase className="text-amber-500" />;
     default: return null;
   }
@@ -718,7 +716,7 @@ const DeviceScreenPreview: FC<DeviceScreenPreviewProps> = ({ mockType, themeColo
               <div className="flex justify-between items-start">
                 <div className="space-y-0.5">
                   <span className="text-[7.5px] uppercase tracking-wider text-slate-500 font-bold font-mono">DATABASE TIER</span>
-                  <h6 className="font-bold text-white text-[9.5px]">Supabase Backend Security</h6>
+                  <h6 className="font-bold text-white text-[9.5px]">Cloud Database Security</h6>
                 </div>
                 <span className="text-[9px] text-slate-400 font-bold font-mono">12%</span>
               </div>
@@ -1043,17 +1041,16 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ slug }) => {
         
         {/* Navigation / Header controls */}
         <div className="flex justify-between items-center mb-16 pt-4">
-          <motion.a 
+          <a 
             href="#projects"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
               window.location.hash = '#projects';
             }}
-            whileHover={{ x: -4 }}
-            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white font-medium transition-colors"
+            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white font-medium transition-all duration-200 hover:-translate-x-1"
           >
             <ArrowLeft size={16} /> Back to Portfolio
-          </motion.a>
+          </a>
           
           <div className="flex gap-3">
             <a 
@@ -1121,11 +1118,9 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ slug }) => {
             >
               {tab}
               {activeTab === tab && (
-                <motion.div 
-                  layoutId="activeDetailTab"
-                  className="absolute bottom-0 left-0 right-0 h-px"
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-0.5"
                   style={{ backgroundColor: data.color }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
               )}
             </button>
@@ -1133,15 +1128,10 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ slug }) => {
         </div>
 
         {/* Tab Contents */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.4 }}
-            className="min-h-[400px]"
-          >
+        <div
+          key={activeTab}
+          className="min-h-[400px] transition-opacity duration-300"
+        >
             
             {/* OVERVIEW TAB */}
             {activeTab === 'overview' && (
@@ -1443,22 +1433,20 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ slug }) => {
               </div>
             )}
 
-          </motion.div>
-        </AnimatePresence>
+        </div>
 
         {/* Footer controls */}
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <motion.a 
+          <a 
             href="#projects"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
               window.location.hash = '#projects';
             }}
-            whileHover={{ x: -4 }}
-            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-all duration-200 hover:-translate-x-1"
           >
             <ArrowLeft size={16} /> Return to Home
-          </motion.a>
+          </a>
           
           <span className="text-xs font-mono text-slate-600">
             {data.title} Case Study — Mahmoud Magdy Mansour
@@ -1467,64 +1455,59 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ slug }) => {
       </div>
 
       {/* LIGHTBOX MODAL */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div 
-            role="dialog"
-            aria-modal="true"
-            aria-label="Screenshot lightbox preview"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
+      {lightboxIndex !== null && (
+        <div 
+          role="dialog"
+          aria-modal="true"
+          aria-label="Screenshot lightbox preview"
+          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in"
+        >
+          <button 
+            onClick={() => setLightboxIndex(null)}
+            aria-label="Close lightbox modal"
+            className="absolute top-6 right-6 text-slate-400 hover:text-white text-xs font-mono tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full"
           >
-            <button 
-              onClick={() => setLightboxIndex(null)}
-              aria-label="Close lightbox modal"
-              className="absolute top-6 right-6 text-slate-400 hover:text-white text-xs font-mono tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full"
-            >
-              CLOSE (ESC)
-            </button>
+            CLOSE (ESC)
+          </button>
 
-            <button 
-              onClick={() => handleLightboxNav('prev')}
-              aria-label="Previous screenshot"
-              className="absolute left-4 md:left-10 p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-all active:scale-95"
-            >
-              <ChevronLeft size={24} aria-hidden="true" />
-            </button>
+          <button 
+            onClick={() => handleLightboxNav('prev')}
+            aria-label="Previous screenshot"
+            className="absolute left-4 md:left-10 p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-all active:scale-95"
+          >
+            <ChevronLeft size={24} aria-hidden="true" />
+          </button>
 
-            <div className="max-w-[90vw] max-h-[85vh] flex flex-col items-center gap-4">
-              <div 
-                className="relative border-[4px] border-slate-800 rounded-[28px] bg-[#0b0f19] shadow-2xl overflow-hidden aspect-[9/19.5] h-[70vh] md:h-[75vh]"
-              >
-                {data.screenshots[lightboxIndex].path ? (
-                  <img 
-                    src={data.screenshots[lightboxIndex].path} 
-                    alt={data.screenshots[lightboxIndex].title} 
-                    decoding="async"
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <DeviceScreenPreview mockType={data.screenshots[lightboxIndex].mockType} themeColor={data.color} />
-                )}
-              </div>
-              <div className="text-center max-w-xl">
-                <h4 className="text-lg font-bold text-white">{data.screenshots[lightboxIndex].title}</h4>
-                <p className="text-xs text-slate-400 font-light mt-1">{data.screenshots[lightboxIndex].desc}</p>
-              </div>
+          <div className="max-w-[90vw] max-h-[85vh] flex flex-col items-center gap-4">
+            <div 
+              className="relative border-[4px] border-slate-800 rounded-[28px] bg-[#0b0f19] shadow-2xl overflow-hidden aspect-[9/19.5] h-[70vh] md:h-[75vh]"
+            >
+              {data.screenshots[lightboxIndex].path ? (
+                <img 
+                  src={data.screenshots[lightboxIndex].path} 
+                  alt={data.screenshots[lightboxIndex].title} 
+                  decoding="async"
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <DeviceScreenPreview mockType={data.screenshots[lightboxIndex].mockType} themeColor={data.color} />
+              )}
             </div>
+            <div className="text-center max-w-xl">
+              <h4 className="text-lg font-bold text-white">{data.screenshots[lightboxIndex].title}</h4>
+              <p className="text-xs text-slate-400 font-light mt-1">{data.screenshots[lightboxIndex].desc}</p>
+            </div>
+          </div>
 
-            <button 
-              onClick={() => handleLightboxNav('next')}
-              aria-label="Next screenshot"
-              className="absolute right-4 md:right-10 p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-all active:scale-95"
-            >
-              <ChevronRight size={24} aria-hidden="true" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <button 
+            onClick={() => handleLightboxNav('next')}
+            aria-label="Next screenshot"
+            className="absolute right-4 md:right-10 p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-all active:scale-95"
+          >
+            <ChevronRight size={24} aria-hidden="true" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

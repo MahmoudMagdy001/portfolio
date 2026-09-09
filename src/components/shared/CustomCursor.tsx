@@ -1,20 +1,7 @@
 import { useEffect, useRef, type FC } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { gsap } from '../../lib/gsap';
 
 const CustomCursor: FC = () => {
-  const cursorX = useMotionValue<number>(-100);
-  const cursorY = useMotionValue<number>(-100);
-  const ringX = useMotionValue<number>(-100);
-  const ringY = useMotionValue<number>(-100);
-
-  const springConfig = { stiffness: 700, damping: 40 };
-  const ringSpringConfig = { stiffness: 150, damping: 25 };
-
-  const smoothX = useSpring(cursorX, springConfig);
-  const smoothY = useSpring(cursorY, springConfig);
-  const ringSmoothX = useSpring(ringX, ringSpringConfig);
-  const ringSmoothY = useSpring(ringY, ringSpringConfig);
-
   const dotRef = useRef<HTMLDivElement | null>(null);
   const ringRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,29 +11,49 @@ const CustomCursor: FC = () => {
       return;
     }
 
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    // Center offset adjustments (-6 for dot, -20 for ring based on initial CSS dims)
+    const dotXTo = gsap.quickTo(dot, 'x', { duration: 0.08, ease: 'power2.out' });
+    const dotYTo = gsap.quickTo(dot, 'y', { duration: 0.08, ease: 'power2.out' });
+    const ringXTo = gsap.quickTo(ring, 'x', { duration: 0.25, ease: 'power2.out' });
+    const ringYTo = gsap.quickTo(ring, 'y', { duration: 0.25, ease: 'power2.out' });
+
+    let isVisible = false;
+
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 6);
-      cursorY.set(e.clientY - 6);
-      ringX.set(e.clientX - 20);
-      ringY.set(e.clientY - 20);
+      if (!isVisible) {
+        gsap.to([dot, ring], { opacity: 1, duration: 0.2 });
+        isVisible = true;
+      }
+      dotXTo(e.clientX - 6);
+      dotYTo(e.clientY - 6);
+      ringXTo(e.clientX - 20);
+      ringYTo(e.clientY - 20);
     };
 
     const handleHover = () => {
-      if (dotRef.current) dotRef.current.style.transform = 'scale(2.5)';
-      if (ringRef.current) {
-        ringRef.current.style.width = '60px';
-        ringRef.current.style.height = '60px';
-        ringRef.current.style.borderColor = 'rgba(99,102,241,0.8)';
-      }
+      gsap.to(dot, { scale: 2.5, duration: 0.2, ease: 'power2.out' });
+      gsap.to(ring, {
+        width: 60,
+        height: 60,
+        borderColor: 'rgba(99,102,241,0.8)',
+        duration: 0.25,
+        ease: 'power2.out',
+      });
     };
 
     const handleUnhover = () => {
-      if (dotRef.current) dotRef.current.style.transform = 'scale(1)';
-      if (ringRef.current) {
-        ringRef.current.style.width = '40px';
-        ringRef.current.style.height = '40px';
-        ringRef.current.style.borderColor = 'rgba(99,102,241,0.5)';
-      }
+      gsap.to(dot, { scale: 1, duration: 0.2, ease: 'power2.out' });
+      gsap.to(ring, {
+        width: 40,
+        height: 40,
+        borderColor: 'rgba(99,102,241,0.5)',
+        duration: 0.25,
+        ease: 'power2.out',
+      });
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -66,28 +73,41 @@ const CustomCursor: FC = () => {
       }
     };
 
+    const handleMouseLeave = () => {
+      gsap.to([dot, ring], { opacity: 0, duration: 0.25 });
+      isVisible = false;
+    };
+
+    // Initially hide until first mouse movement
+    gsap.set([dot, ring], { opacity: 0 });
+
     window.addEventListener('mousemove', moveCursor, { passive: true });
     document.addEventListener('mouseover', handleMouseOver, { passive: true });
     document.addEventListener('mouseout', handleMouseOut, { passive: true });
+    document.documentElement.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
+      document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
+      gsap.killTweensOf([dot, ring]);
     };
-  }, [cursorX, cursorY, ringX, ringY]);
+  }, []);
 
   return (
     <>
-      <motion.div
+      <div
         ref={dotRef}
-        className="custom-cursor"
-        style={{ x: smoothX, y: smoothY, transition: 'transform 0.2s ease' }}
+        className="custom-cursor pointer-events-none fixed z-[9999]"
+        style={{ willChange: 'transform' }}
+        aria-hidden="true"
       />
-      <motion.div
+      <div
         ref={ringRef}
-        className="custom-cursor-ring"
-        style={{ x: ringSmoothX, y: ringSmoothY }}
+        className="custom-cursor-ring pointer-events-none fixed z-[9998]"
+        style={{ willChange: 'transform, width, height' }}
+        aria-hidden="true"
       />
     </>
   );

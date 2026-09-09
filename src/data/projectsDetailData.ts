@@ -682,13 +682,13 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'Clinical healthcare applications require absolute security standards, precise input formats (like genetic strings), and intuitive tools to track patient indicators over long intervals.',
-      goalDesc2: 'Cancer Detection AI is a secure clinical frontend. The app connects to Supabase database layers utilizing Row-Level Security rules. It displays patient indicators using fl_chart diagrams and passes parameters to a custom Machine Learning backend to output colorectal cancer risk calculations.',
+      goalDesc2: 'Cancer Detection AI is a secure clinical frontend. The app connects to cloud database layers with secure role verification. It displays patient indicators using fl_chart diagrams and passes parameters to a custom Machine Learning backend to output colorectal cancer risk calculations.',
       outcomes: [
-        'Fully secure clinical client integrated with Supabase Authentication and Database',
+        'Fully secure clinical client integrated with Firebase Authentication and Cloud Firestore',
         'Multi-stage medical image analysis for Endoscopy and Histopathology via a Flask ML REST API',
         'Polyp classification and bounding box localization drawn reactively via CustomPainter',
         'Interactive tumor marker CEA & CA19-9 tracking plotted via fl_chart and syncfusion_flutter_charts',
-        'Clinical patient records management and real-time medical forum boards powered by Supabase RLS',
+        'Clinical patient records management and real-time medical forum boards powered by secure cloud rules',
         'Declarative routing utilizing GoRouter and state management via lightweight Cubits'
       ],
       walkthrough: {
@@ -721,9 +721,9 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
       {
         id: 4,
         iconName: 'ShieldCheck',
-        title: 'Supabase Security & RLS',
-        desc: 'Enforces HIPAA-grade security policies by routing queries through Supabase Auth. Row-Level Security (RLS) policies prevent cross-clinician leakages, securing forum data and patient records.',
-        tags: ['Supabase Auth', 'Row-Level Security', 'GoRouter Guard']
+        title: 'Cloud Security & Auth',
+        desc: 'Enforces HIPAA-grade security policies by routing queries through Firebase Auth. Granular security rules prevent cross-clinician leakages, securing forum data and patient records.',
+        tags: ['Firebase Auth', 'Cloud Security Rules', 'GoRouter Guard']
       }
     ],
     alert: {
@@ -781,7 +781,7 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
       ],
       folderCaption: 'Modular feature-focused Clean/MVVM structure',
       techTitle: 'Feature-Focused Clean/MVVM Architecture',
-      techDesc: 'Colorectal Cancer AI isolates functional domains into 12 self-contained feature slices under the lib/features folder. Core router files, models, and shared utilities reside in the core/ directory. Views consume state reactively via Cubits, while Supabase and Flask REST integrations are encapsulated in data handlers.',
+      techDesc: 'Colorectal Cancer AI isolates functional domains into 12 self-contained feature slices under the lib/features folder. Core router files, models, and shared utilities reside in the core/ directory. Views consume state reactively via Cubits, while Cloud and Flask REST integrations are encapsulated in data handlers.',
       layers: [
         {
           name: 'Presentation Views',
@@ -794,12 +794,12 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
           desc: 'Lightweight cubits (e.g. TumorCubit, PatientTrackingCubit) that process inputs, fetch clinical data, and emit immutable states.'
         },
         {
-          name: 'Supabase & API Services',
+          name: 'Cloud & API Services',
           color: 'emerald',
-          desc: 'Performs user authentication, executes RLS-authorized database queries, and runs HTTP Multipart requests to the Flask ML endpoints.'
+          desc: 'Performs user authentication, executes secure database queries, and runs HTTP Multipart requests to the Flask ML endpoints.'
         }
       ],
-      diDetails: 'Services and repositories are configured inside setupServiceLocator() using GetIt, separating backend API calls from view rendering. The Supabase connection is established at startup.'
+      diDetails: 'Services and repositories are configured inside setupServiceLocator() using GetIt, separating backend API calls from view rendering. The backend connection is established at startup.'
     },
     screenshots: []
   },
@@ -821,13 +821,13 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
     overview: {
       goalTitle: 'The Quest Goal',
       goalDesc1: 'E-learning apps must coordinate complex customer journeys, including catalog lookups, video playback resume states, multi-tier subscription locks, and interactive quizzes, all with offline support.',
-      goalDesc2: 'Mansy Learning uses an MVVM structure. It integrates GoRouter guards to intercept route requests, caches playback timestamps using SharedPreferences, and connects to a serverless Supabase backend to synchronize progress markers.',
+      goalDesc2: 'Mansy Learning uses an MVVM structure. It integrates GoRouter guards to intercept route requests, caches playback timestamps using SharedPreferences, and connects to a cloud backend to synchronize progress markers.',
       outcomes: [
         'Course access control showing lock icons on lessons/quizzes based on SubscriptionCubit state',
         'Subscribed content launching via url_launcher in-app webview (videos) and external apps (PDFs)',
         'Interactive QuizView using QuizCubit to render progress bars and compare scores with passing marks',
         'Authentication-responsive GoRouter setups listening to AuthCubit streams for automatic page routing',
-        'Secure user registration and login endpoints utilizing Supabase Authentication',
+        'Secure user registration and login endpoints utilizing Firebase Authentication',
         'Clean dependency injection registration inside injection.dart using GetIt'
       ],
       walkthrough: {
@@ -860,9 +860,9 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
       {
         id: 4,
         iconName: 'Database',
-        title: 'Supabase Course Synchronizer',
-        desc: 'Interacts directly with Supabase database tables to query courses, fetch course content lists, check user enrollments, and retrieve active profiles.',
-        tags: ['Supabase Client', 'CourseService', 'ProfileRepository']
+        title: 'Cloud Course Synchronizer',
+        desc: 'Interacts directly with cloud database services to query courses, fetch course content lists, check user enrollments, and retrieve active profiles.',
+        tags: ['Cloud Client', 'CourseService', 'ProfileRepository']
       }
     ],
     alert: {
@@ -911,7 +911,7 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
       ],
       folderCaption: 'Feature-First structure with service/repository segregation',
       techTitle: 'Feature-First Clean/MVVM Architecture',
-      techDesc: 'Mansy Learning segregates functionality into 11 distinct feature slices under the lib/features folder. Shared router paths, theme configs, and DI setups reside in the lib/core module. Inside each feature slice, services fetch data from Supabase, repositories format them into Equatable models, and passive views read state reactively from Cubits.',
+      techDesc: 'Mansy Learning segregates functionality into 11 distinct feature slices under the lib/features folder. Shared router paths, theme configs, and DI setups reside in the lib/core module. Inside each feature slice, services fetch data from cloud endpoints, repositories format them into Equatable models, and passive views read state reactively from Cubits.',
       layers: [
         {
           name: 'Presentation (UI & Router)',
@@ -926,7 +926,7 @@ export const projectsDetailData: Record<string, ProjectDetailItem> = {
         {
           name: 'Repositories & Services',
           color: 'emerald',
-          desc: 'Services fetch raw JSON from Supabase database tables, and repositories serialize them into safe models, throwing Exceptions on failure.'
+          desc: 'Services fetch raw JSON from cloud services, and repositories serialize them into safe models, throwing Exceptions on failure.'
         }
       ],
       diDetails: 'Dependency injection is configured in setupDependencyInjection() using GetIt. Services, repositories, and viewmodels are registered as LazySingletons (with factory registrations for SignupCubit) to optimize memory.'

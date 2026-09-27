@@ -45,21 +45,21 @@ export const milestones: readonly Milestone[] = [
     year: '2024',
     title: 'Ownership',
     description:
-      'Took responsibility for complete products from concept to delivery. Worked closely with stakeholders, refined user experiences, and focused on building scalable and reliable mobile solutions.',
+      'Took end-to-end architectural ownership from system design to production delivery. Standardized Feature-First Clean Architecture, integrated full Firebase cloud suites, and enforced regression-proof testing.',
     color: '#f59e0b',
   },
   {
     year: '2025',
-    title: 'Scale',
+    title: 'Scale & Systems',
     description:
-      'Delivered advanced applications across e-commerce, real estate, learning platforms, and service systems using Flutter, Firebase, BLoC/Cubit, and modern software architecture patterns.',
+      'Scaled multi-module enterprise platforms across logistics, real estate, commerce, and media. Adopted Dart 3 modern standards, Supabase, Genkit AI flows, and automated Patrol E2E testing suites.',
     color: '#14b8a6',
   },
   {
     year: 'Today',
-    title: 'Building the Future',
+    title: 'Architecting the Future',
     description:
-      'Now focused on creating exceptional digital experiences through Flutter, scalable architectures, and modern technologies—while continuously learning, improving, and preparing for even bigger challenges ahead.',
+      'Engineering the next generation of intelligent, cloud-native mobile ecosystems — fusing 60fps Flutter craft with autonomous agentic intelligence and production-grade resilience.',
     color: '#f43f5e',
   },
 ];

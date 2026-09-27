@@ -399,8 +399,8 @@ const ProjectsMobile: FC = () => {
 
 const ProjectsDesktop: FC = () => {
   const containerRef = useRef<HTMLElement | null>(null);
-  const pinWrapRef   = useRef<HTMLDivElement | null>(null);
-  const trackRef     = useRef<HTMLDivElement | null>(null);
+  const pinWrapRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
     if (typeof window === 'undefined') return;

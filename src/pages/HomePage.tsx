@@ -3,13 +3,13 @@ import Hero from '../features/hero';
 import { SectionLoader } from '../components/ui';
 
 // Lazy-loaded feature sections
-const Beginning    = lazy(() => import('../features/beginning'));
-const Journey      = lazy(() => import('../features/journey'));
-const Projects      = lazy(() => import('../features/projects'));
+const Beginning = lazy(() => import('../features/beginning'));
+const Journey = lazy(() => import('../features/journey'));
+const Projects = lazy(() => import('../features/projects'));
 const OtherProjects = lazy(() => import('../features/other-projects'));
-const Services      = lazy(() => import('../features/services'));
-const Numbers       = lazy(() => import('../features/numbers'));
-const Contact       = lazy(() => import('../features/contact'));
+const Services = lazy(() => import('../features/services'));
+const Numbers = lazy(() => import('../features/numbers'));
+const Contact = lazy(() => import('../features/contact'));
 
 const HomePage: FC = () => (
   <>
@@ -36,7 +36,7 @@ const HomePage: FC = () => (
       <OtherProjects />
     </Suspense>
 
-    {/* Chapters 05 + 06 */}
+    {/* Chapters 06 + 07 */}
     <Suspense fallback={<SectionLoader />}>
       <Services />
     </Suspense>

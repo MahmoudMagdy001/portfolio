@@ -9,12 +9,12 @@ interface NavItem {
 }
 
 const navItems: readonly NavItem[] = [
-  { label: 'Story',    href: '#beginning' },
-  { label: 'Journey',  href: '#journey' },
-  { label: 'Mobile',   href: '#projects' },
-  { label: 'Web',      href: '#web-projects' },
+  { label: 'Story', href: '#beginning' },
+  { label: 'Journey', href: '#journey' },
+  { label: 'Mobile', href: '#projects' },
+  { label: 'Web', href: '#web-projects' },
   { label: 'Services', href: '#services' },
-  { label: 'Contact',  href: '#contact' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 const sectionIds: readonly string[] = ['beginning', 'journey', 'projects', 'web-projects', 'services', 'contact'];
@@ -115,16 +115,14 @@ const Navbar: FC = () => {
 
       <nav
         ref={navRef}
-        className={`fixed left-0 right-0 z-50 transition-all duration-300 flex justify-center ${
-          scrolled ? 'top-4 px-4' : 'top-0 px-0'
-        }`}
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 flex justify-center ${scrolled ? 'top-4 px-4' : 'top-0 px-0'
+          }`}
       >
         <div
-          className={`w-full transition-all duration-300 relative ${
-            scrolled
+          className={`w-full transition-all duration-300 relative ${scrolled
               ? 'glass-strong rounded-full px-5 md:px-7 py-2.5 shadow-2xl border border-primary/15 max-w-5xl'
               : 'mx-auto max-w-[1440px] px-6 xl:px-32 py-4 border-b border-white/[0.03] bg-dark/10 backdrop-blur-md'
-          }`}
+            }`}
         >
           <div className="flex items-center justify-between gap-2">
             {/* Logo with GSAP Magnetic Effect */}
@@ -163,9 +161,8 @@ const Navbar: FC = () => {
                     key={item.href}
                     onClick={() => scrollTo(item.href)}
                     onMouseEnter={() => setHoveredItem(item.href)}
-                    className={`relative px-3.5 lg:px-4 py-2 text-sm font-semibold tracking-wide transition-all duration-300 rounded-full whitespace-nowrap active:scale-95 ${
-                      isActive ? 'text-white' : 'text-slate-400 hover:text-white'
-                    }`}
+                    className={`relative px-3.5 lg:px-4 py-2 text-sm font-semibold tracking-wide transition-all duration-300 rounded-full whitespace-nowrap active:scale-95 ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'
+                      }`}
                   >
                     {isActive && (
                       <div
@@ -206,19 +203,16 @@ const Navbar: FC = () => {
                 aria-controls="mobile-nav-menu"
               >
                 <span
-                  className={`w-6 h-0.5 bg-white block transition-transform duration-300 origin-center ${
-                    menuOpen ? 'rotate-45 translate-y-2' : ''
-                  }`}
+                  className={`w-6 h-0.5 bg-white block transition-transform duration-300 origin-center ${menuOpen ? 'rotate-45 translate-y-2' : ''
+                    }`}
                 />
                 <span
-                  className={`w-6 h-0.5 bg-white block transition-opacity duration-200 ${
-                    menuOpen ? 'opacity-0' : 'opacity-100'
-                  }`}
+                  className={`w-6 h-0.5 bg-white block transition-opacity duration-200 ${menuOpen ? 'opacity-0' : 'opacity-100'
+                    }`}
                 />
                 <span
-                  className={`w-6 h-0.5 bg-white block transition-transform duration-300 origin-center ${
-                    menuOpen ? '-rotate-45 -translate-y-2' : ''
-                  }`}
+                  className={`w-6 h-0.5 bg-white block transition-transform duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-2' : ''
+                    }`}
                 />
               </button>
             </div>
@@ -244,11 +238,10 @@ const Navbar: FC = () => {
                       <button
                         key={item.href}
                         onClick={() => scrollTo(item.href)}
-                        className={`text-left text-base font-medium py-4 px-6 rounded-xl transition-all duration-300 border-l-2 flex items-center justify-between ${
-                          isActive
+                        className={`text-left text-base font-medium py-4 px-6 rounded-xl transition-all duration-300 border-l-2 flex items-center justify-between ${isActive
                             ? 'bg-primary/10 border-primary text-white font-semibold'
                             : 'border-transparent text-slate-300 hover:text-white hover:bg-white/5'
-                        }`}
+                          }`}
                       >
                         <span>{item.label}</span>
                         {isActive && (

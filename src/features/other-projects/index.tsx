@@ -73,7 +73,7 @@ const OtherProjectCard: FC<OtherProjectCardProps> = ({ project }) => {
               <span className="text-[10px] font-mono tracking-[0.2em] uppercase py-1 px-3 rounded-full border border-white/5 bg-white/5 text-slate-400">
                 {project.category}
               </span>
-              <span className="text-[11px] font-sans font-medium py-0.5 px-2.5 rounded-md bg-white/[0.04] text-slate-300 border border-white/[0.06] hidden sm:inline-block">
+              <span className="text-[11px] font-arabic font-semibold py-0.5 px-2.5 rounded-md bg-white/[0.04] text-slate-300 border border-white/[0.06] hidden sm:inline-block tracking-normal" dir="rtl">
                 {project.arabicTitle}
               </span>
             </div>
@@ -266,8 +266,8 @@ const OtherProjectsMobile: FC = () => {
 // Desktop View: Sticky horizontal scroll (with GSAP ScrollTrigger)
 const OtherProjectsDesktop: FC = () => {
   const containerRef = useRef<HTMLElement | null>(null);
-  const pinWrapRef   = useRef<HTMLDivElement | null>(null);
-  const trackRef     = useRef<HTMLDivElement | null>(null);
+  const pinWrapRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
     if (typeof window === 'undefined') return;

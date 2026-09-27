@@ -12,19 +12,19 @@ const MilestoneCard: FC<MilestoneCardProps> = ({ milestone }) => (
   <div className="flex-shrink-0 w-[380px] group relative">
     <div className="glass-card rounded-[28px] p-8 h-full border border-white/5 relative overflow-hidden transition-all duration-500 group-hover:border-primary/30 group-hover:bg-white/[0.03]">
       {/* Background Glow */}
-      <div 
+      <div
         className="absolute -top-20 -right-20 w-56 h-56 rounded-full opacity-0 group-hover:opacity-10 transition-all duration-700 blur-[80px]"
         style={{ background: milestone.color }}
       />
-      
+
       {/* Top Accent */}
-      <div 
+      <div
         className="absolute top-0 left-8 right-8 h-px transition-opacity duration-500 opacity-20 group-hover:opacity-100"
         style={{ background: `linear-gradient(90deg, transparent, ${milestone.color}, transparent)` }}
       />
 
       <div className="flex items-center gap-3 mb-4">
-        <span 
+        <span
           className="text-xs font-mono font-bold px-3 py-1.5 rounded-full"
           style={{ background: `${milestone.color}15`, color: milestone.color, border: `1px solid ${milestone.color}30` }}
         >
@@ -42,7 +42,7 @@ const MilestoneCard: FC<MilestoneCardProps> = ({ milestone }) => (
 
       {/* Connection Node */}
       <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-dark border border-white/10 flex items-center justify-center">
-        <div 
+        <div
           className="w-2 h-2 rounded-full animate-pulse-glow"
           style={{ backgroundColor: milestone.color }}
         />
@@ -125,7 +125,7 @@ const JourneyMobile: FC = () => {
 const JourneyDesktop: FC = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const pinWrapRef = useRef<HTMLDivElement | null>(null);
-  const trackRef   = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
     if (typeof window === 'undefined') return;
@@ -180,7 +180,7 @@ const JourneyDesktop: FC = () => {
 
         {/* Horizontal Container */}
         <div className="relative flex items-center">
-          <div 
+          <div
             ref={trackRef}
             className="flex gap-8 px-[10vw]"
             style={{ willChange: 'transform' }}

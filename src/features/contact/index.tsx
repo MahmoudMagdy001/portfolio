@@ -129,9 +129,9 @@ const Contact: FC = () => {
       try {
         const text = `*New Portfolio Message*\n\n*Name:* ${name.trim()}\n*Email:* ${email.trim()}\n*Subject:* ${subject.trim() || 'No Subject'}\n*Message:* ${message.trim()}`;
         const whatsappUrl = `https://wa.me/201090617609?text=${encodeURIComponent(text)}`;
-        
+
         window.open(whatsappUrl, '_blank');
-        
+
         setSubmitted(true);
         setFormState(EMPTY_FORM);
       } catch {

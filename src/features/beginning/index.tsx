@@ -116,7 +116,7 @@ const BeginningDesktop: FC = () => {
 
   return (
     <section ref={sectionRef} id="beginning" className="relative bg-transparent">
-      <div 
+      <div
         ref={containerRef}
         className="h-screen w-full flex flex-col items-center justify-center overflow-hidden"
         style={{ willChange: 'transform' }}
